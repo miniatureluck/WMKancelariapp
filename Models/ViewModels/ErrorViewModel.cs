@@ -1,4 +1,4 @@
-namespace WMKancelariapp.Models
+namespace WMKancelariapp.Models.ViewModels
 {
     public class ErrorViewModel
     {
