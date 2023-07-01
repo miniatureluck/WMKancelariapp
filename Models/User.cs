@@ -1,6 +1,8 @@
-﻿namespace WMKancelariapp.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace WMKancelariapp.Models
 {
-    public class User : Entity
+    public class User : IdentityUser
     {
         public string Username { get; set; }
         public string Phone { get; set; }

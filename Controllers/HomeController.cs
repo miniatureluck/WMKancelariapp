@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WMKancelariapp.Models;
+using WMKancelariapp.Models.ViewModels;
 
 namespace WMKancelariapp.Controllers
 {
