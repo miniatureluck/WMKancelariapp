@@ -4,7 +4,9 @@
     {
         public int Price { get; set; }
         public User User { get; set; }
-        public Task Task { get; set; }
+        public TaskType TaskType { get; set; }
         public Client Client { get; set; }
+
+        public UserTask UserTask { get; set; }
     }
 }

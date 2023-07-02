@@ -3,6 +3,8 @@
     public class TaskType : Entity
     {
         public string Name { get; set; }
-        public List<Case> Cases { get; set; } = new List<Case>();
+
+        public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
+        public HourlyPrice? HourlyPrice { get; set; }
     }
 }

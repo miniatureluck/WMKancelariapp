@@ -6,6 +6,7 @@
         public User? AssignedUser { get; set; }
         public Client? Client { get; set; }
         public string? Description { get; set; }
+        public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
 
     }
 }

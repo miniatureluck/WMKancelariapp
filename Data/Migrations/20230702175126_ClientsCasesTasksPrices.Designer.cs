@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WMKancelariapp.Data;
 
@@ -11,9 +12,11 @@ using WMKancelariapp.Data;
 namespace WMKancelariapp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230702175126_ClientsCasesTasksPrices")]
+    partial class ClientsCasesTasksPrices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -463,8 +466,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasOne("WMKancelariapp.Models.Client", "Client")
                         .WithMany("Cases")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ClientId");
 
                     b.Navigation("AssignedUser");
 
@@ -475,8 +477,7 @@ namespace WMKancelariapp.Data.Migrations
                 {
                     b.HasOne("WMKancelariapp.Models.User", "AssignedUser")
                         .WithMany("Clients")
-                        .HasForeignKey("AssignedUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("AssignedUserId");
 
                     b.Navigation("AssignedUser");
                 });
@@ -514,8 +515,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasOne("WMKancelariapp.Models.Client", "Client")
                         .WithMany("Tasks")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("WMKancelariapp.Models.TaskType", "TaskType")
                         .WithMany("Tasks")
