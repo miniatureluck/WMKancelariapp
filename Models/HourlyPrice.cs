@@ -7,6 +7,6 @@
         public TaskType TaskType { get; set; }
         public Client Client { get; set; }
 
-        public UserTask UserTask { get; set; }
+        public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
     }
 }

@@ -15,7 +15,7 @@ namespace WMKancelariapp.Data
             }
 
             await roleManager.CreateAsync(new IdentityRole { Name = "SysAdmin" });
-            var admin = new User { Email = "admin@example.com", UserName = "admin@example.com", EmailConfirmed = true};
+            var admin = new User { Email = "admin@example.com", UserName = "admin@example.com", EmailConfirmed = true };
             await userManager.CreateAsync(admin, "123qwe!@#QWE");
             await userManager.AddToRoleAsync(admin, "SysAdmin");
 
@@ -34,13 +34,21 @@ namespace WMKancelariapp.Data
                 TaxIdNumber = "231241433"
             };
 
+            var sampleTaskType = new TaskType
+            {
+                Created = DateTime.Now,
+                Name = "Rozmowa telefoniczna"
+            };
+
             var samplePrice = new HourlyPrice
             {
                 Client = sampleClient,
                 User = admin,
                 Price = 100,
                 Created = DateTime.Now,
+                TaskType = sampleTaskType
             };
+
 
             var sampleTask = new UserTask
             {
@@ -50,14 +58,10 @@ namespace WMKancelariapp.Data
                 Description = "sample description",
                 User = admin,
                 HourlyPrice = samplePrice,
-                TaskType = new TaskType
-                {
-                    Created = DateTime.Now,
-                    Name = "Rozmowa telefoniczna"
-                }
+                TaskType = sampleTaskType
             };
 
-            samplePrice.Task = sampleTask;
+            samplePrice.UserTasks.Add(sampleTask);
 
             context.Clients.Add(sampleClient);
             context.HourlyPrices.Add(samplePrice);

@@ -48,7 +48,7 @@ namespace WMKancelariapp.Data
             builder.Entity<TaskType>()
                 .HasIndex(x => x.Name).IsUnique();
             builder.Entity<TaskType>()
-                .HasOne(x => x.HourlyPrice).WithOne(x => x.TaskType);
+                .HasMany(x => x.HourlyPrices).WithOne(x => x.TaskType);
 
             builder.Entity<UserTask>()
                 .HasOne(x => x.Client).WithMany(x => x.Tasks)
@@ -56,9 +56,7 @@ namespace WMKancelariapp.Data
             builder.Entity<UserTask>()
                 .HasOne(x => x.Case).WithMany(x => x.Tasks);
             builder.Entity<UserTask>()
-                .HasOne(x => x.HourlyPrice).WithOne(x => x.UserTask)
-                .HasForeignKey<HourlyPrice>(x => x.Id);
-
+                .HasOne(x => x.HourlyPrice).WithMany(x => x.UserTasks);
 
 
         }

@@ -1,8 +1,11 @@
-﻿namespace WMKancelariapp.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WMKancelariapp.Models
 {
     public class Entity
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }
