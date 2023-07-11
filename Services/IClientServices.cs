@@ -10,6 +10,6 @@ namespace WMKancelariapp.Services
         Task Edit(CreateClientViewModel editedClient);
         Task<bool> Delete(string id);
         Task<Client> GetById(string id);
-        Task<Client> GetByName(string name);
+        Task<Client> GetByName(string name, string surname);
     }
 }

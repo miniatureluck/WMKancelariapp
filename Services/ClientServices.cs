@@ -1,38 +1,55 @@
-﻿using WMKancelariapp.Models;
+﻿using AutoMapper;
+using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
+using WMKancelariapp.Repository;
 
 namespace WMKancelariapp.Services
 {
     public class ClientServices : IClientServices
     {
-        public Task Create(CreateClientViewModel newClient)
+        private readonly IRepository<Client> _clients;
+        private readonly IMapper _mapper;
+        public ClientServices(IRepository<Client> clients, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _clients = clients;
+            _mapper = mapper;
+        }
+        public async Task Create(CreateClientViewModel newClient)
+        {
+            var client = _mapper.Map<Client>(newClient);
+            await _clients.Insert(client);
         }
 
-        public Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            var clientToDelete = await _clients.GetById(id);
+            return await _clients.Delete(clientToDelete);
         }
 
-        public Task Edit(CreateClientViewModel editedClient)
+        public async Task Edit(CreateClientViewModel editedClient)
         {
-            throw new NotImplementedException();
+            var clientToEdit = await GetByName(editedClient.Name, editedClient.Surname ?? string.Empty);
+            if (clientToEdit == null)
+            {
+                return;
+            }
+            await _clients.Update(clientToEdit);
         }
 
-        public Task<IEnumerable<Client>> GetAll()
+        public async Task<IEnumerable<Client>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _clients.GetAll(x => x.Cases, x => x.AssignedUser, x => x.Prices, x => x.Tasks);
         }
 
-        public Task<Client> GetById(string id)
+        public async Task<Client> GetById(string id)
         {
-            throw new NotImplementedException();
+            return await _clients.GetById(id);
         }
 
-        public Task<Client> GetByName(string name)
+        public async Task<Client> GetByName(string name, string surname)
         {
-            throw new NotImplementedException();
+            var clientList = await GetAll();
+            return clientList.First(x => x.Name.Equals(name) && x.Surname != null && x.Surname.Equals(surname));
         }
     }
 }

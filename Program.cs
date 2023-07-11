@@ -22,6 +22,7 @@ namespace WMKancelariapp
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddScoped<UserManager<User>>();
+            builder.Services.AddAutoMapper(typeof(Program));
 
             var app = builder.Build();
             await CreateDbIfDoesntExist(app);

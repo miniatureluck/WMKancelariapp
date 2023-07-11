@@ -40,10 +40,11 @@ namespace WMKancelariapp.Repository
             }
         }
 
-        public async Task Delete(T entity)
+        public async Task<bool> Delete(T entity)
         {
             _entities.Remove(entity);
-            await _context.SaveChangesAsync();
+            var deleted = await _context.SaveChangesAsync();
+            return deleted > 0;
         }
 
         public async Task Update(T entity)

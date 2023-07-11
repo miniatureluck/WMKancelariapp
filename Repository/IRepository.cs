@@ -7,7 +7,7 @@ namespace WMKancelariapp.Repository
     {
         public Task<List<T>> GetAll(params Expression<Func<T, object>>[]? includes);
         public Task Insert(T entity);
-        public Task Delete(T entity);
+        public Task<bool> Delete(T entity);
         public Task Update(T entity);
         public Task<T> GetById(string id);
         public Task<T> GetById(string id, params Expression<Func<T, object>>[] includes);
