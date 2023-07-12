@@ -43,16 +43,18 @@ namespace WMKancelariapp.Controllers
         // GET: ClientsController/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new ClientDtoViewModel();
+            return View(model);
         }
 
         // POST: ClientsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(ClientDtoViewModel model)
         {
             try
             {
+                await _clientServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
