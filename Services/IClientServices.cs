@@ -13,5 +13,6 @@ namespace WMKancelariapp.Services
         Task<Client> GetById(string id);
         Task<Client> GetByIdWithIncludes(string id, params Expression<Func<Client, object>>[] includes);
         Task<Client> GetByName(string name, string surname);
+        Task<ClientDtoViewModel> GetDtoById(string id);
     }
 }

@@ -29,11 +29,12 @@ namespace WMKancelariapp.Services
 
         public async Task Edit(ClientDtoViewModel editedClient)
         {
-            var clientToEdit = await GetByName(editedClient.Name, editedClient.Surname ?? string.Empty);
+            var clientToEdit = _mapper.Map(editedClient, await GetById(editedClient.ClientId));
             if (clientToEdit == null)
             {
                 return;
             }
+            
             await _clients.Update(clientToEdit);
         }
 
@@ -56,6 +57,12 @@ namespace WMKancelariapp.Services
         {
             var clientList = await GetAll();
             return clientList.First(x => x.Name.Equals(name) && x.Surname != null && x.Surname.Equals(surname));
+        }
+
+        public async Task<ClientDtoViewModel> GetDtoById(string id)
+        {
+            var clientDto = _mapper.Map<ClientDtoViewModel>(await _clients.GetById(id));
+            return clientDto;
         }
     }
 }

@@ -64,18 +64,20 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: ClientsController/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var model = await _clientServices.GetDtoById(id);
+            return View(model);
         }
 
         // POST: ClientsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, IFormCollection collection)
+        public async Task<ActionResult> Edit(ClientDtoViewModel model)
         {
             try
             {
+                await _clientServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
