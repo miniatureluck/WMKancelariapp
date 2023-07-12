@@ -8,10 +8,14 @@ namespace WMKancelariapp.Data.Profiles
     {
         public ClientProfile()
         {
-        CreateMap<Client, CreateClientViewModel>()
+        CreateMap<Client, ClientDtoViewModel>()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
-        CreateMap<Client, CreateClientViewModel>().ReverseMap();
+        CreateMap<Client, ClientDtoViewModel>()
+            .ForMember(x=> x.ClientId, opt => opt.MapFrom(x=>x.Id))
+            .ReverseMap();
+
+
         }
 
             

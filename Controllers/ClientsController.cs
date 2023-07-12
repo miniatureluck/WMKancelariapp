@@ -1,21 +1,43 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WMKancelariapp.Models.ViewModels;
+using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
     [Authorize]
     public class ClientsController : Controller
     {
-        // GET: ClientsController
-        public ActionResult Index()
+        private readonly IClientServices _clientServices;
+        private readonly IMapper _mapper;
+
+        public ClientsController(IClientServices clientServices, IMapper mapper)
         {
-            return View();
+            _clientServices = clientServices;
+            _mapper = mapper;
+        }
+        // GET: ClientsController
+        public async Task<ActionResult> Index()
+        {
+            var model = new ClientIndexViewModel();
+            var clientsDto = new List<ClientDtoViewModel>();
+            
+            var clients = await _clientServices.GetAll();
+            foreach (var item in clients)
+            {
+                model.AllClients.Add(_mapper.Map(item, new ClientDtoViewModel()));
+            }
+
+            return View(model);
         }
 
         // GET: ClientsController/Details/5
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
-            return View();
+            var client = await _clientServices.GetByIdWithIncludes(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices);
+            var model = _mapper.Map(client, new ClientDtoViewModel());
+            return View(model);
         }
 
         // GET: ClientsController/Create

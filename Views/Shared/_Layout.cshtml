@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <title>@ViewData["Title"] - WMKancelariapp</title>
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/styles.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WMKancelariapp.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -27,9 +26,11 @@
     <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
         <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light">@(User.Identity.Name ?? "---------")</div>
+            <div class="sidebar-heading border-bottom bg-light">
+                <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Identity.Name ?? "---------")</a>
+            </div>
             <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Klienci</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Clients">Klienci</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Sprawy</a>
 
             </div>

@@ -1,4 +1,5 @@
-﻿using WMKancelariapp.Models;
+﻿using System.Linq.Expressions;
+using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 
 namespace WMKancelariapp.Services
@@ -6,10 +7,11 @@ namespace WMKancelariapp.Services
     public interface IClientServices
     {
         Task<IEnumerable<Client>> GetAll();
-        Task Create(CreateClientViewModel newClient);
-        Task Edit(CreateClientViewModel editedClient);
+        Task Create(ClientDtoViewModel newClient);
+        Task Edit(ClientDtoViewModel editedClient);
         Task<bool> Delete(string id);
         Task<Client> GetById(string id);
+        Task<Client> GetByIdWithIncludes(string id, params Expression<Func<Client, object>>[] includes);
         Task<Client> GetByName(string name, string surname);
     }
 }

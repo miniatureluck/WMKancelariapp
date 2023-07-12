@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WMKancelariapp.Data;
 using WMKancelariapp.Models;
+using WMKancelariapp.Repository;
+using WMKancelariapp.Services;
 
 namespace WMKancelariapp
 {
@@ -22,6 +24,8 @@ namespace WMKancelariapp
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddScoped<UserManager<User>>();
+            builder.Services.AddScoped<IClientServices, ClientServices>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddAutoMapper(typeof(Program));
 
             var app = builder.Build();
