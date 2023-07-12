@@ -87,18 +87,20 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: ClientsController/Delete/5
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
+            var model = await _clientServices.GetDtoById(id);
+            return View(model);
         }
 
         // POST: ClientsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
+                await _clientServices.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
