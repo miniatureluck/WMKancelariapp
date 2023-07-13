@@ -1,35 +1,59 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WMKancelariapp.Models;
+using WMKancelariapp.Models.ViewModels;
+using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
     public class CasesController : Controller
     {
-        // GET: CasesController
-        public ActionResult Index()
+        private readonly ICaseServices _caseServices;
+        private readonly IMapper _mapper;
+        public CasesController(ICaseServices caseServices, IMapper mapper)
         {
-            return View();
+            _caseServices = caseServices;
+            _mapper = mapper;
+        }
+        // GET: CasesController
+        public async Task<ActionResult> Index()
+        {
+            var model = new CaseIndexViewModel();
+
+            var cases = await _caseServices.GetAll();
+            foreach (var item in cases)
+            {
+                model.AllCases.Add(_mapper.Map(item, new CaseDtoViewModel()));
+            }
+
+            return View(model);
         }
 
         // GET: CasesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(string id)
         {
-            return View();
+            var userCase =
+                await _caseServices.GetByIdWithIncludes(id, x => x.AssignedUser, x => x.Tasks, x => x.Client);
+            var model = _mapper.Map(userCase, new CaseDtoViewModel());
+            return View(model);
         }
 
         // GET: CasesController/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new CaseDtoViewModel();
+            return View(model);
         }
 
         // POST: CasesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(CaseDtoViewModel model)
         {
             try
             {
+                await _caseServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -39,18 +63,20 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: CasesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var model = await _caseServices.GetDtoById(id);
+            return View(model);
         }
 
         // POST: CasesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(CaseDtoViewModel model)
         {
             try
             {
+                await _caseServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -60,18 +86,20 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: CasesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
+            var model = await _caseServices.GetDtoById(id);
+            return View(model);
         }
 
         // POST: CasesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
+                await _caseServices.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

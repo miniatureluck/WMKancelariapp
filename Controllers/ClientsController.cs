@@ -21,7 +21,6 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Index()
         {
             var model = new ClientIndexViewModel();
-            var clientsDto = new List<ClientDtoViewModel>();
             
             var clients = await _clientServices.GetAll();
             foreach (var item in clients)
