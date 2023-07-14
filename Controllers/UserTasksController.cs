@@ -1,15 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WMKancelariapp.Models.ViewModels;
+using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
     public class UserTasksController : Controller
     {
-        // GET: UserTasksController
-        public ActionResult Index()
+        private readonly IUserTaskServices _userTaskServices;
+        private readonly IMapper _mapper;
+        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper)
         {
+            _userTaskServices = userTaskServices;
+            _mapper = mapper;
+        }
+        // GET: UserTasksController
+        public async Task<ActionResult> Index()
+        {
+
             var model = new UserTaskIndexViewModel();
+
+            var userTasks = await _userTaskServices.GetAll();
+            foreach (var item in userTasks)
+            {
+                model.AllUserTasks.Add(_mapper.Map(item, new UserTaskDtoViewModel()));
+            }
+
             return View(model);
         }
 

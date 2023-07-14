@@ -11,7 +11,7 @@ namespace WMKancelariapp.Models.ViewModels
         public DateTime? StartTime { get; set; }
         [DisplayName("Zakończono")]
         public DateTime? EndTime { get; set; }
-        [DisplayName("Czas trwania")]
+        [DisplayName("Czas")]
         public TimeSpan? Duration { get; set; }
         [DisplayName("Opis")]
         public string? Description { get; set; }

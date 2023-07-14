@@ -26,6 +26,7 @@ namespace WMKancelariapp
             builder.Services.AddScoped<UserManager<User>>();
             builder.Services.AddScoped<IClientServices, ClientServices>();
             builder.Services.AddScoped<ICaseServices, CaseServices>();
+            builder.Services.AddScoped<IUserTaskServices, UserTaskServices>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddAutoMapper(typeof(Program));
 

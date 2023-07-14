@@ -527,7 +527,7 @@ namespace WMKancelariapp.Data.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("WMKancelariapp.Models.HourlyPrice", "HourlyPrice")
-                        .WithMany("UserTasks")
+                        .WithMany("AllUserTasks")
                         .HasForeignKey("HourlyPriceId");
 
                     b.HasOne("WMKancelariapp.Models.TaskType", "TaskType")
@@ -569,7 +569,7 @@ namespace WMKancelariapp.Data.Migrations
 
             modelBuilder.Entity("WMKancelariapp.Models.HourlyPrice", b =>
                 {
-                    b.Navigation("UserTasks");
+                    b.Navigation("AllUserTasks");
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.TaskType", b =>

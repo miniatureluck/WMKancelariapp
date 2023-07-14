@@ -6,32 +6,35 @@
 <p>
     <a asp-action="Create">Nowa czynność</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-hover table-sm">
+    <thead class="table-primary">
         <tr>
             <th>
-                Czynność
+                @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().TaskType)
             </th>
             <th>
-                Sprawa
+                @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().Case)
             </th>
             <th>
-                Klient
+                @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().Client)
             </th>
             <th>
-                Opiekun
+                @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().User)
             </th>
             <th>
-                @Html.DisplayNameFor(x=> x.UserTasks.FirstOrDefault().Duration)
+                @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(x=> x.UserTasks.FirstOrDefault().Description)
+                @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().Description)
+            </th>
+            <th>
+                Opcje
             </th>
 
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.UserTasks)
+        @foreach (var item in Model.AllUserTasks)
         {
             <tr>
                 <td>
@@ -41,7 +44,8 @@
                     @Html.DisplayFor(modelItem => item.Case.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Client.Name) @Html.DisplayFor(modelItem => item.Client.Surname)
+                    <a asp-action="Details" asp-controller="Clients" asp-route-id="@item.Client.Id">
+                    @Html.DisplayFor(modelItem => item.Client.Name) @Html.DisplayFor(modelItem => item.Client.Surname)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.User.UserName)
@@ -53,9 +57,9 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edycja", "Edit", new {  id=item.UserTaskId }) |
+                    @Html.ActionLink("Szczegóły", "Details", new {  id=item.UserTaskId  }) |
+                    @Html.ActionLink("Usuń", "Delete", new {  id=item.UserTaskId  })
                 </td>
             </tr>
         }

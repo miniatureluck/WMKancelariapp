@@ -56,7 +56,7 @@ namespace WMKancelariapp.Services
         public async Task<Client> GetByName(string name, string surname)
         {
             var clientList = await GetAll();
-            return clientList.First(x => x.Name.Equals(name) && x.Surname != null && x.Surname.Equals(surname));
+            return clientList.FirstOrDefault(x => x.Name.Equals(name) && x.Surname != null && x.Surname.Equals(surname));
         }
 
         public async Task<ClientDtoViewModel> GetDtoById(string id)

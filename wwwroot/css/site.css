@@ -1,3 +1,19 @@
+.filter-text-input {
+    font-size: small;
+    padding-left: 5px;
+    width: 100%;
+}
+
+.filter-section {
+    display: none;
+    transition: transform 0.6s cubic-bezier(0, 0.55, 0.45, 1);
+}
+
+.show-filter-section {
+    display: block;
+    transition: transform 0.6s cubic-bezier(0, 0.55, 0.45, 1);
+}
+
 html {
   font-size: 14px;
 }

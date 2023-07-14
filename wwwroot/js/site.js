@@ -7,15 +7,45 @@
 // Scripts
 // 
 
+$('.filter-button').click(function () {
+    $('.filter-section').toggleClass('show-filter-section');
+})
+
+//$(function () {
+//    $('.filter-button').click(function () {
+//        $('.filter-section').toggle();
+//    });
+//});
+
+function filterNames() {
+
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("clientNameInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("resultsTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+};
+
 window.addEventListener('DOMContentLoaded', event => {
 
-    // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
+
+         if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+             document.body.classList.toggle('sb-sidenav-toggled');
+         }
         sidebarToggle.addEventListener('click', event => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
