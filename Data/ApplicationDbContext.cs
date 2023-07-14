@@ -58,7 +58,8 @@ namespace WMKancelariapp.Data
             builder.Entity<UserTask>()
                 .HasOne(x => x.HourlyPrice).WithMany(x => x.UserTasks);
 
-
+            builder.Entity<HourlyPrice>()
+                .Navigation(x => x.TaskType).AutoInclude();
         }
     }
 }

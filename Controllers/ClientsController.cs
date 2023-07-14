@@ -34,7 +34,7 @@ namespace WMKancelariapp.Controllers
         // GET: ClientsController/Details/5
         public async Task<ActionResult> Details(string id)
         {
-            var client = await _clientServices.GetByIdWithIncludes(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices);
+            var client = await _clientServices.GetByIdWithIncludes(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices, x=>x.Tasks);
             var model = _mapper.Map(client, new ClientDtoViewModel());
             return View(model);
         }

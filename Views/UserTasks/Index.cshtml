@@ -1,0 +1,63 @@
+﻿@model WMKancelariapp.Models.ViewModels.UserTaskIndexViewModel
+
+@{
+    ViewData["Title"] = "Czynności";
+}
+<p>
+    <a asp-action="Create">Nowa czynność</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Czynność
+            </th>
+            <th>
+                Sprawa
+            </th>
+            <th>
+                Klient
+            </th>
+            <th>
+                Opiekun
+            </th>
+            <th>
+                @Html.DisplayNameFor(x=> x.UserTasks.FirstOrDefault().Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x=> x.UserTasks.FirstOrDefault().Description)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserTasks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Case.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Name) @Html.DisplayFor(modelItem => item.Client.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -62,7 +62,7 @@
             <ui>
                 @foreach (var item in Model.Prices)
                 {
-                    <li>@(item.TaskType): @(item.Price)</li>
+                    <li>@(item.TaskType.Name): @(item.Price)</li>
                 }
             </ui>
         </dd>

@@ -27,7 +27,7 @@ namespace WMKancelariapp.Models.ViewModels
         public List<Case>? Cases { get; set; } = new List<Case>();
         [DisplayName("Czynności")]
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
-        [DisplayName("Stawka")]
+        [DisplayName("Stawki")]
         public List<HourlyPrice>? Prices { get; set; } = new List<HourlyPrice>();
         [DisplayName("Opiekun")]
         public User? AssignedUser { get; set; }
