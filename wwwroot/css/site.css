@@ -1,16 +1,24 @@
+.dropdown-content {
+    display: none;
+}
+
 .filter-text-input {
     font-size: small;
     padding-left: 5px;
     width: 100%;
 }
 
-.filter-section {
-    display: none;
-    transition: transform 0.6s cubic-bezier(0, 0.55, 0.45, 1);
+.filter-button {
+    height: 2rem;
+    padding: 3px 5px 3px 5px
 }
 
-.show-filter-section {
-    display: block;
+.filter-button-toggled {
+    background-color: floralwhite;
+}
+
+.filter-section {
+    display: none;
     transition: transform 0.6s cubic-bezier(0, 0.55, 0.45, 1);
 }
 

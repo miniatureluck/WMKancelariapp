@@ -20,6 +20,17 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group dropdown">
+                <button class="btn btn-secondary btn-dropdown" onclick="dropdownToggle()">Klient</button>
+                <div id="dropdown-content" class="dropdown-content">
+                    <input type="text" placeholder="Wyszukaj" id="dropdownInput" onkeyup="filterFunction()"/>
+                    @foreach (var client in Model.AllClients)
+                    {
+                        <a href="#">@client.Name @client.Surname</a>
+                    }
+                </div>
+                <span asp-validation-for="AllClients" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Stwórz" class="btn btn-primary" />
             </div>

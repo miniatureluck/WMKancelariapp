@@ -15,5 +15,10 @@ namespace WMKancelariapp.Models.ViewModels
         public string? Description { get; set; }
         [DisplayName("Czynności")]
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
+
+
+
+        [DisplayName("Klient")]
+        public List<Client>? AllClients { get; set; } = new List<Client>();
     }
 }

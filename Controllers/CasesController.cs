@@ -10,10 +10,12 @@ namespace WMKancelariapp.Controllers
     public class CasesController : Controller
     {
         private readonly ICaseServices _caseServices;
+        private readonly IClientServices _clientServices;
         private readonly IMapper _mapper;
-        public CasesController(ICaseServices caseServices, IMapper mapper)
+        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper)
         {
             _caseServices = caseServices;
+            _clientServices = clientServices;
             _mapper = mapper;
         }
         // GET: CasesController
@@ -40,9 +42,10 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: CasesController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             var model = new CaseDtoViewModel();
+            model.AllClients.AddRange(await _clientServices.GetAll());
             return View(model);
         }
 
