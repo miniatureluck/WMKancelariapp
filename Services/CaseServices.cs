@@ -29,12 +29,12 @@ namespace WMKancelariapp.Services
 
         public async Task Edit(CaseDtoViewModel editedCase)
         {
-            var caseToEdit = _mapper.Map(editedCase, await _caseRepository.GetById(editedCase.CaseId));
+            var caseToEdit = _mapper.Map(editedCase, await _caseRepository.GetById(editedCase.CaseId, x=>x.Client, x=>x.AssignedUser, x=>x.Tasks));
             if (caseToEdit == null)
             {
                 return;
             }
-
+            
             await _caseRepository.Update(caseToEdit);
         }
 

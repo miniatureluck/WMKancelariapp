@@ -5,7 +5,7 @@ namespace WMKancelariapp.Data
 {
     public static class Seed
     {
-        public async static Task Initialize(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public static async Task Initialize(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             await context.Database.EnsureCreatedAsync();
 

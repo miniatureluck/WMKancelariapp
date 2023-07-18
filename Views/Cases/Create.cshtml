@@ -20,21 +20,17 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group dropdown">
-                <button class="btn btn-secondary btn-dropdown" onclick="dropdownToggle()">Klient</button>
-                <div id="dropdown-content" class="dropdown-content">
-                    <input type="text" placeholder="Wyszukaj" id="dropdownInput" onkeyup="filterFunction()"/>
-                    @foreach (var client in Model.AllClients)
-                    {
-                        <a href="#">@client.Name @client.Surname</a>
-                    }
+            <div class="form-group">
+                <div class="dropdown-content">
+                    @Html.DropDownListFor(x => x.Client.Id, Model.AllClientsSelectList, "Klient")
                 </div>
-                <span asp-validation-for="AllClients" class="text-danger"></span>
+                <span asp-validation-for="AllClientsSelectList" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Stwórz" class="btn btn-primary" />
             </div>
             @Html.HiddenFor(x=>x.CaseId)
+            @Html.HiddenFor(x=>x.Client)
         </form>
     </div>
 </div>

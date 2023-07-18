@@ -12,25 +12,25 @@ $('.filter-button').click(function () {
     $('.filter-button').toggleClass("filter-button-toggled")
 });
 
-function dropdownToggle() {
-    document.getElementById("dropdown-content").classList.toggle("display");
-}
+//function dropdownToggle() {
+//    document.getElementById("dropdown-content").classList.toggle("display");
+//}
 
-function filterFunction() {
-    var input, filter, ul, li, a, i;
-    input = document.getElementById("dropdownInput");
-    filter = input.value.toUpperCase();
-    div = document.getElementById("dropdown-content");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        txtValue = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "block";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
-}
+//function filterFunction() {
+//    var input, filter, ul, li, a, i;
+//    input = document.getElementById("dropdownInput");
+//    filter = input.value.toUpperCase();
+//    div = document.getElementById("dropdown-content");
+//    a = div.getElementsByTagName("a");
+//    for (i = 0; i < a.length; i++) {
+//        txtValue = a[i].textContent || a[i].innerText;
+//        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//            a[i].style.display = "block";
+//        } else {
+//            a[i].style.display = "none";
+//        }
+//    }
+//}
 
 function filterNames() {
 

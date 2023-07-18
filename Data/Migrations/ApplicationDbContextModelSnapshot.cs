@@ -187,7 +187,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Cases");
+                    b.ToTable("Cases", (string)null);
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.Client", b =>
@@ -234,7 +234,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasIndex("AssignedUserId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.HourlyPrice", b =>
@@ -269,7 +269,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HourlyPrices");
+                    b.ToTable("HourlyPrices", (string)null);
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.TaskType", b =>
@@ -290,7 +290,7 @@ namespace WMKancelariapp.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("TaskTypes");
+                    b.ToTable("TaskTypes", (string)null);
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.User", b =>
@@ -408,7 +408,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -527,7 +527,7 @@ namespace WMKancelariapp.Data.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("WMKancelariapp.Models.HourlyPrice", "HourlyPrice")
-                        .WithMany("AllUserTasks")
+                        .WithMany("UserTasks")
                         .HasForeignKey("HourlyPriceId");
 
                     b.HasOne("WMKancelariapp.Models.TaskType", "TaskType")
@@ -569,7 +569,7 @@ namespace WMKancelariapp.Data.Migrations
 
             modelBuilder.Entity("WMKancelariapp.Models.HourlyPrice", b =>
                 {
-                    b.Navigation("AllUserTasks");
+                    b.Navigation("UserTasks");
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.TaskType", b =>

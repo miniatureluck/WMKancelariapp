@@ -34,7 +34,7 @@
                     @item.AssignedUser?.UserName
                 </td>
                 <td>
-                    @item.Client?.Name @item.Client?.Surname
+                    <a asp-action="Details" asp-controller="Clients" asp-route-id="@item.Client?.Id">@item.Client?.Name @item.Client?.Surname</a>
                 </td>
                 <td>
                     @Html.ActionLink("Szczegóły", "Details", new {  id=item.CaseId }) |

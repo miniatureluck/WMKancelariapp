@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
+    
+    [Authorize]
     public class CasesController : Controller
     {
         private readonly ICaseServices _caseServices;
@@ -45,7 +49,9 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new CaseDtoViewModel();
-            model.AllClients.AddRange(await _clientServices.GetAll());
+            model.Client = new Client();
+            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+
             return View(model);
         }
 
@@ -56,6 +62,7 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
+                model.Client = await _clientServices.GetById(model.Client.Id);
                 await _caseServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -69,6 +76,8 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             var model = await _caseServices.GetDtoById(id);
+
+            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
             return View(model);
         }
 
@@ -79,6 +88,15 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
+                if (model.Client.Id == "0")
+                {
+                    model.Client = null;
+                }
+                else
+                {
+                    model.Client = await _clientServices.GetById(model.Client.Id);
+                }
+
                 await _caseServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }

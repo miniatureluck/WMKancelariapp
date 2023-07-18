@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
@@ -63,6 +64,27 @@ namespace WMKancelariapp.Services
         {
             var clientDto = _mapper.Map<ClientDtoViewModel>(await _clients.GetById(id));
             return clientDto;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> CreateClientsSelectList()
+        {
+            var model = new List<SelectListItem>();
+            var clients = await GetAll();
+            model.Add(new SelectListItem
+            {
+                Text = "Brak",
+                Value = "0"
+
+            });
+            foreach (var item in clients)
+            {
+                model.Add(new SelectListItem
+                {
+                    Text = $"{item.Name} {item.Surname}",
+                    Value = item.Id
+                });
+            }
+            return model;
         }
     }
 }

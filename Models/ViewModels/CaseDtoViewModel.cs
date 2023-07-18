@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
 {
@@ -19,6 +20,6 @@ namespace WMKancelariapp.Models.ViewModels
 
 
         [DisplayName("Klient")]
-        public List<Client>? AllClients { get; set; } = new List<Client>();
+        public List<SelectListItem>? AllClientsSelectList { get; set; } = new List<SelectListItem>();
     }
 }
