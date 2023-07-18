@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Services;
@@ -16,11 +18,13 @@ namespace WMKancelariapp.Controllers
         private readonly ICaseServices _caseServices;
         private readonly IClientServices _clientServices;
         private readonly IMapper _mapper;
-        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper)
+        private readonly UserManager<User> _userManager;
+        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper, UserManager<User> userManager)
         {
             _caseServices = caseServices;
             _clientServices = clientServices;
             _mapper = mapper;
+            _userManager = userManager;
         }
         // GET: CasesController
         public async Task<ActionResult> Index()
@@ -51,6 +55,7 @@ namespace WMKancelariapp.Controllers
             var model = new CaseDtoViewModel();
             model.Client = new Client();
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
 
             return View(model);
         }
@@ -63,6 +68,7 @@ namespace WMKancelariapp.Controllers
             try
             {
                 model.Client = await _clientServices.GetById(model.Client.Id);
+                model.AssignedUser = await _userManager.FindByIdAsync(model.AssignedUser.Id);
                 await _caseServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -78,6 +84,7 @@ namespace WMKancelariapp.Controllers
             var model = await _caseServices.GetDtoById(id);
 
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
             return View(model);
         }
 
@@ -88,14 +95,8 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
-                if (model.Client.Id == "0")
-                {
-                    model.Client = null;
-                }
-                else
-                {
-                    model.Client = await _clientServices.GetById(model.Client.Id);
-                }
+                model.Client = await _clientServices.GetById(model.Client.Id);
+                model.AssignedUser = await _userManager.FindByIdAsync(model.AssignedUser.Id);
 
                 await _caseServices.Edit(model);
                 return RedirectToAction(nameof(Index));

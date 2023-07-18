@@ -21,5 +21,8 @@ namespace WMKancelariapp.Models.ViewModels
 
         [DisplayName("Klient")]
         public List<SelectListItem>? AllClientsSelectList { get; set; } = new List<SelectListItem>();
+
+        [DisplayName("Opiekun")]
+        public virtual List<SelectListItem>? AllUsersSelectList { get; set; } = new List<SelectListItem>();
     }
 }
