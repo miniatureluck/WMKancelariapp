@@ -13,5 +13,25 @@ namespace WMKancelariapp.Extensions
 
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text);
         }
+
+        public static string Truncate(this string text, int maxLength)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            var result = text.Remove(maxLength) + "...";
+            return result;
+        }
+
+        public static string RemoveEmailDomain(this string email)
+        {
+            if (string.IsNullOrEmpty(email) || !email.Contains('@'))
+            {
+                return email;
+            }
+            return email.Remove(email.IndexOf('@'));
+        }
     }
 }

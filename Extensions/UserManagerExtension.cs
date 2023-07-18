@@ -20,7 +20,7 @@ namespace WMKancelariapp.Extensions
             {
                 usersSelectList.Add(new SelectListItem
                 {
-                    Text = user.UserName,
+                    Text = user.UserName.RemoveEmailDomain(),
                     Value = user.Id
                 });
             }

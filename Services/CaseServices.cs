@@ -55,7 +55,7 @@ namespace WMKancelariapp.Services
 
         public async Task<CaseDtoViewModel> GetDtoById(string id)
         {
-            return _mapper.Map<CaseDtoViewModel>(await _caseRepository.GetById(id));
+            return _mapper.Map<CaseDtoViewModel>(await GetByIdWithIncludes(id, x=>x.Client, x=>x.AssignedUser, x=>x.Tasks));
         }
 
         public async Task<CaseDtoViewModel> GetDtoByName(string name)

@@ -1,4 +1,5 @@
-﻿@model WMKancelariapp.Models.ViewModels.CaseIndexViewModel
+﻿@using WMKancelariapp.Extensions
+@model WMKancelariapp.Models.ViewModels.CaseIndexViewModel
 
 @{
     ViewData["Title"] = "Sprawy";
@@ -28,10 +29,10 @@
                     @item.Name
                 </td>
                 <td>
-                    @item.Description
+                    @item.Description.Truncate(5)
                 </td>
                 <td>
-                    @item.AssignedUser?.UserName
+                    @item.AssignedUser?.UserName.RemoveEmailDomain()
                 </td>
                 <td>
                     <a asp-action="Details" asp-controller="Clients" asp-route-id="@item.Client?.Id">@item.Client?.Name @item.Client?.Surname</a>
