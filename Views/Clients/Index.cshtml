@@ -16,12 +16,15 @@
         <tr>
             <th scope="col">
                 <div class="filter-section">
-                    <input type="text" id="clientNameInput" onkeyup="filterNames()" placeholder="Filtruj po imieniu/nazwisku" class="filter-text-input"/><br/>
+                    <input type="text" id="clientNameInput" onkeyup="filterNames('clientNameInput', 'resultsTable' )" placeholder="Filtruj po imieniu/nazwisku" class="filter-text-input" /><br />
                 </div>
                 Imię i nazwisko
             </th>
             <th scope="col" colspan="2">
                 Dane kontaktowe
+            </th>
+            <th scope="col">
+                Opiekun
             </th>
             <th scope="col">
                 Akcje
@@ -35,6 +38,7 @@
                 <td>@item.Name @item.Surname</td>
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
+                <td>@item.AssignedUser</td>
                 <td>
                     @Html.ActionLink("Szczegóły", "Details", new { id=item.ClientId }) |
                     @Html.ActionLink("Edycja", "Edit", new { id=item.ClientId }) |
