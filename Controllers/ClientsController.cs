@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WMKancelariapp.Extensions;
+using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Services;
 
@@ -11,11 +14,15 @@ namespace WMKancelariapp.Controllers
     {
         private readonly IClientServices _clientServices;
         private readonly IMapper _mapper;
+        private readonly ICaseServices _caseServices;
+        private readonly UserManager<User> _userManager;
 
-        public ClientsController(IClientServices clientServices, IMapper mapper)
+        public ClientsController(IClientServices clientServices, IMapper mapper, ICaseServices caseServices, UserManager<User> userManager)
         {
             _clientServices = clientServices;
             _mapper = mapper;
+            _caseServices = caseServices;
+            _userManager = userManager;
         }
         // GET: ClientsController
         public async Task<ActionResult> Index()
@@ -66,6 +73,10 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             var model = await _clientServices.GetDtoById(id);
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList());
+            model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+            model.SelectedCases.AddRange(model.Cases.Select(x=>x.Id));
+
             return View(model);
         }
 
@@ -76,6 +87,13 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
+                model.Cases.Clear();
+                foreach (var item in model.SelectedCases)
+                {
+                    model.Cases.Add(await _caseServices.GetById(item));
+                }
+                model.AssignedUser = await _userManager.FindByIdAsync(model.AssignedUser.Id);
+
                 await _clientServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }

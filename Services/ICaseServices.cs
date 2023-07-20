@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Services
 {
@@ -14,5 +15,6 @@ namespace WMKancelariapp.Services
         Task<Case> GetByIdWithIncludes(string id, params Expression<Func<Case, object>>[] includes);
         Task<CaseDtoViewModel> GetDtoByName(string name);
         Task<CaseDtoViewModel> GetDtoById(string id);
+        Task<IEnumerable<SelectListItem>> CreateCasesSelectList();
     }
 }

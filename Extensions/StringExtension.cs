@@ -21,7 +21,14 @@ namespace WMKancelariapp.Extensions
                 return text;
             }
 
-            var result = text.Remove(maxLength) + "...";
+            var textEnd = "...";
+            if (maxLength >= text.Length)
+            {
+                maxLength = text.Length;
+                textEnd = string.Empty;
+            }
+
+            var result = text.Remove(maxLength > text.Length ? text.Length : maxLength) + textEnd;
             return result;
         }
 

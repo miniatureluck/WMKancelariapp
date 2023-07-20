@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
@@ -16,6 +17,7 @@ namespace WMKancelariapp.Services
             _caseRepository = caseRepository;
             _mapper = mapper;
         }
+
         public async Task Create(CaseDtoViewModel newCase)
         {
             await _caseRepository.Insert(_mapper.Map<Case>(newCase));
@@ -29,18 +31,19 @@ namespace WMKancelariapp.Services
 
         public async Task Edit(CaseDtoViewModel editedCase)
         {
-            var caseToEdit = _mapper.Map(editedCase, await _caseRepository.GetById(editedCase.CaseId, x=>x.Client, x=>x.AssignedUser, x=>x.Tasks));
+            var caseToEdit = _mapper.Map(editedCase,
+                await _caseRepository.GetById(editedCase.CaseId, x => x.Client, x => x.AssignedUser, x => x.Tasks));
             if (caseToEdit == null)
             {
                 return;
             }
-            
+
             await _caseRepository.Update(caseToEdit);
         }
 
         public async Task<IEnumerable<Case>> GetAll()
         {
-            return await _caseRepository.GetAll(x=>x.AssignedUser, x=>x.Client, x=>x.Tasks);
+            return await _caseRepository.GetAll(x => x.AssignedUser, x => x.Client, x => x.Tasks);
         }
 
         public async Task<Case> GetById(string id)
@@ -55,14 +58,31 @@ namespace WMKancelariapp.Services
 
         public async Task<CaseDtoViewModel> GetDtoById(string id)
         {
-            return _mapper.Map<CaseDtoViewModel>(await GetByIdWithIncludes(id, x=>x.Client, x=>x.AssignedUser, x=>x.Tasks));
+            return _mapper.Map<CaseDtoViewModel>(await GetByIdWithIncludes(id, x => x.Client, x => x.AssignedUser,
+                x => x.Tasks));
         }
 
         public async Task<CaseDtoViewModel> GetDtoByName(string name)
         {
             var cases = await _caseRepository.GetAll();
-            var userCase = cases.FirstOrDefault(x=>x.Name == name);
+            var userCase = cases.FirstOrDefault(x => x.Name == name);
             return _mapper.Map<CaseDtoViewModel>(userCase);
+        }
+
+        public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList()
+        {
+            var model = new List<SelectListItem>();
+            var cases = await GetAll();
+            foreach (var item in cases)
+            {
+                model.Add(new SelectListItem
+                {
+                    Text = $"{item.Name}",
+                    Value = item.Id
+                });
+            }
+
+            return model;
         }
     }
 }

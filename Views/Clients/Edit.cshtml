@@ -56,11 +56,19 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="AssignedUser" class="control-label"></label>
+                @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, "----", Model.AssignedUser?.Id)
+                <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cases" class="control-label"></label>
+                @Html.ListBoxFor(x => x.SelectedCases, Model.AllCasesSelectList, new { @class="form-control", @multiple="multiple" })
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
             @Html.HiddenFor(x=>x.ClientId)
-            @Html.HiddenFor(x=>x.AssignedUser)
-            @Html.HiddenFor(x=>x.Prices)
+            @*@Html.HiddenFor(x=>x.Prices)
             @for (int i = 0; i < Model.Prices?.Count; i++)
             {
                 @Html.HiddenFor(x => x.Prices[i].TaskType)
@@ -82,7 +90,7 @@
                     @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Created)
                     @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Id)
                 }
-            }
+            }*@
             @Html.HiddenFor(x=>x.Cases)
             @Html.HiddenFor(x=>x.Tasks)
         </form>
