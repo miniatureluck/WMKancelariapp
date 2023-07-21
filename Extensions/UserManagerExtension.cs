@@ -8,14 +8,8 @@ namespace WMKancelariapp.Extensions
     {
         public static IEnumerable<SelectListItem> CreateUsersSelectList(this UserManager<User> userManager)
         {
-            var usersSelectList = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Brak",
-                    Value = "0"
-                }
-            };
+            var usersSelectList = new List<SelectListItem>();
+            
             foreach (var user in userManager.Users)
             {
                 usersSelectList.Add(new SelectListItem

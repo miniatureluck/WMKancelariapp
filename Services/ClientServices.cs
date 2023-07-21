@@ -30,7 +30,8 @@ namespace WMKancelariapp.Services
 
         public async Task Edit(ClientDtoViewModel editedClient)
         {
-            var clientToEdit = _mapper.Map(editedClient, await GetById(editedClient.ClientId));
+            var clients = await GetAll();
+            var clientToEdit = _mapper.Map(editedClient, clients.FirstOrDefault(x=>x.Id == editedClient.ClientId));
             if (clientToEdit == null)
             {
                 return;
