@@ -6,7 +6,15 @@
 // 
 // Scripts
 // 
-
+$(function () {
+    $('#multiple-select').multipleSelect({
+        filter: true,
+        filterPlaceholder: 'Filtruj',
+        selectAll: false,
+        showClear: true,
+        animate: 'fade'
+    })
+})
 $('.filter-button').click(function () {
     $('.filter-section').slideToggle(500);
     $('.filter-button').toggleClass("filter-button-toggled")
