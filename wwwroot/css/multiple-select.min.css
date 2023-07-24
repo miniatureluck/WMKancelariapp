@@ -68,10 +68,14 @@
             color: rgba(0, 0, 255, 0);
         }
 
+        .ms-choice > span.placeholder:hover {
+            cursor: pointer;
+        }
+
     .ms-choice > div.icon-close {
         position: absolute;
         top: 15%;
-        right: -15%;
+        right: 1px;
         height: 100%;
         width: 16px
     }
@@ -91,7 +95,7 @@
         width: 0;
         height: 0;
         top: 50%;
-        right: 8px;
+        left: 2%;
         margin-top: -2px;
         border-color: #888 transparent transparent transparent;
         border-style: solid;
@@ -108,7 +112,8 @@
     min-width: 100%;
     overflow: hidden;
     display: none;
-    margin-top: -1px;
+    margin-top: -3px;
+    margin-left: -10px;
     padding: 0;
     position: absolute;
     z-index: 1000;

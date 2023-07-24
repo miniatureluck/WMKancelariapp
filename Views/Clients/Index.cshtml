@@ -27,6 +27,12 @@
                 Opiekun
             </th>
             <th scope="col">
+                Sprawy
+            </th>
+            <th scope="col">
+                Cennik
+            </th>
+            <th scope="col">
                 Akcje
             </th>
         </tr>
@@ -35,17 +41,17 @@
         @foreach (var item in Model.AllClients)
         {
             <tr>
-                <td>@item.Name @item.Surname</td>
+                <td><a asp-action="Details" asp-route-id="@item.ClientId">@item.Name @item.Surname</a></td>
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
                 <td>@item.AssignedUser</td>
+                <td>@item.Cases.Count</td>
                 <td>
-                    @Html.ActionLink("Szczegóły", "Details", new { id=item.ClientId }) |
-                    @Html.ActionLink("Edycja", "Edit", new { id=item.ClientId }) |
-                    @Html.ActionLink("Opiekun", "Edit", new { id=item.ClientId }) |
-                    @Html.ActionLink("Sprawy", "Edit", new { id=item.ClientId }) |
-                    @Html.ActionLink("Cennik", "Edit", new { id=item.ClientId }) |
-                    @Html.ActionLink("Usuń", "Delete", new {  id=item.ClientId })
+                    @{ var prices = item.Prices.Any() ? item.Prices.Count.ToString() : "brak"; }
+                    @prices
+                </td>
+                <td>
+                    @Html.ActionLink("Edycja", "Edit", new { id=item.ClientId })
                 </td>
             </tr>
         }

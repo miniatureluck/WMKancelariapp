@@ -69,10 +69,11 @@ namespace WMKancelariapp.Services
             return _mapper.Map<CaseDtoViewModel>(userCase);
         }
 
-        public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList()
+        public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList(string clientId)
         {
             var model = new List<SelectListItem>();
             var cases = await GetAll();
+            cases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
             foreach (var item in cases)
             {
                 model.Add(new SelectListItem

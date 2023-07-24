@@ -11,8 +11,7 @@ $(function () {
         filter: true,
         filterPlaceholder: 'Filtruj',
         selectAll: false,
-        showClear: true,
-        animate: 'fade'
+        showClear: true
     })
 })
 $('.filter-button').click(function () {

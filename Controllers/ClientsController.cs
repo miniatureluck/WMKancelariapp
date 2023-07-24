@@ -47,9 +47,11 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: ClientsController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             var model = new ClientDtoViewModel();
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(string.Empty));
+            model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
             return View(model);
         }
 
@@ -73,7 +75,7 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             var model = await _clientServices.GetDtoById(id);
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList());
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(id));
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
             model.SelectedCases.AddRange(model.Cases.Select(x=>x.Id));
 
