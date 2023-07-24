@@ -43,6 +43,7 @@ namespace WMKancelariapp.Controllers
         {
             var client = await _clientServices.GetByIdWithIncludes(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices, x=>x.Tasks);
             var model = _mapper.Map(client, new ClientDtoViewModel());
+            
             return View(model);
         }
 
@@ -52,6 +53,7 @@ namespace WMKancelariapp.Controllers
             var model = new ClientDtoViewModel();
             model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(string.Empty));
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+
             return View(model);
         }
 
