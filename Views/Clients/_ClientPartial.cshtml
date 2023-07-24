@@ -64,7 +64,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Zapisz" class="btn btn-primary" />
-                <button class="btn btn-secondary" asp-action="Index" asp-controller="Home">Cofnij</button>
+                @Html.ActionLink("Cofnij", null, null, null, new { href = Context.Request.Headers.Referer})
             </div>
             @Html.HiddenFor(x=>x.ClientId)
             @*@Html.HiddenFor(x=>x.Prices)

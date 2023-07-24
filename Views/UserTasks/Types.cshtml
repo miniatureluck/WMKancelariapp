@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.TaskTypeDtoViewModel>
+
+@{
+    ViewData["Title"] = "Kategorie";
+}
+
+<h2>Kategorie czynności</h2>
+
+<p>
+    <a asp-action="CreateType">Dodaj nową</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "EditType", new { id = item.TaskTypeId }) |
+                    @Html.ActionLink("Usuń", "DeleteType", new {  id = item.TaskTypeId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

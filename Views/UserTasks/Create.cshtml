@@ -1,0 +1,16 @@
+﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>UserTaskDtoViewModel</h4>
+<hr />
+
+<partial name="_UserTaskPartial" model="Model"/>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

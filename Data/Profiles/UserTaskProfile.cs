@@ -13,6 +13,9 @@ namespace WMKancelariapp.Data.Profiles
             CreateMap<UserTask, UserTaskDtoViewModel>()
                 .ForMember(x => x.UserTaskId, opt => opt.MapFrom(x => x.Id))
                 .ReverseMap();
+
+            CreateMap<TaskType, TaskTypeDtoViewModel>()
+                .ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model WMKancelariapp.Models.ViewModels.ClientIndexViewModel
+﻿@using WMKancelariapp.Extensions
+@model WMKancelariapp.Models.ViewModels.ClientIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -44,7 +45,7 @@
                 <td><a asp-action="Details" asp-route-id="@item.ClientId">@item.Name @item.Surname</a></td>
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
-                <td>@item.AssignedUser</td>
+                <td>@item.AssignedUser.UserName.RemoveEmailDomain()</td>
                 <td>@item.Cases.Count</td>
                 <td>
                     @{ var prices = item.Prices.Any() ? item.Prices.Count.ToString() : "brak"; }

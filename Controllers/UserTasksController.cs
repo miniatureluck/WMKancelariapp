@@ -31,15 +31,18 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: UserTasksController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var model = _userTaskServices.GetDtoById(id);
+            return View(model);
         }
 
         // GET: UserTasksController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var model = new UserTaskDtoViewModel();
+            model.TaskTypeSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
+            return View(model);
         }
 
         // POST: UserTasksController/Create
@@ -97,6 +100,34 @@ namespace WMKancelariapp.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<ActionResult> Types()
+        {
+            var model = new List<TaskTypeDtoViewModel>();
+            var types = await _userTaskServices.GetAllTaskTypes();
+            foreach (var item in types)
+            {
+                model.Add(_mapper.Map(item, new TaskTypeDtoViewModel()));
+            }
+
+            return View(model);
+        }
+
+        public ActionResult CreateType()
+        {
+            var model = new TaskTypeDtoViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateType(TaskTypeDtoViewModel model)
+        {
+            await _userTaskServices.CreateTaskType(model);
+
+            return RedirectToAction("Types");
         }
     }
 }

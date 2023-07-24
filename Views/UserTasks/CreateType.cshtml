@@ -1,0 +1,16 @@
+﻿@model WMKancelariapp.Models.ViewModels.TaskTypeDtoViewModel
+
+@{
+    ViewData["Title"] = "Nowa kategoria";
+}
+
+<h2>Nowa kategoria</h2>
+<hr />
+
+<partial name="_TaskTypePartial" model="Model"/>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

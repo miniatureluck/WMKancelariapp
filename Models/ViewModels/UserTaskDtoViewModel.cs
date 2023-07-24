@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
 {
@@ -24,5 +25,9 @@ namespace WMKancelariapp.Models.ViewModels
         public TaskType TaskType { get; set; }
         [DisplayName("Stawki")]
         public HourlyPrice? HourlyPrice { get; set; }
+
+
+        [DisplayName("Kategoria")]
+        public List<SelectListItem>? TaskTypeSelectList { get; set; } = new List<SelectListItem>();
     }
 }
