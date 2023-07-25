@@ -14,9 +14,9 @@ $(function () {
         showClear: true
     })
 })
-$('.filter-button').click(function () {
+$('#filter-toggle').click(function () {
     $('.filter-section').slideToggle(500);
-    $('.filter-button').toggleClass("filter-button-toggled")
+    $('#filter-toggle').toggleClass("button-normal-toggled")
 });
 
 function filterNames(inputName, tableName, colNumber) {
