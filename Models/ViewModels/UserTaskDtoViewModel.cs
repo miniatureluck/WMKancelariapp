@@ -29,5 +29,10 @@ namespace WMKancelariapp.Models.ViewModels
 
         [DisplayName("Kategoria")]
         public List<SelectListItem>? TaskTypeSelectList { get; set; } = new List<SelectListItem>();
+
+        [DisplayName("Klient")]
+        public List<SelectListItem>? ClientSelectList { get; set; } = new List<SelectListItem>();
+        [DisplayName("Wykonawca")]
+        public List<SelectListItem>? UserSelectList { get; set; } = new List<SelectListItem>();
     }
 }

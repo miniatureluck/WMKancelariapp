@@ -6,7 +6,13 @@
 <h2>Nowy klient</h2>
 <hr />
 
-@await Html.PartialAsync("_ClientPartial", Model)
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            @await Html.PartialAsync("_ClientPartial", Model)
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

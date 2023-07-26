@@ -16,7 +16,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-
+                Najczęstsza sprawa
+            </th>
+            <th>
+                Opcje
             </th>
         </tr>
     </thead>
@@ -26,6 +29,10 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @item.Tasks.GroupBy(x=>x.Case).OrderByDescending(x=>x.Count()).Select(x=>x).FirstOrDefault()?.Key.Name
+                    
                 </td>
                 <td>
                     @Html.ActionLink("Edytuj", "EditType", new { id = item.TaskTypeId }) |

@@ -1,36 +1,30 @@
 ﻿@model WMKancelariapp.Models.ViewModels.CaseDtoViewModel
-@{
-}
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="dropdown-content">
-                    @Html.DropDownListFor(x => x.Client.Id, Model.AllClientsSelectList, "Klient", Model.Client?.Id)
-                    <span asp-validation-for="AllClientsSelectList" class="text-danger"></span>
-                </div>
-                <div>
-                    @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, "Opiekun", Model.AssignedUser?.Id)
-                    <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <input class="btn-template button-accept" type="submit" value="Zapisz">
-                <a class="btn-template button-alert" href="@Context.Request.Headers.Referer">Cofnij</a>
-            </div>
-            @Html.HiddenFor(x=>x.CaseId)
-        </form>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Description" class="control-label"></label>
+    <input asp-for="Description" class="form-control" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <div class="dropdown-content">
+        @Html.DropDownListFor(x => x.Client.Id, Model.AllClientsSelectList, "Klient", Model.Client?.Id)
+        <span asp-validation-for="AllClientsSelectList" class="text-danger"></span>
+    </div>
+    <div>
+        @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, "Opiekun", Model.AssignedUser?.Id)
+        <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
     </div>
 </div>
+<div class="form-group">
+    <input class="btn-template button-accept" type="submit" value="Zapisz">
+    <a class="btn-template button-alert" href="@Context.Request.Headers.Referer">Cofnij</a>
+</div>
+@Html.HiddenFor(x=>x.CaseId)
+

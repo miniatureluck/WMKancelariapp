@@ -1,24 +1,32 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WMKancelariapp.Extensions;
+using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
+    [Authorize]
     public class UserTasksController : Controller
     {
         private readonly IUserTaskServices _userTaskServices;
         private readonly IMapper _mapper;
-        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper)
+        private readonly IClientServices _clientServices;
+        private readonly UserManager<User> _userManager;
+        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper, IClientServices clientServices, UserManager<User> userManager)
         {
             _userTaskServices = userTaskServices;
             _mapper = mapper;
+            _clientServices = clientServices;
+            _userManager = userManager;
         }
         // GET: UserTasksController
         public async Task<ActionResult> Index()
         {
-
             var model = new UserTaskIndexViewModel();
 
             var userTasks = await _userTaskServices.GetAll();
@@ -31,9 +39,9 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: UserTasksController/Details/5
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
-            var model = _userTaskServices.GetDtoById(id);
+            var model = await _userTaskServices.GetDtoById(id);
             return View(model);
         }
 
@@ -42,16 +50,30 @@ namespace WMKancelariapp.Controllers
         {
             var model = new UserTaskDtoViewModel();
             model.TaskTypeSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
+            model.ClientSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            if (User.IsInRole("SysAdmin"))
+            {
+                model.UserSelectList.AddRange(_userManager.CreateUsersSelectList());
+            }
+            else
+            {
+                model.User = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+
             return View(model);
         }
 
         // POST: UserTasksController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(UserTaskDtoViewModel model)
         {
             try
             {
+                model.Client = await _clientServices.GetById(model.Client.Id);
+                model.User = await _userManager.FindByIdAsync(model.User.Id);
+                model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
+                await _userTaskServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -61,18 +83,29 @@ namespace WMKancelariapp.Controllers
         }
 
         // GET: UserTasksController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var model = await _userTaskServices.GetDtoById(id);
+
+            model.TaskTypeSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
+            model.ClientSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.UserSelectList.AddRange(_userManager.CreateUsersSelectList());
+
+            return View(model);
         }
 
         // POST: UserTasksController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(UserTaskDtoViewModel model)
         {
             try
             {
+                model.Client = await _clientServices.GetById(model.Client.Id);
+                model.User = await _userManager.FindByIdAsync(model.User.Id);
+                model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
+
+                await _userTaskServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -81,25 +114,11 @@ namespace WMKancelariapp.Controllers
             }
         }
 
-        // GET: UserTasksController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
-        }
+            await _userTaskServices.Delete(id);
 
-        // POST: UserTasksController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<ActionResult> Types()

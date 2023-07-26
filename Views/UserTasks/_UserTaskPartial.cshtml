@@ -1,39 +1,43 @@
 ﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
 
-@{
-    ViewData["Title"] = "Nowe zadanie";
-}
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <label asp-for="TaskTypeSelectList" class="control-label"></label>
-            @Html.DropDownListFor(x=>x.TaskType, Model.TaskTypeSelectList)
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
-                <span asp-validation-for="Duration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input class="btn-template button-accept" type="submit" value="Zapisz">
-                <a class="btn-template button-alert" href="@Context.Request.Headers.Referer">Cofnij</a>
-            </div>
-        </form>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group">
+    <label asp-for="TaskTypeSelectList" class="control-label"></label>
+    @Html.DropDownListFor(x=>x.TaskType.Id, Model.TaskTypeSelectList)
+</div>
+<div class="form-group">
+    <label asp-for="ClientSelectList" class="control-label"></label>
+    @Html.DropDownListFor(x=>x.Client.Id, Model.ClientSelectList)
+</div>
+@if (User.IsInRole("SysAdmin"))
+{
+    <div class="form-group">
+        <label asp-for="UserSelectList" class="control-label"></label>
+        @Html.DropDownListFor(x => x.User.Id, Model.UserSelectList)
     </div>
+}
+<div class="form-group">
+    <label asp-for="StartTime" class="control-label"></label>
+    <input asp-for="StartTime" class="form-control" />
+    <span asp-validation-for="StartTime" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndTime" class="control-label"></label>
+    <input asp-for="EndTime" class="form-control" />
+    <span asp-validation-for="EndTime" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Duration" class="control-label"></label>
+    <input asp-for="Duration" class="form-control" />
+    <span asp-validation-for="Duration" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Description" class="control-label"></label>
+    <input asp-for="Description" class="form-control" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <input class="btn-template button-accept" type="submit" value="Zapisz">
+    <a class="btn-template button-alert" href="@Context.Request.Headers.Referer">Cofnij</a>
 </div>

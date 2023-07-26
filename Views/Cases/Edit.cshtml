@@ -7,7 +7,13 @@
 <h2>Edycja sprawy</h2>
 <hr />
 
-@await Html.PartialAsync("_CasePartial", Model)
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            @await Html.PartialAsync("_CasePartial", Model)
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     @{

@@ -3,10 +3,19 @@
 @{
     ViewData["Title"] = "Edycja";
 }
-<h4>Zmiana danych klienta</h4>
+<h2>Edycja danych klienta</h2>
 <hr />
-@await Html.PartialAsync("_ClientPartial", Model)
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            @await Html.PartialAsync("_ClientPartial", Model)
+        </form>
+    </div>
+</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

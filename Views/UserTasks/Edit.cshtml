@@ -1,16 +1,16 @@
 ﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edycja";
 }
 
-<h4>Nowa czynność</h4>
+<h4>Edycja czynności</h4>
 <hr />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <partial name="_UserTaskPartial" model="Model"/>
+        <form asp-action="Edit">
+            <partial name="_UserTaskPartial" model="Model" />
         </form>
     </div>
 </div>

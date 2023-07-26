@@ -1,0 +1,77 @@
+﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły czynności";
+}
+
+<div>
+<h2>Podgląd czynności</h2>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TaskType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TaskType.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Name) @Html.DisplayFor(model => model.Client.Surname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Case)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Case.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edycja", "Edit", new {  id = Model.UserTaskId }) |
+    @Html.ActionLink("Cofnij", null, null, null, new { href = Context.Request.Headers.Referer})
+    <button type="button" class="btn-template button-alert" data-bs-toggle="modal" data-bs-target="#modalDelete">Usuń</button>
+</div>
+
+<div class="modal fade" id="modalDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Potwierdź usunięcie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Czy na pewno usunąć tę czynność?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-template button-normal" data-bs-dismiss="modal">Nie</button>
+                <a asp-action="Delete" asp-route-id="@Model.UserTaskId"><button type="button" class="btn-template button-alert" data-bs-dismiss="modal">Tak</button></a>
+            </div>
+        </div>
+    </div>
+</div>
