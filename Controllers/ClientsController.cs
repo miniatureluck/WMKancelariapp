@@ -52,6 +52,7 @@ namespace WMKancelariapp.Controllers
         {
             var model = new ClientDtoViewModel();
             model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(string.Empty));
+            model.AllCasesSelectList.RemoveAt(0);
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
 
             return View(model);
@@ -64,6 +65,12 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
+                foreach (var item in model.SelectedCases)
+                {
+                    model.Cases.Add(await _caseServices.GetById(item));
+                }
+                model.AssignedUser = model.AssignedUser.Id == null ? null : await _userManager.FindByIdAsync(model.AssignedUser.Id);
+
                 await _clientServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -78,6 +85,7 @@ namespace WMKancelariapp.Controllers
         {
             var model = await _clientServices.GetDtoById(id);
             model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(id));
+            model.AllCasesSelectList.RemoveAt(0);
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
             model.SelectedCases.AddRange(model.Cases.Select(x=>x.Id));
 

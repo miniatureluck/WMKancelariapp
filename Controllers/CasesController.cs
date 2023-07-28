@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
@@ -67,14 +68,14 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
-                model.Client = await _clientServices.GetById(model.Client.Id);
-                model.AssignedUser = await _userManager.FindByIdAsync(model.AssignedUser.Id);
+                model.Client = model.Client.Id.IsNullOrEmpty() ? null : await _clientServices.GetById(model.Client.Id);
+                model.AssignedUser = model.AssignedUser.Id.IsNullOrEmpty() ? null : await _userManager.FindByIdAsync(model.AssignedUser.Id);
                 await _caseServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -95,15 +96,15 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
-                model.Client = await _clientServices.GetById(model.Client.Id);
-                model.AssignedUser = await _userManager.FindByIdAsync(model.AssignedUser.Id);
+                model.Client = model.Client.Id.IsNullOrEmpty() ? null : await _clientServices.GetById(model.Client.Id);
+                model.AssignedUser = model.AssignedUser.Id.IsNullOrEmpty() ? null : await _userManager.FindByIdAsync(model.AssignedUser.Id);
 
                 await _caseServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 

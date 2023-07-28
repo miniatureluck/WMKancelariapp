@@ -71,13 +71,25 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<TaskType>> GetAllTaskTypes()
         {
-            return await _taskTypes.GetAll();
+            var result = await _taskTypes.GetAll(x => x.Tasks, x => x.HourlyPrices);
+            var tempResult = new List<UserTask>();
+            foreach (var item in result)
+            {
+                foreach (var userTask in item.Tasks)
+                {
+                    tempResult.Add(await _userTasks.GetById(userTask.Id, x=>x.Case, x=>x.Client));
+                }
+                item.Tasks = tempResult;
+                tempResult.Clear();
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<SelectListItem>> CreateTaskTypeSelectList()
         {
-            var model = new List<SelectListItem>();
             var taskTypes = await _taskTypes.GetAll();
+            var model = new List<SelectListItem>();
             foreach (var item in taskTypes)
             {
                 var taskType = new SelectListItem
@@ -104,7 +116,7 @@ namespace WMKancelariapp.Services
 
         public async Task EditTaskType(TaskTypeDtoViewModel editedTaskType)
         {
-            var taskToEdit = await _taskTypes.GetById(editedTaskType.TaskTypeId);
+            var taskToEdit = _mapper.Map(editedTaskType, await _taskTypes.GetById(editedTaskType.TaskTypeId));
             await _taskTypes.Update(taskToEdit);
         }
 
@@ -112,6 +124,23 @@ namespace WMKancelariapp.Services
         {
             var typeToDelete = await _taskTypes.GetById(id);
             return await _taskTypes.Delete(typeToDelete);
+        }
+
+        public async Task<IEnumerable<Case>>? FindMostFrequentCaseForTaskType(TaskType taskType)
+        {
+            if (taskType == null)
+            {
+                return null;
+            }
+
+            var tasks = await _userTasks.GetAll();
+            var tasksOfType = tasks.Where(x => x.TaskType == taskType && x.Case != null);
+
+            var caseCounts = tasksOfType.GroupBy(x => x.Case).Select(x => new { Case = x.Key, Count = x.Count() });
+
+            var mostFrequentCases = caseCounts.Where(x=>x.Count == caseCounts.MaxBy(x => x.Count)?.Count).Select(x=>x.Case);
+
+            return mostFrequentCases;
         }
     }
 }

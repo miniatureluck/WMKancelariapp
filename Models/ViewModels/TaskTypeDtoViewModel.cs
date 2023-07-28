@@ -7,6 +7,7 @@ namespace WMKancelariapp.Models.ViewModels
         public string TaskTypeId { get; set; }
         [DisplayName("Nazwa")]
         public string Name { get; set; }
+        public List<Case>? MostFrequentCase { get; set; } = new List<Case>();
 
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
         public List<HourlyPrice>? HourlyPrices { get; set; } = new List<HourlyPrice>();

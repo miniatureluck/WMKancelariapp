@@ -18,7 +18,9 @@ namespace WMKancelariapp.Data.Profiles
             .ForMember(x => x.Surname, opt => opt.MapFrom(x => x.Surname.ToTitleCase()))
             .ReverseMap();
 
-
+        CreateMap<ClientDtoViewModel, Client>()
+            .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.ToTitleCase()))
+            .ForMember(x => x.Surname, opt => opt.MapFrom(x => x.Surname.ToTitleCase()));
         }
 
             

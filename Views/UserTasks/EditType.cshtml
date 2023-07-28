@@ -1,16 +1,15 @@
 ﻿@model WMKancelariapp.Models.ViewModels.TaskTypeDtoViewModel
 
 @{
-    ViewData["Title"] = "Nowa kategoria";
+    ViewData["Title"] = "Edycja kategorii";
 }
 
-<h2>Nowa kategoria</h2>
+<h2>Edycja kategorii</h2>
 <hr />
-
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateType">
-            <partial name="_TaskTypePartial" model="Model" />
+        <form asp-action="EditType">
+            @await Html.PartialAsync("_TaskTypePartial", Model)
         </form>
     </div>
 </div>

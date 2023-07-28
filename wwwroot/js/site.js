@@ -7,7 +7,7 @@
 // Scripts
 // 
 $(function () {
-    $('#multiple-select').multipleSelect({
+    $('.multiple-select').multipleSelect({
         filter: true,
         filterPlaceholder: 'Filtruj',
         selectAll: false,

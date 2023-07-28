@@ -74,7 +74,7 @@ namespace WMKancelariapp.Services
             model.Add(new SelectListItem
             {
                 Text = "Brak",
-                Value = "0"
+                Value = null
 
             });
             foreach (var item in clients)

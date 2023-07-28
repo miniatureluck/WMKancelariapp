@@ -17,12 +17,14 @@ namespace WMKancelariapp.Controllers
         private readonly IMapper _mapper;
         private readonly IClientServices _clientServices;
         private readonly UserManager<User> _userManager;
-        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper, IClientServices clientServices, UserManager<User> userManager)
+        private readonly ICaseServices _caseServices;
+        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper, IClientServices clientServices, UserManager<User> userManager, ICaseServices caseServices)
         {
             _userTaskServices = userTaskServices;
             _mapper = mapper;
             _clientServices = clientServices;
             _userManager = userManager;
+            _caseServices = caseServices;
         }
         // GET: UserTasksController
         public async Task<ActionResult> Index()
@@ -49,11 +51,13 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new UserTaskDtoViewModel();
-            model.TaskTypeSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
-            model.ClientSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
+            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
             if (User.IsInRole("SysAdmin"))
             {
-                model.UserSelectList.AddRange(_userManager.CreateUsersSelectList());
+                model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+                model.AllUsersSelectList.RemoveAt(0);
             }
             else
             {
@@ -70,15 +74,16 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
-                model.Client = await _clientServices.GetById(model.Client.Id);
-                model.User = await _userManager.FindByIdAsync(model.User.Id);
+                model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
+                model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
+                model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
                 await _userTaskServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -87,9 +92,10 @@ namespace WMKancelariapp.Controllers
         {
             var model = await _userTaskServices.GetDtoById(id);
 
-            model.TaskTypeSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
-            model.ClientSelectList.AddRange(await _clientServices.CreateClientsSelectList());
-            model.UserSelectList.AddRange(_userManager.CreateUsersSelectList());
+            model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
+            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
 
             return View(model);
         }
@@ -101,16 +107,17 @@ namespace WMKancelariapp.Controllers
         {
             try
             {
-                model.Client = await _clientServices.GetById(model.Client.Id);
-                model.User = await _userManager.FindByIdAsync(model.User.Id);
+                model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
+                model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
+                model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
 
                 await _userTaskServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -123,13 +130,14 @@ namespace WMKancelariapp.Controllers
 
         public async Task<ActionResult> Types()
         {
-            var model = new List<TaskTypeDtoViewModel>();
             var types = await _userTaskServices.GetAllTaskTypes();
-            foreach (var item in types)
+            var model = (from item in types let dto = new TaskTypeDtoViewModel { TaskTypeId = item.Id } select _mapper.Map(item, dto)).ToList();
+            foreach (var item in model)
             {
-                model.Add(_mapper.Map(item, new TaskTypeDtoViewModel()));
+                item.MostFrequentCase.AddRange(
+                    await _userTaskServices.FindMostFrequentCaseForTaskType(
+                        await _userTaskServices.GetTaskTypeById(item.TaskTypeId)));
             }
-
             return View(model);
         }
 
@@ -144,9 +152,46 @@ namespace WMKancelariapp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateType(TaskTypeDtoViewModel model)
         {
-            await _userTaskServices.CreateTaskType(model);
+            try
+            {
+                await _userTaskServices.CreateTaskType(model);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Types));
 
-            return RedirectToAction("Types");
+            }
+
+            return RedirectToAction(nameof(Types));
+        }
+
+        public async Task<ActionResult> EditType(string id)
+        {
+            var model = _mapper.Map(await _userTaskServices.GetTaskTypeById(id), new TaskTypeDtoViewModel{ TaskTypeId = id});
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditType(TaskTypeDtoViewModel model)
+        {
+            try
+            {
+                await _userTaskServices.EditTaskType(model);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Types));
+            }
+
+            return RedirectToAction(nameof(Types));
+        }
+
+        public async Task<ActionResult> DeleteType(string id)
+        {
+            await _userTaskServices.DeleteTaskType(id);
+
+            return RedirectToAction(nameof(Types));
         }
     }
 }

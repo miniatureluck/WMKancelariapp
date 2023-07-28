@@ -22,5 +22,7 @@ namespace WMKancelariapp.Services
         Task<bool> DeleteTaskType(string id);
 
         Task<IEnumerable<SelectListItem>> CreateTaskTypeSelectList();
+
+        Task<IEnumerable<Case>>? FindMostFrequentCaseForTaskType(TaskType taskType);
     }
 }

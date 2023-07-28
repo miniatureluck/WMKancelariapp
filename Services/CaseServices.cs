@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
@@ -71,9 +72,21 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList(string clientId)
         {
-            var model = new List<SelectListItem>();
+            var model = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Brak",
+                    Value = null
+
+                }
+            };
             var cases = await GetAll();
-            cases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
+            if (!clientId.IsNullOrEmpty())
+            {
+                cases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
+            }
+
             foreach (var item in cases)
             {
                 model.Add(new SelectListItem
@@ -82,6 +95,7 @@ namespace WMKancelariapp.Services
                     Value = item.Id
                 });
             }
+
 
             return model;
         }
