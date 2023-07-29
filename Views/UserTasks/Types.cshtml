@@ -10,7 +10,7 @@
     <a class="btn-template button-create" asp-action="CreateType">Dodaj nową</a>
     <a class="btn-template button-alert" href="@Context.Request.Headers.Referer">Cofnij</a>
 </p>
-<table class="table table-striped table-hover table-sm" id="resultsTable">
+<table class="table table-striped table-hover table-sm align-middle" id="resultsTable">
     <thead class="table-primary">
         <tr>
             <th>
@@ -39,8 +39,7 @@
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Edytuj", "EditType", new { id = item.TaskTypeId }) |
-                    @Html.ActionLink("Usuń", "DeleteType", new { id = item.TaskTypeId })
+                    @await Html.PartialAsync("_ActionButtons", item.TaskTypeId)
                 </td>
             </tr>
         }
