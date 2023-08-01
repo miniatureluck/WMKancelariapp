@@ -142,5 +142,30 @@ namespace WMKancelariapp.Services
 
             return mostFrequentCases;
         }
+
+        public UserTaskDtoViewModel CalculateDuration(UserTaskDtoViewModel model)
+        {
+            var startTicks = model.StartTime?.Ticks ?? 0;
+            var endTicks = model.EndTime?.Ticks ?? 0;
+            var duration = TimeSpan.FromMinutes(model.DurationMinutes).Ticks;
+            if (duration == 0 && startTicks != 0 && endTicks != 0)
+            {
+                model.Duration = TimeSpan.FromTicks(endTicks - startTicks);
+            }
+
+            if (startTicks == 0 && duration != 0)
+            {
+                model.StartTime = new DateTime(endTicks - duration);
+                model.Duration = TimeSpan.FromTicks(duration);
+            }
+
+            if (endTicks == 0 && duration != 0)
+            {
+                model.EndTime = new DateTime(startTicks + duration);
+                model.Duration = TimeSpan.FromTicks(duration);
+            }
+
+            return model;
+        }
     }
 }

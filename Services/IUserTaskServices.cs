@@ -24,5 +24,6 @@ namespace WMKancelariapp.Services
         Task<IEnumerable<SelectListItem>> CreateTaskTypeSelectList();
 
         Task<IEnumerable<Case>>? FindMostFrequentCaseForTaskType(TaskType taskType);
+        UserTaskDtoViewModel CalculateDuration(UserTaskDtoViewModel model);
     }
 }

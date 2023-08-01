@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
@@ -51,18 +53,7 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new UserTaskDtoViewModel();
-            model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
-            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
-            if (User.IsInRole("SysAdmin"))
-            {
-                model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
-                model.AllUsersSelectList.RemoveAt(0);
-            }
-            else
-            {
-                model.User = await _userManager.FindByNameAsync(User.Identity.Name);
-            }
+            await PopulateSelectionListsForCreateView(model);
 
             return View(model);
         }
@@ -70,14 +61,28 @@ namespace WMKancelariapp.Controllers
         // POST: UserTasksController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UserTaskDtoViewModel model)
+        public async Task<ActionResult> Create(UserTaskDtoViewModel modelFromView)
         {
+            var model = ValidateUserTask(modelFromView);
+
             try
             {
                 model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
                 model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
+
+                ModelState.Remove("UserTaskId");
+                ModelState.Remove("Case.Name");
+                ModelState.Remove("Client.Name");
+                ModelState.Remove("TaskType.Name");
+                if (!ModelState.IsValid)
+                {
+                    await PopulateSelectionListsForCreateView(model);
+                    return View(model);
+                }
+
+                _userTaskServices.CalculateDuration(model);
                 await _userTaskServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -167,7 +172,7 @@ namespace WMKancelariapp.Controllers
 
         public async Task<ActionResult> EditType(string id)
         {
-            var model = _mapper.Map(await _userTaskServices.GetTaskTypeById(id), new TaskTypeDtoViewModel{ TaskTypeId = id});
+            var model = _mapper.Map(await _userTaskServices.GetTaskTypeById(id), new TaskTypeDtoViewModel { TaskTypeId = id });
             return View(model);
         }
 
@@ -192,6 +197,50 @@ namespace WMKancelariapp.Controllers
             await _userTaskServices.DeleteTaskType(id);
 
             return RedirectToAction(nameof(Types));
+        }
+
+        private async Task<UserTaskDtoViewModel> PopulateSelectionListsForCreateView(UserTaskDtoViewModel model)
+        {
+
+            model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
+            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
+            if (User.IsInRole("SysAdmin"))
+            {
+                model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+                model.AllUsersSelectList.RemoveAt(0);
+            }
+            else
+            {
+                model.User = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+
+            return model;
+        }
+
+        private UserTaskDtoViewModel ValidateUserTask(UserTaskDtoViewModel model)
+        {
+            if (model.StartTime?.Ticks > model.EndTime?.Ticks)
+            {
+                ModelState.AddModelError("StartTime", "Czas rozpoczęcia musi być przed czasem zakończenia");
+            }
+
+            if (model.StartTime?.Ticks > DateTime.Now.Ticks)
+            {
+                ModelState.AddModelError("StartTime", "Czas rozpoczęcia nie może być w przyszłości");
+            }
+
+            if (model.EndTime?.Ticks > DateTime.Now.Ticks)
+            {
+                ModelState.AddModelError("EndTime", "Czas zakończenia nie może być w przyszłości");
+            }
+
+            if (model.DurationMinutes != 0 && model.EndTime?.Ticks - model.StartTime?.Ticks > model.DurationMinutes.Minutes().Ticks)
+            {
+                ModelState.AddModelError("DurationMinutes", $"Czas trwania nie zgadza się z różnicą między rozpoczęciem a zakończeniem");
+            }
+
+            return model;
         }
     }
 }

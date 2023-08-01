@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
@@ -35,7 +36,10 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Stawki")]
         public HourlyPrice? HourlyPrice { get; set; }
 
-
+        [DisplayName("Czas trwania (minuty)")]
+        [DataType(DataType.Duration)]
+        public int DurationMinutes { get; set; } = 0;
+        
         [DisplayName("Kategoria")]
         public List<SelectListItem>? AllTaskTypesSelectList { get; set; } = new List<SelectListItem>();
 
