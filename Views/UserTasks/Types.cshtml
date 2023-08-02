@@ -39,6 +39,12 @@
                     }
                 </td>
                 <td>
+                    @{
+                        if (!ViewData.ContainsKey("TaskType"))
+                        {
+                            ViewData.Add("TaskType", true);
+                        }
+                    }
                     @await Html.PartialAsync("_ActionButtons", item.TaskTypeId)
                 </td>
             </tr>
