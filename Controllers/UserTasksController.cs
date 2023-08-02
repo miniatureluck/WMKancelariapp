@@ -118,7 +118,7 @@ namespace WMKancelariapp.Controllers
                 model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
-                model.Duration = TimeSpan.FromMinutes(int.Parse(model.DurationMinutes.ConvertTimeToMinutes())).Ticks;
+                model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
 
                 if (!ModelState.IsValid)
                 {
@@ -256,7 +256,7 @@ namespace WMKancelariapp.Controllers
             var convertedTicks = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
             var startEndGiven = model is { EndTime: not null, StartTime: not null };
 
-            if (!model.DurationMinutes.IsNullOrEmpty() && startEndGiven && model.EndTime?.Ticks - model.StartTime?.Ticks < convertedTicks)
+            if (!model.DurationMinutes.IsNullOrEmpty() && startEndGiven && model.EndTime?.Ticks - model.StartTime?.Ticks != convertedTicks)
             {
                 ModelState.AddModelError("DurationMinutes", $"Czas trwania nie zgadza się z różnicą między rozpoczęciem a zakończeniem");
             }
