@@ -12,6 +12,7 @@ namespace WMKancelariapp.Data.Profiles
 
             CreateMap<UserTask, UserTaskDtoViewModel>()
                 .ForMember(x => x.UserTaskId, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x=>x.DurationMinutes, opt=>opt.MapFrom(x=>x.Duration.HasValue ? x.Duration.Value.Minutes : 0))
                 .ReverseMap();
 
             CreateMap<TaskType, TaskTypeDtoViewModel>()

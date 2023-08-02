@@ -72,10 +72,6 @@ namespace WMKancelariapp.Controllers
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
 
-                ModelState.Remove("UserTaskId");
-                ModelState.Remove("Case.Name");
-                ModelState.Remove("Client.Name");
-                ModelState.Remove("TaskType.Name");
                 if (!ModelState.IsValid)
                 {
                     await PopulateSelectionListsForCreateView(model);
@@ -83,6 +79,7 @@ namespace WMKancelariapp.Controllers
                 }
 
                 _userTaskServices.CalculateDuration(model);
+
                 await _userTaskServices.Create(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -108,14 +105,24 @@ namespace WMKancelariapp.Controllers
         // POST: UserTasksController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(UserTaskDtoViewModel model)
+        public async Task<ActionResult> Edit(UserTaskDtoViewModel modelFromView)
         {
+            var model = ValidateUserTask(modelFromView);
+
             try
             {
                 model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
                 model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
+
+                if (!ModelState.IsValid)
+                {
+                    await PopulateSelectionListsForCreateView(model);
+                    return View(model);
+                }
+
+                _userTaskServices.CalculateDuration(model);
 
                 await _userTaskServices.Edit(model);
                 return RedirectToAction(nameof(Index));
@@ -239,6 +246,11 @@ namespace WMKancelariapp.Controllers
             {
                 ModelState.AddModelError("DurationMinutes", $"Czas trwania nie zgadza się z różnicą między rozpoczęciem a zakończeniem");
             }
+            
+            ModelState.Remove("UserTaskId");
+            ModelState.Remove("Case.Name");
+            ModelState.Remove("Client.Name");
+            ModelState.Remove("TaskType.Name");
 
             return model;
         }
