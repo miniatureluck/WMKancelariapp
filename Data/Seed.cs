@@ -53,7 +53,7 @@ namespace WMKancelariapp.Data
             var sampleTask = new UserTask
             {
                 Client = sampleClient,
-                Duration = TimeSpan.FromSeconds(1),
+                Duration = TimeSpan.FromSeconds(1).Ticks,
                 Created = DateTime.Now,
                 Description = "sample description",
                 User = admin,

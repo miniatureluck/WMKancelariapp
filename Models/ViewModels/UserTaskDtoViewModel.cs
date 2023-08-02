@@ -18,7 +18,7 @@ namespace WMKancelariapp.Models.ViewModels
         public DateTime? EndTime { get; set; }
 
         [DisplayName("Czas")]
-        public TimeSpan? Duration { get; set; }
+        public long? Duration { get; set; }
 
         [DisplayName("Opis")]
         public string? Description { get; set; }
@@ -36,9 +36,8 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Stawki")]
         public HourlyPrice? HourlyPrice { get; set; }
 
-        [DisplayName("Czas trwania (minuty)")]
-        [DataType(DataType.Duration)]
-        public int DurationMinutes { get; set; } = 0;
+        [DisplayName("Czas trwania")]
+        public string? DurationMinutes { get; set; }
         
         [DisplayName("Kategoria")]
         public List<SelectListItem>? AllTaskTypesSelectList { get; set; } = new List<SelectListItem>();

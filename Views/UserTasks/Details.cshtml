@@ -1,4 +1,6 @@
-﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
+﻿@using Microsoft.IdentityModel.Tokens
+@using WMKancelariapp.Extensions
+@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
 
 @{
     ViewData["Title"] = "Szczegóły czynności";
@@ -45,11 +47,11 @@
             @Model.EndTime?.ToString("MM/dd/yyyy HH:mm")
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
+            @Html.DisplayNameFor(model => model.DurationMinutes)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
+            @Model.DurationMinutes?.ConvertTimeToMinutes().ConvertMinutesToStringDisplay()
         </dd>
     </dl>
 </div>
-@await Html.PartialAsync("_ActionButtonsSingle", Model)
+@await Html.PartialAsync("_ActionButtonsSingle", Model.UserTaskId)

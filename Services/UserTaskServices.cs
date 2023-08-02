@@ -2,6 +2,8 @@
 using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
+using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
@@ -147,22 +149,28 @@ namespace WMKancelariapp.Services
         {
             var startTicks = model.StartTime?.Ticks ?? 0;
             var endTicks = model.EndTime?.Ticks ?? 0;
-            var duration = TimeSpan.FromMinutes(model.DurationMinutes).Ticks;
+            var duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
+
             if (duration == 0 && startTicks != 0 && endTicks != 0)
             {
-                model.Duration = TimeSpan.FromTicks(endTicks - startTicks);
+                model.Duration = TimeSpan.FromTicks(endTicks - startTicks).Ticks;
             }
 
-            if (startTicks == 0 && duration != 0)
+            if (startTicks == 0 && endTicks !=0 && duration != 0)
             {
                 model.StartTime = new DateTime(endTicks - duration);
-                model.Duration = TimeSpan.FromTicks(duration);
+                model.Duration = TimeSpan.FromTicks(duration).Ticks;
             }
 
-            if (endTicks == 0 && duration != 0)
+            if (startTicks != 0 && endTicks == 0 && duration != 0)
             {
                 model.EndTime = new DateTime(startTicks + duration);
-                model.Duration = TimeSpan.FromTicks(duration);
+                model.Duration = TimeSpan.FromTicks(duration).Ticks;
+            }
+
+            if (startTicks == 0 && endTicks == 0 && duration != 0)
+            {
+                model.Duration = TimeSpan.FromTicks(duration).Ticks;
             }
 
             return model;

@@ -1,4 +1,5 @@
 ﻿@using WMKancelariapp.Extensions
+@using Microsoft.IdentityModel.Tokens
 @model WMKancelariapp.Models.ViewModels.UserTaskIndexViewModel
 
 @{
@@ -70,7 +71,7 @@
                     @item.User.UserName.RemoveEmailDomain()
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Duration)
+                    @item.DurationMinutes?.ConvertTimeToMinutes().ConvertMinutesToStringDisplay()
                 </td>
                 <td>
                     @await Html.PartialAsync("_ActionButtons", item.UserTaskId)

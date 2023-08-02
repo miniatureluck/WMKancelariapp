@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
@@ -71,6 +72,8 @@ namespace WMKancelariapp.Controllers
                 model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
+                model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
+
 
                 if (!ModelState.IsValid)
                 {
@@ -115,6 +118,7 @@ namespace WMKancelariapp.Controllers
                 model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
                 model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
+                model.Duration = TimeSpan.FromMinutes(int.Parse(model.DurationMinutes.ConvertTimeToMinutes())).Ticks;
 
                 if (!ModelState.IsValid)
                 {
@@ -227,6 +231,13 @@ namespace WMKancelariapp.Controllers
 
         private UserTaskDtoViewModel ValidateUserTask(UserTaskDtoViewModel model)
         {
+            
+            if (model.DurationMinutes?.Count(x => x == ':') > 1)
+            {
+                ModelState.AddModelError("DurationMinutes", "Czas trwania może zawierać tylko jeden znak ':'");
+            }
+
+            
             if (model.StartTime?.Ticks > model.EndTime?.Ticks)
             {
                 ModelState.AddModelError("StartTime", "Czas rozpoczęcia musi być przed czasem zakończenia");
@@ -242,7 +253,10 @@ namespace WMKancelariapp.Controllers
                 ModelState.AddModelError("EndTime", "Czas zakończenia nie może być w przyszłości");
             }
 
-            if (model.DurationMinutes != 0 && model.EndTime?.Ticks - model.StartTime?.Ticks > model.DurationMinutes.Minutes().Ticks)
+            var convertedTicks = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
+            var startEndGiven = model is { EndTime: not null, StartTime: not null };
+
+            if (!model.DurationMinutes.IsNullOrEmpty() && startEndGiven && model.EndTime?.Ticks - model.StartTime?.Ticks < convertedTicks)
             {
                 ModelState.AddModelError("DurationMinutes", $"Czas trwania nie zgadza się z różnicą między rozpoczęciem a zakończeniem");
             }
