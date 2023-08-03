@@ -57,7 +57,7 @@
     <label asp-for="Cases" class="control-label"></label>
     @Html.ListBoxFor(x => x.SelectedCases, Model.AllCasesSelectList, new { @class="form-control multiple-select", @multiple="multiple" })
 </div>
-@await Html.PartialAsync("_OkCancelButtons")
+@await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
 
 @Html.HiddenFor(x=>x.ClientId)
 @*@Html.HiddenFor(x=>x.Prices)

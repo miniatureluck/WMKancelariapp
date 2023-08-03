@@ -24,7 +24,7 @@
         <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
     </div>
 </div>
-@await Html.PartialAsync("_OkCancelButtons")
+@await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
 
 @Html.HiddenFor(x=>x.CaseId)
 
