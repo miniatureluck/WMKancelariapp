@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Szczegóły";
+    ViewData.Add("GoBack", true);
 }
 
 <div>
@@ -35,4 +36,4 @@
         </dd>
     </dl>
 </div>
-@await Html.PartialAsync("_ActionButtonsSingle", Model.CaseId)
+@await Html.PartialAsync("_ActionButtons", Model.CaseId)

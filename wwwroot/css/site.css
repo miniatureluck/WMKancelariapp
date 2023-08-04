@@ -30,6 +30,7 @@ body {
         left: 2px;
         box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.4);
         margin-right: 5px;
+        margin-bottom: 8px;
     }
 
 .button-create {
@@ -51,7 +52,25 @@ body {
         background: linear-gradient(to bottom, #598946 5%, #99e47c 100%);
         background-color: #598946;
     }
+.button-additional {
+    background: linear-gradient(to bottom, #85eee7 5%, #61b0ab 100%);
+    background-color: #85eee7;
+}
 
+    .button-additional:hover {
+        background: linear-gradient(to bottom, #61b0ab 5%, #85eee7 100%);
+        background-color: #61b0ab;
+    }
+
+.button-navigation {
+    background: linear-gradient(to bottom, #ffba80 5%, #9a7049 100%);
+    background-color: #ffba80;
+}
+
+    .button-navigation:hover {
+        background: linear-gradient(to bottom, #9a7049 5%, #ffba80 100%);
+        background-color: #9a7049;
+    }
 
 .button-alert {
     background: linear-gradient(to bottom, #ff0000 5%, #a90000 100%);
@@ -62,16 +81,6 @@ body {
         background: linear-gradient(to bottom, #a90000 5%, #ff0000 100%);
         background-color: #a90000;
     }
-
-.dropdown-content {
-    display: block;
-}
-
-.filter-text-input {
-    font-size: small;
-    padding-left: 5px;
-    width: 100%;
-}
 
 .button-normal {
     background: linear-gradient(to bottom, #d1d1d1 5%, #918f91 100%);
@@ -90,6 +99,16 @@ body {
     top: 2px;
     left: 2px;
     box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.4);
+}
+
+.dropdown-content {
+    display: block;
+}
+
+.filter-text-input {
+    font-size: small;
+    padding-left: 5px;
+    width: 100%;
 }
 
 .filter-section {
