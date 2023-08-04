@@ -7,9 +7,9 @@ namespace WMKancelariapp.Models.ViewModels
     {
         public string ClientId { get; set; }
         [DisplayName("Imię")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [DisplayName("Nazwisko")]
-        public string? Surname { get; set; }
+        public string Surname { get; set; }
         [DisplayName("Adres")]
         public string? Address { get; set; }
         [DisplayName("Kod pocztowy")]

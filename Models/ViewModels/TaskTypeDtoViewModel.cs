@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Microsoft.Build.Framework;
 
 namespace WMKancelariapp.Models.ViewModels
 {
@@ -6,6 +7,7 @@ namespace WMKancelariapp.Models.ViewModels
     {
         public string TaskTypeId { get; set; }
         [DisplayName("Nazwa")]
+        [Required]
         public string Name { get; set; }
         public List<Case>? MostFrequentCase { get; set; } = new List<Case>();
 
