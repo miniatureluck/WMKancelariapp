@@ -139,9 +139,16 @@ namespace WMKancelariapp.Controllers
 
         public async Task<ActionResult> Delete(string id)
         {
-            await _userTaskServices.Delete(id);
+            try
+            {
+                await _userTaskServices.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-            return RedirectToAction(nameof(Index));
         }
 
         public async Task<ActionResult> Types()
@@ -231,13 +238,13 @@ namespace WMKancelariapp.Controllers
 
         private UserTaskDtoViewModel ValidateUserTask(UserTaskDtoViewModel model)
         {
-            
+
             if (model.DurationMinutes?.Count(x => x == ':') > 1)
             {
                 ModelState.AddModelError("DurationMinutes", "Czas trwania może zawierać tylko jeden znak ':'");
             }
 
-            
+
             if (model.StartTime?.Ticks > model.EndTime?.Ticks)
             {
                 ModelState.AddModelError("StartTime", "Czas rozpoczęcia musi być przed czasem zakończenia");
@@ -260,7 +267,7 @@ namespace WMKancelariapp.Controllers
             {
                 ModelState.AddModelError("DurationMinutes", $"Czas trwania nie zgadza się z różnicą między rozpoczęciem a zakończeniem");
             }
-            
+
             ModelState.Remove("UserTaskId");
             ModelState.Remove("Case.Name");
             ModelState.Remove("Client.Name");

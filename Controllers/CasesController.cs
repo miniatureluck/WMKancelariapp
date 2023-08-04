@@ -12,7 +12,7 @@ using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
-    
+
     [Authorize]
     public class CasesController : Controller
     {
@@ -107,18 +107,8 @@ namespace WMKancelariapp.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
-        // GET: CasesController/Delete/5
+        
         public async Task<ActionResult> Delete(string id)
-        {
-            var model = await _caseServices.GetDtoById(id);
-            return View(model);
-        }
-
-        // POST: CasesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
@@ -127,7 +117,7 @@ namespace WMKancelariapp.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
     }
