@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <title>@ViewData["Title"] - WMKancelariapp</title>
-    <link rel="stylesheet" href="~/css/styles.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/multiple-select.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Slabo+27px" />
@@ -16,7 +16,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
             <div class="container-fluid">
-                <button class="btn btn-primary" id="sidebarToggle">Menu</button>
+                <button class="btn-template button-normal" id="sidebarToggle">Menu</button>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
@@ -28,13 +28,15 @@
     </header>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
-        <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light">
-                <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Identity.Name ?? "---------")</a>
-            </div>
-            <div class="list-group list-group-flush">
+        <div class="bg-white" id="sidebar-wrapper">
+            
+            <div class="border-end border-bottom list-group list-group-flush">
+                <div class="sidebar-heading border-bottom bg-light">
+                    <a class="nav-link text-dark text-truncate" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Identity.Name ?? "---------")</a>
+                </div>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Clients">Klienci</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Cases">Sprawy</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="UserTasks">Czynności</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="UserTasks">Czynności</a>
 
             </div>
@@ -52,8 +54,8 @@
         </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top text-muted" id="footer">
+        <div class="container ">
             &copy; 2023 - WMKancelariapp
         </div>
     </footer>

@@ -35,7 +35,7 @@
     height: 26px;
     padding: 0;
     overflow: hidden;
-    cursor: pointer;
+    cursor: url('../resources/Normal.cur'), default;
     border: 0px solid #aaa;
     text-align: left;
     white-space: nowrap;
@@ -68,9 +68,9 @@
             color: rgba(0, 0, 255, 0);
         }
 
-        .ms-choice > span.placeholder:hover {
-            cursor: pointer;
-        }
+            .ms-choice > span.placeholder:hover {
+                cursor: url('../resources/Select.cur'), default;
+            }
 
     .ms-choice > div.icon-close {
         position: absolute;
@@ -117,7 +117,7 @@
     padding: 0;
     position: absolute;
     z-index: 1000;
-    background: #fff;
+    background: #f3f1f1;
     color: #000;
     border: 1px solid #aaa;
     border-radius: 4px
@@ -176,7 +176,7 @@
             font-weight: normal !important;
             opacity: .35;
             filter: Alpha(Opacity=35);
-            cursor: default
+            cursor: url('../resources/Normal.cur'), default;
         }
 
         .ms-drop ul > li.multiple {
@@ -203,7 +203,7 @@
             font-weight: normal;
             display: block;
             white-space: nowrap;
-            cursor: pointer
+            cursor: url('../resources/Select.cur'), default;
         }
 
             .ms-drop ul > li label.optgroup {
@@ -220,7 +220,7 @@
 
             .ms-drop ul > li.hide-radio.selected {
                 color: #fff;
-                background-color: #007bff
+                background-color: #5885b5
             }
 
             .ms-drop ul > li.hide-radio label {
