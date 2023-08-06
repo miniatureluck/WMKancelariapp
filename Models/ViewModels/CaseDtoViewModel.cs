@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
@@ -7,6 +8,7 @@ namespace WMKancelariapp.Models.ViewModels
     {
         public string CaseId { get; set; }
         [DisplayName("Nazwa")]
+        [Required(ErrorMessage = "Należy podać nazwę")]
         public string Name { get; set; }
         [DisplayName("Opiekun")]
         public User? AssignedUser { get; set; }

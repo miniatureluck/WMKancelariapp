@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
@@ -9,6 +10,7 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Imię")]
         public string? Name { get; set; }
         [DisplayName("Nazwisko")]
+        [Required(ErrorMessage = "Należy podać nazwisko")]
         public string Surname { get; set; }
         [DisplayName("Adres")]
         public string? Address { get; set; }

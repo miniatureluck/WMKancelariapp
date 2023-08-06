@@ -53,8 +53,10 @@ namespace WMKancelariapp.Controllers
         // GET: CasesController/Create
         public async Task<ActionResult> Create()
         {
-            var model = new CaseDtoViewModel();
-            model.Client = new Client();
+            var model = new CaseDtoViewModel
+            {
+                Client = new Client()
+            };
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
 

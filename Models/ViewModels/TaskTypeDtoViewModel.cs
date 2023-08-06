@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations;
 
 namespace WMKancelariapp.Models.ViewModels
 {
@@ -7,7 +7,7 @@ namespace WMKancelariapp.Models.ViewModels
     {
         public string TaskTypeId { get; set; }
         [DisplayName("Nazwa")]
-        [Required]
+        [Required(ErrorMessage = "Należy podać nazwę")]
         public string Name { get; set; }
         public List<Case>? MostFrequentCase { get; set; } = new List<Case>();
 

@@ -10,7 +10,7 @@
     <div class="form-group">
         <label asp-for="Surname" class="control-label"></label>
         <input asp-for="Surname" class="form-control" />
-        @Html.ValidationMessageFor(x=>x.Name, "Należy podać nazwisko", new { @class="text-danger" })
+        <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
 </div>
 <div class="form-group">
