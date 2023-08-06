@@ -22,6 +22,10 @@ body {
 }
 
     .btn-template:hover {
+        color: #ffffff;
+    }
+
+    .btn-template:active {
         border-bottom: 0px;
         border-right: 0px;
         color: #ffffff;
@@ -52,6 +56,7 @@ body {
         background: linear-gradient(to bottom, #598946 5%, #99e47c 100%);
         background-color: #598946;
     }
+
 .button-additional {
     background: linear-gradient(to bottom, #85eee7 5%, #61b0ab 100%);
     background-color: #85eee7;
@@ -127,11 +132,11 @@ input[type="checkbox" i] {
 }
 
 #footer {
- position: fixed;
- bottom: 0;
- width: 100%;
- background-color: #456f9b;
- color: white
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #456f9b;
+    color: white
 }
 
 @media (min-width: 768px) {

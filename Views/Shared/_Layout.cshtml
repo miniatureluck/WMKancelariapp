@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WMKancelariapp.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -32,12 +33,13 @@
             
             <div class="border-end border-bottom list-group list-group-flush">
                 <div class="sidebar-heading border-bottom bg-light">
-                    <a class="nav-link text-dark text-truncate" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Identity.Name ?? "---------")</a>
+                    <a class="nav-link text-dark text-truncate" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Identity.Name.RemoveEmailDomain() ?? "---------")</a>
                 </div>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Clients">Klienci</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Cases">Sprawy</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="UserTasks">Czynności</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="UserTasks">Czynności</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Home">Terminy</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Home">Finanse</a>
 
             </div>
         </div>

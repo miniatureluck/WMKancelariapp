@@ -2,44 +2,54 @@
 
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<div>
-    <label asp-for="AllTaskTypesSelectList"></label>
-    @Html.DropDownListFor(x=>x.TaskType.Id, Model.AllTaskTypesSelectList, new { @class="form-control multiple-select" })
-</div>
-<div>
-    <label asp-for="AllClientsSelectList"></label>
-    @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control multiple-select" })
-</div>
-@if (User.IsInRole("SysAdmin"))
-{
-    <div>
-        <label asp-for="AllUsersSelectList"></label>
-        @Html.DropDownListFor(x => x.User.Id, Model.AllUsersSelectList, new { @class="form-control multiple-select" })
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="AllTaskTypesSelectList"></label>
+            @Html.DropDownListFor(x => x.TaskType.Id, Model.AllTaskTypesSelectList, new { @class = "form-control multiple-select" })
+        </div>
+        <div class="col-md-3">
+            <label asp-for="AllClientsSelectList"></label>
+            @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control multiple-select" })
+        </div>
     </div>
-}
-<div>
-    <label asp-for="AllCasesSelectList"></label>
-    @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class="form-control multiple-select" })
-</div>
-<div>
-    <label asp-for="StartTime"></label>
-    <input asp-for="StartTime" class="form-control" />
-    <span asp-validation-for="StartTime" class="text-danger"></span>
-</div>
-<div>
-    <label asp-for="EndTime"></label>
-    <input asp-for="EndTime" class="form-control" />
-    <span asp-validation-for="EndTime" class="text-danger"></span>
-</div>
-<div>
-    <label asp-for="DurationMinutes"></label>
-    <input type="text" asp-for="DurationMinutes" class="form-control" asp-format="{0:HH:mm}" />
-    <span asp-validation-for="DurationMinutes" class="text-danger"></span>
-</div>
-<div>
-    <label asp-for="Description"></label>
-    <input asp-for="Description" class="form-control" />
-    <span asp-validation-for="Description" class="text-danger"></span>
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="AllCasesSelectList"></label>
+            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control multiple-select" })
+        </div>
+        @if (User.IsInRole("SysAdmin"))
+        {
+            <div class="col-md-3">
+                <label asp-for="AllUsersSelectList"></label>
+                @Html.DropDownListFor(x => x.User.Id, Model.AllUsersSelectList, new { @class="form-control multiple-select" })
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label asp-for="StartTime"></label>
+            <input asp-for="StartTime" class="form-control" />
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="EndTime"></label>
+            <input asp-for="EndTime" class="form-control" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label asp-for="DurationMinutes"></label>
+            <input type="text" asp-for="DurationMinutes" class="form-control" asp-format="{0:HH:mm}" />
+            <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+        </div>
+        <div class="col-md-5">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
 </div>
 @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
 
