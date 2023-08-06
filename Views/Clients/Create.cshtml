@@ -6,12 +6,10 @@
 <h2>Nowy klient</h2>
 <hr />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            @await Html.PartialAsync("_ClientPartial", Model)
-        </form>
-    </div>
+<div>
+    <form asp-action="Create">
+        @await Html.PartialAsync("_ClientPartial", Model)
+    </form>
 </div>
 
 @section Scripts {

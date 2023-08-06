@@ -6,12 +6,10 @@
 <h2>Edycja danych klienta</h2>
 <hr />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            @await Html.PartialAsync("_ClientPartial", Model)
-        </form>
-    </div>
+<div>
+    <form asp-action="Edit">
+        @await Html.PartialAsync("_ClientPartial", Model)
+    </form>
 </div>
 
 @section Scripts {

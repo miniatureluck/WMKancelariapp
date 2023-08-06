@@ -2,42 +2,42 @@
 
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<div class="form-group">
-    <label asp-for="AllTaskTypesSelectList" class="control-label"></label>
+<div>
+    <label asp-for="AllTaskTypesSelectList"></label>
     @Html.DropDownListFor(x=>x.TaskType.Id, Model.AllTaskTypesSelectList, new { @class="form-control multiple-select" })
 </div>
-<div class="form-group">
-    <label asp-for="AllClientsSelectList" class="control-label"></label>
+<div>
+    <label asp-for="AllClientsSelectList"></label>
     @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control multiple-select" })
 </div>
 @if (User.IsInRole("SysAdmin"))
 {
-    <div class="form-group">
-        <label asp-for="AllUsersSelectList" class="control-label"></label>
+    <div>
+        <label asp-for="AllUsersSelectList"></label>
         @Html.DropDownListFor(x => x.User.Id, Model.AllUsersSelectList, new { @class="form-control multiple-select" })
     </div>
 }
-<div class="form-group">
-    <label asp-for="AllCasesSelectList" class="control-label"></label>
+<div>
+    <label asp-for="AllCasesSelectList"></label>
     @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class="form-control multiple-select" })
 </div>
-<div class="form-group">
-    <label asp-for="StartTime" class="control-label"></label>
+<div>
+    <label asp-for="StartTime"></label>
     <input asp-for="StartTime" class="form-control" />
     <span asp-validation-for="StartTime" class="text-danger"></span>
 </div>
-<div class="form-group">
-    <label asp-for="EndTime" class="control-label"></label>
+<div>
+    <label asp-for="EndTime"></label>
     <input asp-for="EndTime" class="form-control" />
     <span asp-validation-for="EndTime" class="text-danger"></span>
 </div>
-<div class="form-group">
-    <label asp-for="DurationMinutes" class="control-label"></label>
+<div>
+    <label asp-for="DurationMinutes"></label>
     <input type="text" asp-for="DurationMinutes" class="form-control" asp-format="{0:HH:mm}" />
     <span asp-validation-for="DurationMinutes" class="text-danger"></span>
 </div>
-<div class="form-group">
-    <label asp-for="Description" class="control-label"></label>
+<div>
+    <label asp-for="Description"></label>
     <input asp-for="Description" class="form-control" />
     <span asp-validation-for="Description" class="text-danger"></span>
 </div>

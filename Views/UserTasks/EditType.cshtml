@@ -6,12 +6,11 @@
 
 <h2>Edycja kategorii</h2>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditType">
-            @await Html.PartialAsync("_TaskTypePartial", Model)
-        </form>
-    </div>
+
+<div>
+    <form asp-action="Edit">
+        @await Html.PartialAsync("_TaskTypePartial", Model)
+    </form>
 </div>
 
 @section Scripts {

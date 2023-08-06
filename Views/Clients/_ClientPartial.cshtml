@@ -2,86 +2,97 @@
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="col-md-12">
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="row">
+        <div class="col-md-3">
+            <label asp-for="AssignedUser"></label>
+            @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, new {  @class="form-control multiple-select" })
+            <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Cases"></label>
+            @Html.ListBoxFor(x => x.SelectedCases, Model.AllCasesSelectList, new { @class="form-control multiple-select", @multiple="multiple" })
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="Surname" class="control-label"></label>
-        <input asp-for="Surname" class="form-control" />
-        <span asp-validation-for="Surname" class="text-danger"></span>
+    <div class="row">
+        <div class="col-md-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Surname"></label>
+            <input asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="TaxIdNumber"></label>
+            <input asp-for="TaxIdNumber" class="form-control" />
+            <span asp-validation-for="TaxIdNumber" class="text-danger"></span>
+        </div>
     </div>
-</div>
-<div class="form-group">
-    <label asp-for="Address" class="control-label"></label>
-    <input asp-for="Address" class="form-control" />
-    <span asp-validation-for="Address" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="PostCode" class="control-label"></label>
-    <input asp-for="PostCode" class="form-control" />
-    <span asp-validation-for="PostCode" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Location" class="control-label"></label>
-    <input asp-for="Location" class="form-control" />
-    <span asp-validation-for="Location" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Email" class="control-label"></label>
-    <input asp-for="Email" class="form-control" />
-    <span asp-validation-for="Email" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="TaxIdNumber" class="control-label"></label>
-    <input asp-for="TaxIdNumber" class="form-control" />
-    <span asp-validation-for="TaxIdNumber" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Phone" class="control-label"></label>
-    <input asp-for="Phone" class="form-control" />
-    <span asp-validation-for="Phone" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Description" class="control-label"></label>
-    <input asp-for="Description" class="form-control" />
-    <span asp-validation-for="Description" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="AssignedUser" class="control-label"></label>
-    @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, new {  @class="form-control multiple-select" })
-    <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Cases" class="control-label"></label>
-    @Html.ListBoxFor(x => x.SelectedCases, Model.AllCasesSelectList, new { @class="form-control multiple-select", @multiple="multiple" })
+    <div class="row">
+        <div class="col-md-3">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
+            <label asp-for="PostCode"></label>
+            <input asp-for="PostCode" class="form-control" />
+            <span asp-validation-for="PostCode" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Location"></label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-2">
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="Description"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
 </div>
 @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
 
 @Html.HiddenFor(x=>x.ClientId)
 @*@Html.HiddenFor(x=>x.Prices)
-            @for (int i = 0; i < Model.Prices?.Count; i++)
-            {
-            @Html.HiddenFor(x => x.Prices[i].TaskType)
-            @Html.HiddenFor(x => x.Prices[i].Client)
-            @Html.HiddenFor(x => x.Prices[i].Price)
-            @Html.HiddenFor(x => x.Prices[i].Created)
-            @Html.HiddenFor(x => x.Prices[i].Id)
-            for (int j = 0; j < Model.Prices[i].UserTasks.Count; j++)
-            {
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].TaskType)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Client)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Case)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Description)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Duration)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].EndTime)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].HourlyPrice)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].StartTime)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].User)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Created)
-            @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Id)
-            }
-            }*@
+    @for (int i = 0; i < Model.Prices?.Count; i++)
+    {
+    @Html.HiddenFor(x => x.Prices[i].TaskType)
+    @Html.HiddenFor(x => x.Prices[i].Client)
+    @Html.HiddenFor(x => x.Prices[i].Price)
+    @Html.HiddenFor(x => x.Prices[i].Created)
+    @Html.HiddenFor(x => x.Prices[i].Id)
+    for (int j = 0; j < Model.Prices[i].UserTasks.Count; j++)
+    {
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].TaskType)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Client)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Case)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Description)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Duration)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].EndTime)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].HourlyPrice)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].StartTime)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].User)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Created)
+    @Html.HiddenFor(x=>x.Prices[i].UserTasks[j].Id)
+    }
+    }*@
 @Html.HiddenFor(x=>x.Cases)
 @Html.HiddenFor(x=>x.Tasks)
+</div>
