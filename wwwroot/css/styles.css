@@ -10833,7 +10833,7 @@ textarea.form-control-lg {
 
 #sidebar-wrapper {
   
-  margin-left: -15rem;
+  margin-left: -10rem;
   transition: margin 0.25s ease-out;
 }
 
@@ -10864,6 +10864,6 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     width: 100%;
   }
   body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
-    margin-left: -15rem;
+    margin-left: -10rem;
   }
 }
