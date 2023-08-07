@@ -3,11 +3,14 @@
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="col-md-12">
     <div class="row">
+        @if (User.IsInRole("SysAdmin"))
+        {
         <div class="col-md-3">
             <label asp-for="AssignedUser"></label>
-            @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, new {  @class="form-control multiple-select" })
+            @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, new { @class = "form-control select-dropbox" })
             <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
         </div>
+        }
         <div class="col-md-3">
             <label asp-for="Cases"></label>
             @Html.ListBoxFor(x => x.SelectedCases, Model.AllCasesSelectList, new { @class="form-control multiple-select", @multiple="multiple" })

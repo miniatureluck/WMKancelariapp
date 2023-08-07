@@ -13,7 +13,12 @@ $(function () {
         selectAll: false,
         showClear: true
     })
-})
+});
+$(function () {
+    $('.select-dropbox').multipleSelect()
+});
+
+
 $('#filter-toggle').click(function () {
     $('.filter-section').slideToggle(500);
     $('#filter-toggle').toggleClass("button-normal-toggled")
@@ -45,9 +50,9 @@ window.addEventListener('DOMContentLoaded', event => {
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
 
-         if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-             document.body.classList.toggle('sb-sidenav-toggled');
-         }
+        if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+            document.body.classList.toggle('sb-sidenav-toggled');
+        }
         sidebarToggle.addEventListener('click', event => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
