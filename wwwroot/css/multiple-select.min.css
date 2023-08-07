@@ -61,7 +61,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: block;
-        padding-left: 8px
+        padding-left: 5px
     }
 
         .ms-choice > span.placeholder {
@@ -95,7 +95,7 @@
         width: 0;
         height: 0;
         top: 50%;
-        left: 2%;
+        left: 4px;
         margin-top: -2px;
         border-color: #888 transparent transparent transparent;
         border-style: solid;
