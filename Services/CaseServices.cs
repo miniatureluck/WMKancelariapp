@@ -82,20 +82,12 @@ namespace WMKancelariapp.Services
                 }
             };
             var cases = await GetAll();
-            if (!clientId.IsNullOrEmpty())
+            if (clientId != "0")
             {
                 cases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
             }
 
-            foreach (var item in cases)
-            {
-                model.Add(new SelectListItem
-                {
-                    Text = $"{item.Name}",
-                    Value = item.Id
-                });
-            }
-
+            model.AddRange(cases.Select(item => new SelectListItem { Text = $"{item.Name}", Value = item.Id }));
 
             return model;
         }

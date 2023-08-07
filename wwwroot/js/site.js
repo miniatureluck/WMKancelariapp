@@ -15,7 +15,9 @@ $(function () {
     })
 });
 $(function () {
-    $('.select-dropbox').multipleSelect()
+    $('.select-dropbox').multipleSelect({
+        filter: true, filterPlaceholder: 'Filtruj'
+    })
 });
 
 

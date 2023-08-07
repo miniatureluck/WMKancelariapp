@@ -10828,18 +10828,19 @@ textarea.form-control-lg {
   }
 }
 #wrapper {
-  overflow-x: hidden;
+    min-height: 90vh;
+    overflow-x: hidden;
 }
 
 #sidebar-wrapper {
-  
   margin-left: -10rem;
   transition: margin 0.25s ease-out;
 }
 
 #sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
+  padding: 0.875rem 1rem;
   font-size: 1.2rem;
+  text-align: center;
 }
 
 #sidebar-wrapper .list-group {
