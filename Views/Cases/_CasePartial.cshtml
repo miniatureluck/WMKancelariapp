@@ -4,6 +4,18 @@
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="col-md-12">
     <div class="row">
+        <div class="dropdown-content col-md-3">
+            @Html.LabelFor(x=>x.Client)
+            @Html.DropDownListFor(x => x.Client.Id, Model.AllClientsSelectList, new { @class = "form-control select-dropbox" })
+            <span asp-validation-for="AllClientsSelectList" class="text-danger"></span>
+        </div>
+        <div class="dropdown-content col-md-3">
+            @Html.LabelFor(x=>x.AssignedUser)
+            @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, new { @class = "form-control select-dropbox" })
+            <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <label asp-for="Name"></label>
             <input asp-for="Name" class="form-control" />
@@ -16,18 +28,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="dropdown-content col-md-3">
-            @Html.LabelFor(x=>x.Client)
-            @Html.DropDownListFor(x => x.Client.Id, Model.AllClientsSelectList, new { @class = "form-control select-dropbox" })
-            <span asp-validation-for="AllClientsSelectList" class="text-danger"></span>
-        </div>
-        <div class="dropdown-content col-md-3">
-            @Html.LabelFor(x=>x.AssignedUser)
-            @Html.DropDownListFor(x => x.AssignedUser.Id, Model.AllUsersSelectList, new { @class = "form-control select-dropbox" })
-            <span asp-validation-for="AllUsersSelectList" class="text-danger"></span>
-        </div>
-    </div>
+
 </div>
 
 <div>

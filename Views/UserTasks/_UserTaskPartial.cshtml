@@ -1,7 +1,11 @@
 ﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
+@{
+    var getFilteredClientUrl = Url.Action("GetJsonClientByCaseId", "UserTasks");
+}
 
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div id="data-container" data-get-filtered-client-url="@getFilteredClientUrl"></div>
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-4">
@@ -10,13 +14,13 @@
         </div>
         <div class="col-md-3">
             <label asp-for="AllClientsSelectList"></label>
-            @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control select-dropbox" })
+            @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control", id="Client_Id" })
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <label asp-for="AllCasesSelectList"></label>
-            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control select-dropbox" })
+            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control select-dropbox", id="Case_Id" })
         </div>
         @if (User.IsInRole("SysAdmin"))
         {
@@ -46,7 +50,7 @@
         </div>
         <div class="col-md-5">
             <label asp-for="Description"></label>
-            <input asp-for="Description" class="form-control" />
+            <input asp-for="Description" class="form-control" id="Desc"/>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
     </div>

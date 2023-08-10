@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
@@ -214,6 +215,38 @@ namespace WMKancelariapp.Controllers
             return RedirectToAction(nameof(Types));
         }
 
+        public async Task<IActionResult> GetJsonClientByCaseId(string caseId)
+        {
+            if (caseId.IsNullOrEmpty() || caseId == "Brak")
+            {
+                var freshlist = await _clientServices.CreateClientsSelectList();
+                var newFreshlist = freshlist.ToList();
+                newFreshlist.RemoveAt(0);
+                return Json(newFreshlist);
+            }
+
+            var clients = await _clientServices.GetAll();
+            var client = clients.FirstOrDefault(x => x.Cases.Any(y => y.Id == caseId));
+            var result = new List<SelectListItem>();
+
+            if (client == null)
+            {
+                return Json(result);
+            }
+
+            var filteredClient = _mapper.Map<ClientDtoViewModel>(client);
+
+            result.Add(new SelectListItem()
+            {
+                Value = filteredClient.ClientId,
+                Text = filteredClient.Name + " " + filteredClient.Surname
+            });
+
+            return Json(result);
+        }
+
+
+
         private async Task<UserTaskDtoViewModel> PopulateSelectionListsForCreateView(UserTaskDtoViewModel model)
         {
 
@@ -268,6 +301,7 @@ namespace WMKancelariapp.Controllers
             ModelState.Remove("UserTaskId");
             ModelState.Remove("Case.Name");
             ModelState.Remove("Client.Name");
+            ModelState.Remove("Client.Surname");
             ModelState.Remove("TaskType.Name");
 
             return model;

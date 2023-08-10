@@ -6,6 +6,46 @@
 // 
 // Scripts
 // 
+$(document).ready(function () {
+    var getFilteredClientUrl = $('#data-container').data('get-filtered-client-url');
+
+    var caseDropdown = $('#Case_Id');
+    var clientDropdown = $('#Client_Id');
+
+    caseDropdown.change(function () {
+        var selectedCaseId = $(this).val();
+        $.get(getFilteredClientUrl, { caseId: selectedCaseId }, function (data) {
+
+
+            clientDropdown.empty();
+
+            $.each(data, function (index, item) {
+                var option = $('<option>', {
+                    value: item.value,
+                    text: item.text
+                });
+                clientDropdown.append(option);
+
+            });
+            if (data.length == 1) {
+                clientDropdown.val(data[0].value);
+                clientDropdown.prop('disabled', true);
+            } else {
+                clientDropdown.prop('disabled', false);
+                clientDropdown.prepend($('<option>', {
+                    value: 'Brak',
+                    text: 'Brak'
+                }));
+                clientDropdown.addClass('blink');
+                setTimeout(function () {
+                    clientDropdown.removeClass('blink');
+                }, 500);
+                clientDropdown.val('Brak');
+            }
+        });
+    });
+});
+
 $(function () {
     $('.multiple-select').multipleSelect({
         filter: true,

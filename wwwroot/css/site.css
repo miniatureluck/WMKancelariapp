@@ -1,3 +1,12 @@
+@keyframes blink {
+    0%, 100% { background-color: inherit; }
+    50% { background-color: red; }
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+
 body {
     font-family: 'Slabo 27px';
     cursor: url('../resources/Normal.cur'), default;
