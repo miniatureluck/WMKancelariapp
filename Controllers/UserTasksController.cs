@@ -298,6 +298,12 @@ namespace WMKancelariapp.Controllers
                 ModelState.AddModelError("DurationMinutes", $"Czas trwania nie zgadza się z różnicą między rozpoczęciem a zakończeniem");
             }
 
+            var userCase = _caseServices.GetByIdWithIncludes(model.Case.Id, x => x.Client).Result;
+            if (userCase?.Client != null && model.Client.Id != userCase.Client.Id)
+            {
+                ModelState.AddModelError("Client", $"Błąd danych - niezgodność");
+            }
+
             ModelState.Remove("UserTaskId");
             ModelState.Remove("Case.Name");
             ModelState.Remove("Client.Name");

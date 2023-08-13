@@ -119,6 +119,13 @@ body {
     display: block;
 }
 
+.dropdown-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
 .filter-text-input {
     font-size: small;
     padding-left: 5px;

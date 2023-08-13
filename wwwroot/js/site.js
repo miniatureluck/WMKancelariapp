@@ -29,9 +29,11 @@ $(document).ready(function () {
             });
             if (data.length == 1) {
                 clientDropdown.val(data[0].value);
-                clientDropdown.prop('disabled', true);
+                clientDropdown.prop('readonly', true);
+                clientDropdown.addClass('dropdown-disabled');
             } else {
-                clientDropdown.prop('disabled', false);
+                clientDropdown.removeClass('dropdown-disabled');
+                clientDropdown.prop('readonly', false);
                 clientDropdown.prepend($('<option>', {
                     value: 'Brak',
                     text: 'Brak'
