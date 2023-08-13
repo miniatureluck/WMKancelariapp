@@ -17,6 +17,7 @@
         <div class="col-md-3">
             <label asp-for="AllClientsSelectList"></label>
             @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control", id="Client_Id" })
+            <span asp-validation-for="Client" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
