@@ -1,13 +1,14 @@
 ﻿@model WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel
 @{
     var getFilteredClientUrl = Url.Action("GetJsonClientByCaseId", "UserTasks");
+    var getFilteredCasesUrl = Url.Action("GetJsonCasesByClientId", "UserTasks");
 }
 
 
 <div asp-validation-summary="ModelOnly" class="text-danger">
 </div>
     <span asp-validation-for="AllClientsSelectList" class="text-danger"></span>
-<div id="data-container" data-get-filtered-client-url="@getFilteredClientUrl"></div>
+<div id="data-container" data-get-filtered-client-url="@getFilteredClientUrl" data-get-filtered-cases-url="@getFilteredCasesUrl"></div>
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-4">
@@ -23,7 +24,7 @@
     <div class="row">
         <div class="col-md-4">
             <label asp-for="AllCasesSelectList"></label>
-            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control select-dropbox", id="Case_Id" })
+            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control", id="Case_Id" })
         </div>
         @if (User.IsInRole("SysAdmin"))
         {

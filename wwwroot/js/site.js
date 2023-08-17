@@ -8,6 +8,7 @@
 // 
 $(document).ready(function () {
     var getFilteredClientUrl = $('#data-container').data('get-filtered-client-url');
+    var getFilteredCasesUrl = $('#data-container').data('get-filtered-cases-url');
 
     var caseDropdown = $('#Case_Id');
     var clientDropdown = $('#Client_Id');
@@ -44,6 +45,27 @@ $(document).ready(function () {
                 }, 500);
                 clientDropdown.val('Brak');
             }
+        });
+    });
+
+    clientDropdown.change(function () {
+        var selectedClientId = $(this).val();
+        $.get(getFilteredCasesUrl, { clientId: selectedClientId }, function (data) {
+
+            caseDropdown.empty();
+
+            $.each(data, function (index, item) {
+                var option = $('<option>', {
+                    value: item.value,
+                    text: item.text
+                });
+                caseDropdown.append(option);
+            });
+            caseDropdown.prepend($('<option>', {
+                value: 'Brak',
+                text: 'Brak'
+            }));
+            caseDropdown.val('Brak');
         });
     });
 });

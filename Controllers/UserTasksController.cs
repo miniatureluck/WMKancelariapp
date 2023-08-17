@@ -245,7 +245,22 @@ namespace WMKancelariapp.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetJsonCasesByClientId(string clientId)
+        {
+            if (clientId.IsNullOrEmpty() || clientId == "Brak")
+            {
+                var allCasesList = await _caseServices.CreateCasesSelectList(clientId);
+                var allCasesSelectList = allCasesList.ToList();
+                allCasesSelectList.RemoveAt(0);
+                return Json(allCasesSelectList);
+            }
 
+            var cases = await _caseServices.GetAll();
+            var filteredCases = cases.Where(x => x.Client?.Id == clientId);
+            var casesSelectList = filteredCases.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id }).ToList();
+
+            return Json(casesSelectList);
+        }
 
         private async Task<UserTaskDtoViewModel> PopulateSelectionListsForCreateView(UserTaskDtoViewModel model)
         {
