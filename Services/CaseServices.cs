@@ -1,7 +1,6 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.IdentityModel.Tokens;
+using System.Linq.Expressions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
@@ -82,11 +81,12 @@ namespace WMKancelariapp.Services
                 }
             };
             var cases = await GetAll();
-            if (clientId != "0")
+
+            if (clientId != "all")
             {
                 cases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
             }
-
+            
             model.AddRange(cases.Select(item => new SelectListItem { Text = $"{item.Name}", Value = item.Id }));
 
             return model;

@@ -51,7 +51,7 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new ClientDtoViewModel();
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(string.Empty));
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
             model.AllCasesSelectList.RemoveAt(0);
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
 

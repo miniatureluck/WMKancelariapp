@@ -17,14 +17,14 @@
         </div>
         <div class="col-md-3">
             <label asp-for="AllClientsSelectList"></label>
-            @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control", id="Client_Id" })
+            @Html.DropDownListFor(x=>x.Client.Id, Model.AllClientsSelectList, new { @class="form-control select-dropbox", id="Client_Id" })
             <span asp-validation-for="Client" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <label asp-for="AllCasesSelectList"></label>
-            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control", id="Case_Id" })
+            @Html.DropDownListFor(x => x.Case.Id, Model.AllCasesSelectList, new { @class = "form-control select-dropbox", id="Case_Id" })
         </div>
         @if (User.IsInRole("SysAdmin"))
         {

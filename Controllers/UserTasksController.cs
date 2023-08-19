@@ -98,7 +98,7 @@ namespace WMKancelariapp.Controllers
             model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(model.Client.Id ?? "all"));
 
             return View(model);
         }
@@ -217,7 +217,7 @@ namespace WMKancelariapp.Controllers
 
         public async Task<IActionResult> GetJsonClientByCaseId(string caseId)
         {
-            if (caseId.IsNullOrEmpty() || caseId == "Brak")
+            if (caseId.IsNullOrEmpty() || caseId == "0")
             {
                 var freshlist = await _clientServices.CreateClientsSelectList();
                 var newFreshlist = freshlist.ToList();
@@ -247,7 +247,7 @@ namespace WMKancelariapp.Controllers
 
         public async Task<IActionResult> GetJsonCasesByClientId(string clientId)
         {
-            if (clientId.IsNullOrEmpty() || clientId == "Brak")
+            if (clientId.IsNullOrEmpty() || clientId == "0")
             {
                 var allCasesList = await _caseServices.CreateCasesSelectList(clientId);
                 var allCasesSelectList = allCasesList.ToList();
@@ -267,7 +267,7 @@ namespace WMKancelariapp.Controllers
 
             model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all"));
             if (User.IsInRole("SysAdmin"))
             {
                 model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());

@@ -16,8 +16,6 @@ $(document).ready(function () {
     caseDropdown.change(function () {
         var selectedCaseId = $(this).val();
         $.get(getFilteredClientUrl, { caseId: selectedCaseId }, function (data) {
-
-
             clientDropdown.empty();
 
             $.each(data, function (index, item) {
@@ -26,9 +24,9 @@ $(document).ready(function () {
                     text: item.text
                 });
                 clientDropdown.append(option);
-
             });
-            if (data.length == 1) {
+
+            if (data.length === 1) {
                 clientDropdown.val(data[0].value);
                 clientDropdown.prop('readonly', true);
                 clientDropdown.addClass('dropdown-disabled');
@@ -36,22 +34,18 @@ $(document).ready(function () {
                 clientDropdown.removeClass('dropdown-disabled');
                 clientDropdown.prop('readonly', false);
                 clientDropdown.prepend($('<option>', {
-                    value: 'Brak',
+                    value: '0',
                     text: 'Brak'
                 }));
-                clientDropdown.addClass('blink');
-                setTimeout(function () {
-                    clientDropdown.removeClass('blink');
-                }, 500);
-                clientDropdown.val('Brak');
+                clientDropdown.val('0');
             }
+            clientDropdown.multipleSelect('refresh');
         });
     });
 
     clientDropdown.change(function () {
         var selectedClientId = $(this).val();
         $.get(getFilteredCasesUrl, { clientId: selectedClientId }, function (data) {
-
             caseDropdown.empty();
 
             $.each(data, function (index, item) {
@@ -61,14 +55,17 @@ $(document).ready(function () {
                 });
                 caseDropdown.append(option);
             });
+
             caseDropdown.prepend($('<option>', {
-                value: 'Brak',
+                value: '0',
                 text: 'Brak'
             }));
-            caseDropdown.val('Brak');
+            caseDropdown.val('0');
+            caseDropdown.multipleSelect('refresh');
         });
     });
 });
+
 
 $(function () {
     $('.multiple-select').multipleSelect({
