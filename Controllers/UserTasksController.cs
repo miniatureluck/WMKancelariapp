@@ -247,7 +247,7 @@ namespace WMKancelariapp.Controllers
 
         public async Task<IActionResult> GetJsonCasesByClientId(string clientId)
         {
-            if (clientId.IsNullOrEmpty() || clientId == "0")
+            if (clientId.IsNullOrEmpty() || clientId == "all")
             {
                 var allCasesList = await _caseServices.CreateCasesSelectList(clientId);
                 var allCasesSelectList = allCasesList.ToList();

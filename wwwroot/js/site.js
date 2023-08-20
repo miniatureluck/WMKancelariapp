@@ -13,6 +13,7 @@ $(document).ready(function () {
     var caseDropdown = $('#Case_Id');
     var clientDropdown = $('#Client_Id');
 
+
     caseDropdown.change(function () {
         var selectedCaseId = $(this).val();
         $.get(getFilteredClientUrl, { caseId: selectedCaseId }, function (data) {
@@ -29,15 +30,15 @@ $(document).ready(function () {
             if (data.length === 1) {
                 clientDropdown.val(data[0].value);
                 clientDropdown.prop('readonly', true);
-                clientDropdown.addClass('dropdown-disabled');
+                //clientDropdown.addClass('dropdown-disabled');
             } else {
                 clientDropdown.removeClass('dropdown-disabled');
                 clientDropdown.prop('readonly', false);
                 clientDropdown.prepend($('<option>', {
-                    value: '0',
+                    value: 'all',
                     text: 'Brak'
                 }));
-                clientDropdown.val('0');
+                clientDropdown.val('all');
             }
             clientDropdown.multipleSelect('refresh');
         });

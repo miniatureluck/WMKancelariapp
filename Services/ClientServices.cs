@@ -69,22 +69,19 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<SelectListItem>> CreateClientsSelectList()
         {
-            var model = new List<SelectListItem>();
-            var clients = await GetAll();
-            model.Add(new SelectListItem
+            var model = new List<SelectListItem>
             {
-                Text = "Brak",
-                Value = "0"
-
-            });
-            foreach (var item in clients)
-            {
-                model.Add(new SelectListItem
+                new SelectListItem
                 {
-                    Text = $"{item.Name} {item.Surname}",
-                    Value = item.Id
-                });
-            }
+                    Text = "Brak",
+                    Value = "0"
+
+                }
+            };
+
+            var clients = await GetAll();
+
+            model.AddRange(clients.Select(item => new SelectListItem { Text = $"{item.Name} {item.Surname}", Value = item.Id }));
             return model;
         }
     }
