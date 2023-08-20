@@ -74,7 +74,7 @@ namespace WMKancelariapp.Services
                 new SelectListItem
                 {
                     Text = "Brak",
-                    Value = "0"
+                    Value = "all"
 
                 }
             };

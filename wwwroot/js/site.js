@@ -16,6 +16,13 @@ $(document).ready(function () {
 
     caseDropdown.change(function () {
         var selectedCaseId = $(this).val();
+
+        if (selectedCaseId === '0' && clientDropdown.length == 1) {
+            clientDropdown.addClass('blink-red');
+        } else {
+            clientDropdown.addClass('blink-green');
+        }
+
         $.get(getFilteredClientUrl, { caseId: selectedCaseId }, function (data) {
             clientDropdown.empty();
 
@@ -30,7 +37,7 @@ $(document).ready(function () {
             if (data.length === 1) {
                 clientDropdown.val(data[0].value);
                 clientDropdown.prop('readonly', true);
-                //clientDropdown.addClass('dropdown-disabled');
+                clientDropdown.addClass('dropdown-disabled');
             } else {
                 clientDropdown.removeClass('dropdown-disabled');
                 clientDropdown.prop('readonly', false);
@@ -41,11 +48,21 @@ $(document).ready(function () {
                 clientDropdown.val('all');
             }
             clientDropdown.multipleSelect('refresh');
+
+            if (selectedCaseId === '0' && clientDropdown.length == 1) {
+                clientDropdown.removeClass('blink-red');
+            } else {
+                clientDropdown.removeClass('blink-green');
+            }
         });
+
     });
 
     clientDropdown.change(function () {
         var selectedClientId = $(this).val();
+
+        caseDropdown.addClass('blink-green');
+
         $.get(getFilteredCasesUrl, { clientId: selectedClientId }, function (data) {
             caseDropdown.empty();
 
@@ -63,6 +80,9 @@ $(document).ready(function () {
             }));
             caseDropdown.val('0');
             caseDropdown.multipleSelect('refresh');
+
+            caseDropdown.removeClass('blink-green');
+
         });
     });
 });
