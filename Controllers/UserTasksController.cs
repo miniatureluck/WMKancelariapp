@@ -98,7 +98,7 @@ namespace WMKancelariapp.Controllers
             model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(model.Client.Id ?? "all"));
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(model.Client?.Id ?? "all"));
 
             return View(model);
         }
