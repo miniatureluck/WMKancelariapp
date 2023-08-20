@@ -56,6 +56,13 @@ $(document).ready(function () {
             }
         });
 
+        if (selectedCaseId === '0') {
+            caseDropdown.addClass('blink-green');
+            refreshCases('all');
+            setTimeout(function () {
+                caseDropdown.removeClass('blink-green');
+            }, 500);
+        }
     });
 
     clientDropdown.change(function () {
@@ -63,7 +70,11 @@ $(document).ready(function () {
 
         caseDropdown.addClass('blink-green');
 
-        $.get(getFilteredCasesUrl, { clientId: selectedClientId }, function (data) {
+        refreshCases(selectedClientId);
+    });
+
+    function refreshCases(clientId) {
+        $.get(getFilteredCasesUrl, { clientId: clientId }, function (data) {
             caseDropdown.empty();
 
             $.each(data, function (index, item) {
@@ -82,9 +93,8 @@ $(document).ready(function () {
             caseDropdown.multipleSelect('refresh');
 
             caseDropdown.removeClass('blink-green');
-
         });
-    });
+    }
 });
 
 
