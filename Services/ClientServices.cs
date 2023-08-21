@@ -63,7 +63,7 @@ namespace WMKancelariapp.Services
 
         public async Task<ClientDtoViewModel> GetDtoById(string id)
         {
-            var clientDto = _mapper.Map<ClientDtoViewModel>(await _clients.GetById(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices));
+            var clientDto = _mapper.Map<ClientDtoViewModel>(await _clients.GetById(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices, x=>x.Tasks));
             return clientDto;
         }
 

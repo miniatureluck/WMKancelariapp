@@ -18,14 +18,16 @@ namespace WMKancelariapp.Controllers
     {
         private readonly ICaseServices _caseServices;
         private readonly IClientServices _clientServices;
+        private readonly IUserTaskServices _userTaskServices;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper, UserManager<User> userManager)
+        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper, UserManager<User> userManager, IUserTaskServices userTaskServices)
         {
             _caseServices = caseServices;
             _clientServices = clientServices;
             _mapper = mapper;
             _userManager = userManager;
+            _userTaskServices = userTaskServices;
         }
         // GET: CasesController
         public async Task<ActionResult> Index()
@@ -100,6 +102,14 @@ namespace WMKancelariapp.Controllers
             {
                 model.Client = model.Client.Id.IsNullOrEmpty() ? null : await _clientServices.GetById(model.Client.Id);
                 model.AssignedUser = model.AssignedUser.Id.IsNullOrEmpty() ? null : await _userManager.FindByIdAsync(model.AssignedUser.Id);
+
+                var tasks = new List<UserTask>();
+                foreach (var item in model.Tasks)
+                {
+                    tasks.Add(await _userTaskServices.GetById(item.Id));
+                }
+                model.Tasks.Clear();
+                model.Tasks.AddRange(tasks);
 
                 await _caseServices.Edit(model);
                 return RedirectToAction(nameof(Index));
