@@ -7,19 +7,29 @@ namespace WMKancelariapp.Models.ViewModels
     public class CaseDtoViewModel
     {
         public string CaseId { get; set; }
+
         [DisplayName("Nazwa")]
         [Required(ErrorMessage = "Należy podać nazwę")]
         public string Name { get; set; }
+
         [DisplayName("Opiekun")]
         public User? AssignedUser { get; set; }
+
         [DisplayName("Klient")]
         public Client? Client { get; set; }
+
         [DisplayName("Opis")]
         public string? Description { get; set; }
+
+        [DisplayName("Stawki")]
+        public List<HourlyPrice>? Prices { get; set; } = new List<HourlyPrice>();
+
         [DisplayName("Czynności")]
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
 
-
+        public int SpecifiedPrices { get; set; }
+        public int PricesMaxCount { get; set; }
+        public string PricesCompletionFraction => $"{SpecifiedPrices}/{PricesMaxCount}";
 
         [DisplayName("Klient")]
         public List<SelectListItem>? AllClientsSelectList { get; set; } = new List<SelectListItem>();

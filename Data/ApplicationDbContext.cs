@@ -40,8 +40,6 @@ namespace WMKancelariapp.Data
                 .OnDelete(DeleteBehavior.SetNull);
             builder.Entity<User>()
                 .HasMany(x => x.Tasks).WithOne(x => x.User);
-            builder.Entity<User>()
-                .HasMany(x => x.HourlyPrices).WithOne(x => x.User);
 
             builder.Entity<TaskType>()
                 .HasMany(x => x.Tasks).WithOne(x => x.TaskType);
@@ -55,11 +53,12 @@ namespace WMKancelariapp.Data
                 .OnDelete(DeleteBehavior.SetNull);
             builder.Entity<UserTask>()
                 .HasOne(x => x.Case).WithMany(x => x.Tasks);
-            builder.Entity<UserTask>()
-                .HasOne(x => x.HourlyPrice).WithMany(x => x.UserTasks);
 
             builder.Entity<HourlyPrice>()
                 .Navigation(x => x.TaskType).AutoInclude();
+
+            builder.Entity<HourlyPrice>()
+                .HasIndex(x => new { x.TaskTypeId, x.CaseId }).IsUnique();
         }
     }
 }

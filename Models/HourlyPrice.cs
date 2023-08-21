@@ -5,8 +5,12 @@
         public int Price { get; set; }
         public User User { get; set; }
         public TaskType TaskType { get; set; }
-        public Client Client { get; set; }
+        public Case Case { get; set; }
+        public DateTime LastModified { get; set; } = DateTime.Now;
 
         public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
+
+        public string TaskTypeId { get; set; }
+        public string CaseId { get; set; }
     }
 }

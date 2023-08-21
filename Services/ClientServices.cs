@@ -42,7 +42,7 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<Client>> GetAll()
         {
-            return await _clients.GetAll(x => x.Cases, x => x.AssignedUser, x => x.Prices, x => x.Tasks);
+            return await _clients.GetAll(x => x.Cases, x => x.AssignedUser, x => x.Tasks);
         }
 
         public async Task<Client> GetById(string id)
@@ -63,7 +63,7 @@ namespace WMKancelariapp.Services
 
         public async Task<ClientDtoViewModel> GetDtoById(string id)
         {
-            var clientDto = _mapper.Map<ClientDtoViewModel>(await _clients.GetById(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Prices, x=>x.Tasks));
+            var clientDto = _mapper.Map<ClientDtoViewModel>(await _clients.GetById(id, x=>x.AssignedUser, x=>x.Cases, x=>x.Tasks));
             return clientDto;
         }
 

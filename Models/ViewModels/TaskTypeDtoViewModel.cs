@@ -8,6 +8,7 @@ namespace WMKancelariapp.Models.ViewModels
         public string TaskTypeId { get; set; }
         [DisplayName("Nazwa")]
         [Required(ErrorMessage = "Należy podać nazwę")]
+        [StringLength(25)]
         public string Name { get; set; }
         public List<Case>? MostFrequentCase { get; set; } = new List<Case>();
 

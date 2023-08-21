@@ -31,9 +31,6 @@
                 Sprawy
             </th>
             <th scope="col">
-                Cennik
-            </th>
-            <th scope="col">
                 Akcje
             </th>
         </tr>
@@ -47,10 +44,6 @@
                 <td>@item.Phone</td>
                 <td>@item.AssignedUser?.UserName.RemoveEmailDomain()</td>
                 <td>@item.Cases.Count</td>
-                <td>
-                    @{ var prices = item.Prices.Any() ? item.Prices.Count.ToString() : "brak"; }
-                    @prices
-                </td>
                 <td>
                     @await Html.PartialAsync("_ActionButtons", item.ClientId)
                 </td>

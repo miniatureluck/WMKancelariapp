@@ -19,6 +19,12 @@ namespace WMKancelariapp.Data
             await userManager.CreateAsync(admin, "123qwe!@#QWE");
             await userManager.AddToRoleAsync(admin, "SysAdmin");
 
+            var sampleCase = new Case()
+            {
+                Name = "Sample case",
+                Description = "Just a seeded case"
+            };
+
             var sampleClient = new Client
             {
                 Email = "client@example.com",
@@ -42,8 +48,7 @@ namespace WMKancelariapp.Data
 
             var samplePrice = new HourlyPrice
             {
-                Client = sampleClient,
-                User = admin,
+                Case = sampleCase,
                 Price = 100,
                 Created = DateTime.Now,
                 TaskType = sampleTaskType
@@ -58,7 +63,8 @@ namespace WMKancelariapp.Data
                 Description = "sample description",
                 User = admin,
                 HourlyPrice = samplePrice,
-                TaskType = sampleTaskType
+                TaskType = sampleTaskType,
+                Case = sampleCase
             };
 
             samplePrice.UserTasks.Add(sampleTask);

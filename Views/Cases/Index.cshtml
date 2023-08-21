@@ -34,6 +34,9 @@
                 </div>
                 Klient
             </th>
+            <th>
+                Stawki
+            </th>
             <th class="w-auto">Opcje</th>
         </tr>
     </thead>
@@ -52,6 +55,16 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-controller="Clients" asp-route-id="@item.Client?.Id">@item.Client?.Name @item.Client?.Surname</a>
+                </td>
+                <td>
+                    @if (item.PricesMaxCount == 0)
+                    {
+                        <div class="text-danger">Brak</div>
+                    }
+                    else
+                    {
+                        @item.PricesCompletionFraction
+                    }
                 </td>
                 <td>
                     @await Html.PartialAsync("_ActionButtons", item.CaseId)
