@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WMKancelariapp.Extensions
 {
-    public static class StringExtension
+    public static class StringExtensions
     {
         public static string ToTitleCase(this string text)
         {
