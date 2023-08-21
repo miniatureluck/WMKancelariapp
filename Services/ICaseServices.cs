@@ -13,7 +13,6 @@ namespace WMKancelariapp.Services
         Task<bool> Delete(string id);
         Task<Case> GetById(string id);
         Task<Case> GetByIdWithIncludes(string id, params Expression<Func<Case, object>>[] includes);
-        Task<CaseDtoViewModel> GetDtoByName(string name);
         Task<CaseDtoViewModel> GetDtoById(string id);
         Task<IEnumerable<SelectListItem>> CreateCasesSelectList(string clientId);
     }

@@ -62,13 +62,6 @@ namespace WMKancelariapp.Services
                 x => x.Tasks));
         }
 
-        public async Task<CaseDtoViewModel> GetDtoByName(string name)
-        {
-            var cases = await _caseRepository.GetAll();
-            var userCase = cases.FirstOrDefault(x => x.Name == name);
-            return _mapper.Map<CaseDtoViewModel>(userCase);
-        }
-
         public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList(string clientId)
         {
             var model = new List<SelectListItem>
