@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Stawki</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn-template button-create" asp-action="Create">Nowa stawka</a>
 </p>
 <table class="table">
     <thead>
@@ -28,26 +28,34 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var group in Model.GroupBy(x => x.Case.Name))
         {
-            <td>
-                @Html.DisplayFor(modelItem => item.Case.Name)
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaskType.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastModified)
-                </td>
-            </td>
-        <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-
+            <tr>
+                <td rowspan="@group.Count()">@group.Key</td>
+                @foreach (var item in group)
+                {
+                    @if (item == group.First())
+                    {
+                        <td>@item.TaskType.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.LastModified</td>
+                        <td>
+                            @await Html.PartialAsync("_ActionButtons", item.HourlyPriceId)
+                        </td>
+                    }
+                    else
+                    {
+                    <tr>
+                        <td>@item.TaskType.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.LastModified</td>
+                        <td>
+                                @await Html.PartialAsync("_ActionButtons", item.HourlyPriceId)
+                        </td>
+                    </tr>
+                    }
+                }
+            </tr>
         }
     </tbody>
 </table>
