@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
 {
@@ -19,9 +20,11 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Data modyfikacji")]
         public DateTime LastModified { get; set; } = DateTime.Now;
 
-        public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
-
         public string TaskTypeId { get; set; }
         public string CaseId { get; set; }
+
+
+        public List<SelectListItem> CasesSelectList { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> TaskTypesPriceList { get; set; } = new List<SelectListItem>();
     }
 }

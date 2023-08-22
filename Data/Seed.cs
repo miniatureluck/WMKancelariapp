@@ -62,12 +62,9 @@ namespace WMKancelariapp.Data
                 Created = DateTime.Now,
                 Description = "sample description",
                 User = admin,
-                HourlyPrice = samplePrice,
                 TaskType = sampleTaskType,
                 Case = sampleCase
             };
-
-            samplePrice.UserTasks.Add(sampleTask);
 
             context.Clients.Add(sampleClient);
             context.HourlyPrices.Add(samplePrice);

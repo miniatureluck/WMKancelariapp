@@ -33,9 +33,6 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Kategoria")]
         public TaskType TaskType { get; set; }
 
-        [DisplayName("Stawki")]
-        public HourlyPrice? HourlyPrice { get; set; }
-
         [DisplayName("Czas trwania")]
         public string? DurationMinutes { get; set; }
         

@@ -45,7 +45,7 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<UserTask>> GetAll()
         {
-            return await _userTasks.GetAll(x => x.Client, x => x.Case, x => x.HourlyPrice, x => x.User, x=>x.TaskType);
+            return await _userTasks.GetAll(x => x.Client, x => x.Case, x => x.User, x=>x.TaskType);
         }
 
         public async Task<UserTask> GetById(string id)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Linq.Expressions;
+using Microsoft.IdentityModel.Tokens;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
@@ -30,7 +31,7 @@ namespace WMKancelariapp.Services
         public async Task Edit(HourlyPriceDtoViewModel editedHourlyPrice)
         {
             var hourlyPrice = _mapper.Map(editedHourlyPrice,
-                await _hourlyPricesRepository.GetById(editedHourlyPrice.HourlyPriceId, x => x.Case, x => x.TaskType, x => x.User, x=>x.UserTasks));
+                await _hourlyPricesRepository.GetById(editedHourlyPrice.HourlyPriceId, x => x.Case, x => x.TaskType, x => x.User));
             if (hourlyPrice == null)
             {
                 return;
@@ -44,10 +45,10 @@ namespace WMKancelariapp.Services
             return await _hourlyPricesRepository.GetAll(x=>x.Case, x=>x.TaskType);
         }
 
-        public async Task<HourlyPrice> GetByCaseId(string caseId)
+        public async Task<IEnumerable<HourlyPrice>> GetByCaseId(string caseId)
         {
             var hourlyPrices = await GetAll();
-            return hourlyPrices.FirstOrDefault(x => x.Case?.Id == caseId);
+            return hourlyPrices.Where(x => x.Case?.Id == caseId);
         }
 
         public async Task<HourlyPrice> GetById(string id)
@@ -63,7 +64,19 @@ namespace WMKancelariapp.Services
         public async Task<HourlyPriceDtoViewModel> GetDtoById(string id)
         {
             return _mapper.Map<HourlyPriceDtoViewModel>(await GetByIdWithIncludes(id, x => x.TaskType, x => x.Case,
-                x => x.User, x=>x.UserTasks));
+                x => x.User));
+        }
+
+        public async Task<string> GetPriceByCaseAndTaskTypeName(string caseId, string taskTypeName)
+        {
+            if (caseId.IsNullOrEmpty() || taskTypeName.IsNullOrEmpty())
+            {
+                return string.Empty;
+            }
+            var userCase = await GetByCaseId(caseId);
+            var result = userCase.FirstOrDefault(x => x.TaskType.Name == taskTypeName);
+
+            return result?.Price.ToString() ?? string.Empty;
         }
     }
 }

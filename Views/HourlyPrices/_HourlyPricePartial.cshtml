@@ -1,0 +1,41 @@
+﻿@model WMKancelariapp.Models.ViewModels.HourlyPriceDtoViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="col-md-12">
+    @if (Model.CasesSelectList.Count() > 1)
+    {
+        <div class="col-md-3">
+            <b><label asp-for="Case" class="control-label"></label></b>
+            @Html.DropDownListFor(x => x.CaseId, Model.CasesSelectList, new { @class = "form-control select-dropbox" })
+            <span asp-validation-for="Case" class="text-danger"></span>
+        </div>
+    }
+    <table style="margin-top: 1rem; margin-bottom: 1rem">
+        <div class="col-md-3">
+            <tr>
+                <th>
+                    <label asp-for="TaskType" class="control-label"></label>
+                </th>
+                <th>
+                    <label asp-for="Price" class="control-label"></label>
+                </th>
+            </tr>
+                <span asp-validation-for="TaskType" class="text-danger"></span>
+                @foreach (var item in Model.TaskTypesPriceList)
+                {
+                    <tr>
+                        <td>
+                            @item.Text:
+                        </td>
+                        <td class="wd-auto">
+                            <input type="text" asp-for="@item.Value" class="form-control" style="width: 5rem"/>
+                        </td>
+                    </tr>
+                }
+        </div>
+    </table>
+</div>
+
+<div>
+    @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
+</div>

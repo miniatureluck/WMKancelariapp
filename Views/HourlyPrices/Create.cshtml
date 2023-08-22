@@ -1,0 +1,23 @@
+﻿@model WMKancelariapp.Models.ViewModels.HourlyPriceDtoViewModel
+
+@{
+    ViewData["Title"] = "Stawki";
+}
+
+<h2>Stawki</h2>
+
+@if (Model.CasesSelectList.Count() == 1)
+{
+    <h4>w sprawie: <b>@Model.Case.Name</b></h4>
+}
+<hr />
+
+<div>
+    <form asp-action="Create">
+        @await Html.PartialAsync("_HourlyPricePartial", Model)
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

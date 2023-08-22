@@ -11,6 +11,5 @@
         public Client? Client { get; set; }
         public Case? Case { get; set; }
         public TaskType TaskType { get; set; }
-        public HourlyPrice? HourlyPrice { get; set; }
     }
 }

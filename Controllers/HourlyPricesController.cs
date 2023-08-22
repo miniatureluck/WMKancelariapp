@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Services;
@@ -25,7 +26,7 @@ namespace WMKancelariapp.Controllers
             _userTaskServices = userTaskServices;
             _hourlyPriceServices = hourlyPriceServices;
         }
-        // GET: HourlyPricesController
+
         public async Task<ActionResult> Index()
         {
             var hourlyPrices = await _hourlyPriceServices.GetAll();
@@ -34,19 +35,38 @@ namespace WMKancelariapp.Controllers
             return View(model);
         }
 
-        // GET: HourlyPricesController/Details/5
-        public ActionResult Details(int id)
+
+        public ActionResult Details(string id)
         {
             return View();
         }
 
-        // GET: HourlyPricesController/Create
-        public ActionResult Create()
+
+        public async Task<ActionResult> Create(string caseId = null)
         {
-            return View();
+            var userCase = await _caseServices.GetById(caseId);
+            var taskTypes = await _userTaskServices.GetAllTaskTypes();
+            var model = new HourlyPriceDtoViewModel
+            {
+                Case = userCase
+            };
+
+            foreach (var taskType in taskTypes)
+            {
+                model.TaskTypesPriceList.Add(new SelectListItem()
+                {
+                    Text = taskType.Name,
+                    Value = await _hourlyPriceServices.GetPriceByCaseAndTaskTypeName(caseId, taskType.Name)
+                });
+            }
+            
+            var cases = await _caseServices.CreateCasesSelectList("all");
+            model.CasesSelectList = caseId == null ? cases.ToList() : cases.Where(x => x.Value == caseId).ToList();
+
+            return View(model);
         }
 
-        // POST: HourlyPricesController/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -61,13 +81,13 @@ namespace WMKancelariapp.Controllers
             }
         }
 
-        // GET: HourlyPricesController/Edit/5
+
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: HourlyPricesController/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -82,13 +102,13 @@ namespace WMKancelariapp.Controllers
             }
         }
 
-        // GET: HourlyPricesController/Delete/5
+
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: HourlyPricesController/Delete/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
