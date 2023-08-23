@@ -7,7 +7,9 @@
     var indexName = taskType ? "Tasks" : "Index";
     var parentView = Context.Request.RouteValues["action"];
     var controller = Context.Request.RouteValues["controller"];
-    var goBackHref = referer.Contains(controller.ToString()) ? Url.Action(indexName): referer;
+    var goBackHref = referer.Contains(controller.ToString()) ?
+        Url.Action(indexName): referer.Contains("/Update/") ?
+            Url.ActionLink("Index", "HourlyPrices") : referer;
 }
 <div class="w-auto">
     @if (goBack && !goBackHref.Contains("/Edit/"))

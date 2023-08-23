@@ -35,9 +35,9 @@ namespace WMKancelariapp.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> Create(string caseId = null)
+        public async Task<ActionResult> Update(string id)
         {
-            var userCase = await _caseServices.GetById(caseId);
+            var userCase = await _caseServices.GetById(id);
             var taskTypes = await _userTaskServices.GetAllTaskTypes();
             var model = new HourlyPriceDtoViewModel
             {
@@ -49,12 +49,12 @@ namespace WMKancelariapp.Controllers
                 model.TaskTypesPriceList.Add(new SelectListItem()
                 {
                     Text = taskType.Name,
-                    Value = await _hourlyPriceServices.GetPriceByCaseAndTaskTypeName(caseId, taskType.Name)
+                    Value = await _hourlyPriceServices.GetPriceByCaseAndTaskTypeName(id, taskType.Name)
                 });
             }
             
             var cases = await _caseServices.CreateCasesSelectList("all");
-            model.CasesSelectList = caseId == null ? cases.ToList() : cases.Where(x => x.Value == caseId).ToList();
+            model.CasesSelectList = cases.Where(x => x.Value == id).ToList();
 
             return View(model);
         }

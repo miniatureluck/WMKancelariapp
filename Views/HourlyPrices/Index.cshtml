@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.HourlyPriceDtoViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Stawki";
 }
 
 <h2>Stawki</h2>
@@ -22,35 +22,30 @@
             <th>
                 @Html.DisplayNameFor(model => model.LastModified)
             </th>
-            <th>Opcje</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var group in Model.GroupBy(x => x.Case.Name))
+        @foreach (var group in Model.GroupBy(x => x.Case))
         {
             <tr>
-                <td rowspan="@group.Count()">@group.Key</td>
+                <td rowspan="@group.Count()">
+                    <span><a asp-action="Details" asp-controller="Cases" asp-route-id="@group.Key.Id">@group.Key.Name</a></span>
+                    <div><a asp-action="Update" asp-route-id="@group.Key.Id" class="btn-template button-create">Edytuj</a></div>
+                </td>
                 @foreach (var item in group)
                 {
-                    @if (item == group.First())
+                    @if (item != group.First())
                     {
-                        <td>@item.TaskType.Name</td>
-                        <td>@item.Price</td>
-                        <td>@item.LastModified</td>
-                        <td>
-                            @await Html.PartialAsync("_ActionButtons", item.HourlyPriceId)
-                        </td>
+                        @:<tr>
                     }
-                    else
-                    {
-                    <tr>
                         <td>@item.TaskType.Name</td>
                         <td>@item.Price</td>
                         <td>@item.LastModified</td>
-                        <td>
-                                @await Html.PartialAsync("_ActionButtons", item.HourlyPriceId)
-                        </td>
-                    </tr>
+                    <td>
+                    </td>
+                    @if (item != group.First())
+                    {
+                    @:</tr>
                     }
                 }
             </tr>
