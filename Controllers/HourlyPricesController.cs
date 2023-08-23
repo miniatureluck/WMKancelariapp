@@ -35,13 +35,6 @@ namespace WMKancelariapp.Controllers
             return View(model);
         }
 
-
-        public ActionResult Details(string id)
-        {
-            return View();
-        }
-
-
         public async Task<ActionResult> Create(string caseId = null)
         {
             var userCase = await _caseServices.GetById(caseId);

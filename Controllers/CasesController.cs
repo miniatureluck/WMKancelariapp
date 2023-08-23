@@ -35,6 +35,11 @@ namespace WMKancelariapp.Controllers
             var model = new CaseIndexViewModel();
 
             var cases = await _caseServices.GetAll();
+            if (!User.IsInRole("SysAdmin"))
+            {
+                cases = cases.Where(x => x.AssignedUser == null || x.AssignedUser.UserName == User.Identity.Name);
+            }
+
             foreach (var item in cases)
             {
                 model.AllCases.Add(_mapper.Map(item, new CaseDtoViewModel()));
@@ -94,6 +99,11 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             var model = await _caseServices.GetDtoById(id);
+
+            if (!User.IsInRole("SysAdmin") && model.AssignedUser?.UserName != User.Identity.Name)
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
 
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
