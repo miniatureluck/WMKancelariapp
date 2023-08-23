@@ -57,17 +57,18 @@
                     <a asp-action="Details" asp-controller="Clients" asp-route-id="@item.Client?.Id">@item.Client?.Name @item.Client?.Surname</a>
                 </td>
                 <td>
-                    @if (item.PricesMaxCount == 0)
+                    @if (item.SpecifiedPrices == 0)
                     {
-                        <div class="text-danger">Brak</div>
+                        @await Html.PartialAsync("_PlusButton", $"HourlyPrices|{item.CaseId}")
                     }
                     else
                     {
-                        @item.PricesCompletionFraction
+                        <a class="btn-template button-create" asp-action="Edit" asp-controller="HourlyPrices" asp-route-caseId="@item.CaseId">@item.PricesCompletionFraction</a>
                     }
                 </td>
                 <td>
                     @await Html.PartialAsync("_ActionButtons", item.CaseId)
+
                 </td>
             </tr>
         }

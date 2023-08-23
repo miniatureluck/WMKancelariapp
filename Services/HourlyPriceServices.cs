@@ -17,6 +17,12 @@ namespace WMKancelariapp.Services
             _hourlyPricesRepository = hourlyPricesRepository;
             _mapper = mapper;
         }
+
+        public async Task<int> CountSpecifiedPricesForCase(string caseId)
+        {
+            return (await GetByCaseId(caseId)).Count();
+        }
+
         public async Task Create(HourlyPriceDtoViewModel newHourlyPrice)
         {
             await _hourlyPricesRepository.Insert(_mapper.Map<HourlyPrice>(newHourlyPrice));

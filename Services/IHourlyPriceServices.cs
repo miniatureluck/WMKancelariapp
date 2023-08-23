@@ -16,5 +16,7 @@ namespace WMKancelariapp.Services
         Task<HourlyPriceDtoViewModel> GetDtoById(string id);
         Task<IEnumerable<HourlyPrice>> GetByCaseId(string caseId);
         Task<string> GetPriceByCaseAndTaskTypeName (string caseId, string taskTypeName);
+
+        Task<int> CountSpecifiedPricesForCase (string caseId);
     }
 }

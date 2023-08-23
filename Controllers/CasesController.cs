@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
@@ -21,13 +19,15 @@ namespace WMKancelariapp.Controllers
         private readonly IUserTaskServices _userTaskServices;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper, UserManager<User> userManager, IUserTaskServices userTaskServices)
+        private readonly IHourlyPriceServices _hourlyPriceServices;
+        public CasesController(ICaseServices caseServices, IClientServices clientServices, IMapper mapper, UserManager<User> userManager, IUserTaskServices userTaskServices, IHourlyPriceServices hourlyPriceServices)
         {
             _caseServices = caseServices;
             _clientServices = clientServices;
             _mapper = mapper;
             _userManager = userManager;
             _userTaskServices = userTaskServices;
+            _hourlyPriceServices = hourlyPriceServices;
         }
         // GET: CasesController
         public async Task<ActionResult> Index()
@@ -38,6 +38,13 @@ namespace WMKancelariapp.Controllers
             foreach (var item in cases)
             {
                 model.AllCases.Add(_mapper.Map(item, new CaseDtoViewModel()));
+            }
+
+            var maxPrices = await _userTaskServices.CountTaskTypes();
+            foreach (var userCase in model.AllCases)
+            {
+                userCase.PricesMaxCount = maxPrices;
+                userCase.SpecifiedPrices = await _hourlyPriceServices.CountSpecifiedPricesForCase(userCase.CaseId);
             }
 
             return View(model);

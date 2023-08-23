@@ -174,5 +174,10 @@ namespace WMKancelariapp.Services
 
             return model;
         }
+
+        public async Task<int> CountTaskTypes()
+        {
+            return (await _taskTypes.GetAll()).Count();
+        }
     }
 }

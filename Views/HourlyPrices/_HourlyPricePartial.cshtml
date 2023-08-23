@@ -10,7 +10,7 @@
             <span asp-validation-for="Case" class="text-danger"></span>
         </div>
     }
-    <table style="margin-top: 1rem; margin-bottom: 1rem">
+    <table class="margin-top-bot-1">
         <div class="col-md-3">
             <tr>
                 <th>
@@ -27,7 +27,7 @@
                         <td>
                             @item.Text:
                         </td>
-                        <td class="wd-auto">
+                        <td>
                             <input type="text" asp-for="@item.Value" class="form-control" style="width: 5rem"/>
                         </td>
                     </tr>

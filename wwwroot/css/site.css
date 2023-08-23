@@ -8,6 +8,10 @@
     50% { background-color: green; }
 }
 
+.margin-top-bot-1 {
+    margin-top: 1rem;
+    margin-bottom: 1rem
+}
 
 .ms-parent.blink-red, .ms-choice.blink-red {
     animation: blink-red 0.5s 1;
