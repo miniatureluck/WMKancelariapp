@@ -15,8 +15,8 @@ namespace WMKancelariapp.Services
         Task<HourlyPrice> GetByIdWithIncludes(string id, params Expression<Func<HourlyPrice, object>>[] includes);
         Task<HourlyPriceDtoViewModel> GetDtoById(string id);
         Task<IEnumerable<HourlyPrice>> GetByCaseId(string caseId);
-        Task<string> GetPriceByCaseAndTaskTypeName (string caseId, string taskTypeName);
 
         Task<int> CountSpecifiedPricesForCase (string caseId);
+        Task<HourlyPrice> GetByCaseAndTaskTypeName(string caseId, string taskTypeName);
     }
 }

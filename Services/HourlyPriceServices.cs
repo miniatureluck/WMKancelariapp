@@ -73,16 +73,16 @@ namespace WMKancelariapp.Services
                 x => x.User));
         }
 
-        public async Task<string> GetPriceByCaseAndTaskTypeName(string caseId, string taskTypeName)
+        public async Task<HourlyPrice> GetByCaseAndTaskTypeName(string caseId, string taskTypeName)
         {
             if (caseId.IsNullOrEmpty() || taskTypeName.IsNullOrEmpty())
             {
-                return string.Empty;
+                return null;
             }
-            var userCase = await GetByCaseId(caseId);
-            var result = userCase.FirstOrDefault(x => x.TaskType.Name == taskTypeName);
+            var hourlyPrices = await GetByCaseId(caseId);
+            var result = hourlyPrices.FirstOrDefault(x => x.TaskType.Name == taskTypeName);
 
-            return result?.Price.ToString() ?? string.Empty;
+            return result;
         }
     }
 }

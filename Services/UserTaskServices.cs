@@ -177,7 +177,12 @@ namespace WMKancelariapp.Services
 
         public async Task<int> CountTaskTypes()
         {
-            return (await _taskTypes.GetAll()).Count();
+            return (await _taskTypes.GetAll()).Count;
+        }
+
+        public async Task<TaskType> GetTaskTypeByName(string name)
+        {
+            return (await GetAllTaskTypes()).FirstOrDefault(x => x.Name == name);
         }
     }
 }

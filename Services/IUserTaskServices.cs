@@ -20,12 +20,10 @@ namespace WMKancelariapp.Services
         Task CreateTaskType(TaskTypeDtoViewModel newTaskType);
         Task EditTaskType(TaskTypeDtoViewModel editedTaskType);
         Task<bool> DeleteTaskType(string id);
-
         Task<IEnumerable<SelectListItem>> CreateTaskTypeSelectList();
-
         Task<IEnumerable<Case>>? FindMostFrequentCaseForTaskType(TaskType taskType);
         UserTaskDtoViewModel CalculateDuration(UserTaskDtoViewModel model);
-        
         Task<int> CountTaskTypes();
+        Task<TaskType> GetTaskTypeByName(string name);
     }
 }

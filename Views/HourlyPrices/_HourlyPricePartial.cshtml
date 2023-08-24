@@ -6,7 +6,7 @@
     {
         <div class="col-md-3">
             <b><label asp-for="Case" class="control-label"></label></b>
-            @Html.DropDownListFor(x => x.CaseId, Model.CasesSelectList, new { @class = "form-control select-dropbox" })
+            @Html.DropDownListFor(x => x.Case.Id, Model.CasesSelectList, new { @class = "form-control select-dropbox" })
             <span asp-validation-for="Case" class="text-danger"></span>
         </div>
     }
@@ -21,21 +21,22 @@
                 </th>
             </tr>
                 <span asp-validation-for="TaskType" class="text-danger"></span>
-                @foreach (var item in Model.TaskTypesPriceList)
+                @for (var i=0; i< Model.TaskTypesPriceList.Count(); i++)
                 {
                     <tr>
                         <td>
-                            @item.Text:
+                            @Html.HiddenFor(x=>x.TaskTypesPriceList[i].Text)
+                            @Model.TaskTypesPriceList[i].Text:
                         </td>
                         <td>
-                            <input type="text" asp-for="@item.Value" class="form-control" style="width: 5rem"/>
+                            <input type="text" asp-for="@Model.TaskTypesPriceList[i].Value" class="form-control" style="width: 5rem"/>
                         </td>
                     </tr>
                 }
         </div>
     </table>
 </div>
-
+@Html.HiddenFor(x=>x.Case.Id)
 <div>
     @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
 </div>

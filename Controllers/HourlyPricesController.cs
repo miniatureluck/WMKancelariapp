@@ -23,6 +23,7 @@ namespace WMKancelariapp.Controllers
             _clientServices = clientServices;
             _mapper = mapper;
             _caseServices = caseServices;
+            _userManager = userManager;
             _userTaskServices = userTaskServices;
             _hourlyPriceServices = hourlyPriceServices;
         }
@@ -46,10 +47,11 @@ namespace WMKancelariapp.Controllers
 
             foreach (var taskType in taskTypes)
             {
+                var hourlyPrice = await _hourlyPriceServices.GetByCaseAndTaskTypeName(id, taskType.Name);
                 model.TaskTypesPriceList.Add(new SelectListItem()
                 {
                     Text = taskType.Name,
-                    Value = await _hourlyPriceServices.GetPriceByCaseAndTaskTypeName(id, taskType.Name)
+                    Value = hourlyPrice?.Price.ToString()
                 });
             }
             
@@ -62,39 +64,38 @@ namespace WMKancelariapp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Update(HourlyPriceDtoViewModel model)
         {
+            var userCase = await _caseServices.GetById(model.Case.Id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             try
             {
+                foreach (var taskType in model.TaskTypesPriceList.Where(x=>x.Value != null))
+                {
+                    var hourlyPriceDto = new HourlyPriceDtoViewModel()
+                    {
+                        Case = userCase,
+                        TaskType = await _userTaskServices.GetTaskTypeByName(taskType.Text),
+                        Price = int.Parse(taskType.Value),
+                        User = user,
+                        LastModified = DateTime.Now
+                    };
+                    if (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text) == null)
+                    {
+                        await _hourlyPriceServices.Create(hourlyPriceDto);
+                    }
+                    else
+                    {
+                        await _hourlyPriceServices.Edit(hourlyPriceDto);
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
-
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
 
         public ActionResult Delete(int id)
         {
