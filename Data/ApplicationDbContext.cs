@@ -55,6 +55,9 @@ namespace WMKancelariapp.Data
                 .HasOne(x => x.Case).WithMany(x => x.Tasks);
 
             builder.Entity<HourlyPrice>()
+                .Navigation(x=> x.TaskType).AutoInclude();
+
+            builder.Entity<HourlyPrice>()
                 .HasIndex(x => new { x.TaskTypeId, x.CaseId }).IsUnique();
         }
     }

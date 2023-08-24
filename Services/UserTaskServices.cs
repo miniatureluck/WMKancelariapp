@@ -73,15 +73,16 @@ namespace WMKancelariapp.Services
         public async Task<IEnumerable<TaskType>> GetAllTaskTypes()
         {
             var result = await _taskTypes.GetAll(x => x.Tasks, x => x.HourlyPrices);
-            var tempResult = new List<UserTask>();
             foreach (var item in result)
             {
-                foreach (var userTask in item.Tasks)
-                {
-                    tempResult.Add(await _userTasks.GetById(userTask.Id, x=>x.Case, x=>x.Client));
-                }
-                item.Tasks = tempResult;
-                tempResult.Clear();
+            var tempResult = new List<UserTask>();
+            foreach (var userTask in item.Tasks)
+            {
+                tempResult.Add(await _userTasks.GetById(userTask.Id, x => x.Case, x => x.Client, x => x.User));
+            }
+
+            item.Tasks.Clear();
+                item.Tasks.AddRange(tempResult);
             }
 
             return result;
