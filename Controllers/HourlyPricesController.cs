@@ -66,19 +66,23 @@ namespace WMKancelariapp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(HourlyPriceDtoViewModel model)
         {
-            var userCase = await _caseServices.GetById(model.Case.Id);
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userCase = await _caseServices.GetByIdWithIncludes(model.Case.Id, x=>x.AssignedUser, x=>x.Tasks, x=>x.Client, x=>x.Prices);
+            var user = userCase.AssignedUser;
             try
             {
                 foreach (var taskType in model.TaskTypesPriceList.Where(x=>x.Value != null))
                 {
+                    var taskTypeEntity = await _userTaskServices.GetTaskTypeByName(taskType.Text);
                     var hourlyPriceDto = new HourlyPriceDtoViewModel()
                     {
                         Case = userCase,
-                        TaskType = await _userTaskServices.GetTaskTypeByName(taskType.Text),
+                        CaseId = userCase.Id,
+                        TaskType = taskTypeEntity,
+                        TaskTypeId = taskTypeEntity.Id,
                         Price = int.Parse(taskType.Value),
                         User = user,
-                        LastModified = DateTime.Now
+                        LastModified = DateTime.Now,
+                        HourlyPriceId = (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text))?.Id
                     };
                     if (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text) == null)
                     {
