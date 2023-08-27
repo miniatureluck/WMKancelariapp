@@ -45,7 +45,7 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<UserTask>> GetAll()
         {
-            return await _userTasks.GetAll(x => x.Client, x => x.Case, x => x.User, x=>x.TaskType);
+            return await _userTasks.GetAll(x => x.Client, x => x.Case, x => x.User, x => x.TaskType);
         }
 
         public async Task<UserTask> GetById(string id)
@@ -66,26 +66,34 @@ namespace WMKancelariapp.Services
 
         public async Task<UserTaskDtoViewModel> GetDtoById(string id)
         {
-            var userTaskDto = _mapper.Map<UserTaskDtoViewModel>(await _userTasks.GetById(id, x=>x.Client, x=>x.TaskType, x=>x.Case, x=>x.User));
+            var userTaskDto = _mapper.Map<UserTaskDtoViewModel>(await _userTasks.GetById(id, x => x.Client, x => x.TaskType, x => x.Case, x => x.User));
             return userTaskDto;
         }
 
-        public async Task<IEnumerable<TaskType>> GetAllTaskTypes()
+        public async Task<IEnumerable<TaskTypeDtoViewModel>> GetAllTaskTypes()
         {
             var result = await _taskTypes.GetAll(x => x.Tasks, x => x.HourlyPrices);
             foreach (var item in result)
             {
-            var tempResult = new List<UserTask>();
-            foreach (var userTask in item.Tasks)
-            {
-                tempResult.Add(await _userTasks.GetById(userTask.Id, x => x.Case, x => x.Client, x => x.User));
-            }
+                var tempResult = new List<UserTask>();
+                foreach (var userTask in item.Tasks)
+                {
+                    tempResult.Add(await _userTasks.GetById(userTask.Id, x => x.Case, x => x.Client, x => x.User));
+                }
 
-            item.Tasks.Clear();
+                item.Tasks.Clear();
                 item.Tasks.AddRange(tempResult);
             }
 
-            return result;
+            var newResult = new List<TaskTypeDtoViewModel>();
+            for (var i = 0; i < result.Count; i++)
+            {
+                newResult.Add(new TaskTypeDtoViewModel());
+                _mapper.Map(result[i], newResult[i]);
+                newResult[i].TaskTypeId = result[i].Id;
+            }
+
+            return newResult;
         }
 
         public async Task<IEnumerable<SelectListItem>> CreateTaskTypeSelectList()
@@ -140,7 +148,7 @@ namespace WMKancelariapp.Services
 
             var caseCounts = tasksOfType.GroupBy(x => x.Case).Select(x => new { Case = x.Key, Count = x.Count() });
 
-            var mostFrequentCases = caseCounts.Where(x=>x.Count == caseCounts.MaxBy(x => x.Count)?.Count).Select(x=>x.Case);
+            var mostFrequentCases = caseCounts.Where(x => x.Count == caseCounts.MaxBy(x => x.Count)?.Count).Select(x => x.Case);
 
             return mostFrequentCases;
         }
@@ -156,7 +164,7 @@ namespace WMKancelariapp.Services
                 model.Duration = TimeSpan.FromTicks(endTicks - startTicks).Ticks;
             }
 
-            if (startTicks == 0 && endTicks !=0 && duration != 0)
+            if (startTicks == 0 && endTicks != 0 && duration != 0)
             {
                 model.StartTime = new DateTime(endTicks - duration);
                 model.Duration = TimeSpan.FromTicks(duration).Ticks;
@@ -181,7 +189,7 @@ namespace WMKancelariapp.Services
             return (await _taskTypes.GetAll()).Count;
         }
 
-        public async Task<TaskType> GetTaskTypeByName(string name)
+        public async Task<TaskTypeDtoViewModel> GetTaskTypeByName(string name)
         {
             return (await GetAllTaskTypes()).FirstOrDefault(x => x.Name == name);
         }

@@ -152,7 +152,7 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Types()
         {
             var types = await _userTaskServices.GetAllTaskTypes();
-            var model = (from item in types let dto = new TaskTypeDtoViewModel { TaskTypeId = item.Id } select _mapper.Map(item, dto)).ToList();
+            var model = (from item in types let dto = new TaskTypeDtoViewModel { TaskTypeId = item.TaskTypeId } select _mapper.Map(item, dto)).ToList();
             foreach (var item in model)
             {
                 item.MostFrequentCase.AddRange(

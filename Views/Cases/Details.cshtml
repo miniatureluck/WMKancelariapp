@@ -38,7 +38,10 @@
         <div class="col-md-3">
             <span class="align-bottom">
                 <b>@Html.DisplayNameFor(model => model.Prices)</b>
-                <a asp-action="Update" asp-controller="HourlyPrices" asp-route-caseId="@Model.CaseId" class="btn-template button-create float-end" style="margin-top: -3px">Zmień</a>
+                @if (Model.Prices.Any())
+                {
+                    <a asp-action="Update" asp-controller="HourlyPrices" asp-route-caseId="@Model.CaseId" class="btn-template button-create float-end" style="margin-top: -3px">Zmień</a>
+                }
             </span>
             </div>
         @if (!Model.Prices.Any())

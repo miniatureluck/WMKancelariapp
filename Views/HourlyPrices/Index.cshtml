@@ -8,7 +8,7 @@
 
 
 <table class="table">
-    <thead>
+    <thead class="text-uppercase">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Case)
@@ -22,6 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.LastModified)
             </th>
+            <th>
+                
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -29,8 +32,9 @@
         {
             <tr>
                 <td rowspan="@group.Count()">
-                    <span><a asp-action="Details" asp-controller="Cases" asp-route-id="@group.Key.Id">@group.Key.Name</a></span>
-                    <div><a asp-action="Update" asp-route-id="@group.Key.Id" class="btn-template button-create">Edytuj</a></div>
+                    <div><a asp-action="Details" asp-controller="Cases" asp-route-id="@group.Key.Id"><b>@group.Key.Name</b></a></div>
+                    <div><a asp-action="Update" asp-route-id="@group.Key.Id" class="btn-template button-create">Edytuj stawki</a></div>
+                    <div><a asp-action="DeleteAllForCase" asp-route-id="@group.Key.Id" class="btn-template button-alert">Usuń wszystkie</a></div>
                 </td>
                 @foreach (var item in group)
                 {
@@ -41,6 +45,7 @@
                         <td>@item.TaskType.Name</td>
                         <td>@item.Price</td>
                         <td>@item.LastModified</td>
+                        <td><a asp-action="DeleteSingle" asp-route-id="@item.HourlyPriceId" class="btn-template button-alert">Usuń</a></td>
                     <td>
                     </td>
                     @if (item != group.First())

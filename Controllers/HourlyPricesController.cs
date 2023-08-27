@@ -54,7 +54,7 @@ namespace WMKancelariapp.Controllers
                     Value = hourlyPrice?.Price.ToString()
                 });
             }
-            
+
             var cases = await _caseServices.CreateCasesSelectList("all");
             model.CasesSelectList = cases.Where(x => x.Value == id).ToList();
 
@@ -66,32 +66,40 @@ namespace WMKancelariapp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(HourlyPriceDtoViewModel model)
         {
-            var userCase = await _caseServices.GetByIdWithIncludes(model.Case.Id, x=>x.AssignedUser, x=>x.Tasks, x=>x.Client, x=>x.Prices);
+            var userCase = await _caseServices.GetByIdWithIncludes(model.Case.Id, x => x.AssignedUser, x => x.Tasks, x => x.Client, x => x.Prices);
             var user = userCase.AssignedUser;
             try
             {
-                foreach (var taskType in model.TaskTypesPriceList.Where(x=>x.Value != null))
+                foreach (var taskType in model.TaskTypesPriceList.Where(x => x.Value != null))
                 {
-                    var taskTypeEntity = await _userTaskServices.GetTaskTypeByName(taskType.Text);
+                    var taskTypeDto = await _userTaskServices.GetTaskTypeByName(taskType.Text);
+                    var hourlyPriceEntity =
+                        await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text);
+
                     var hourlyPriceDto = new HourlyPriceDtoViewModel()
                     {
                         Case = userCase,
                         CaseId = userCase.Id,
-                        TaskType = taskTypeEntity,
-                        TaskTypeId = taskTypeEntity.Id,
+                        TaskType = await _userTaskServices.GetTaskTypeById(taskTypeDto.TaskTypeId),
+                        TaskTypeId = taskTypeDto.TaskTypeId,
                         Price = int.Parse(taskType.Value),
                         User = user,
-                        LastModified = DateTime.Now,
-                        HourlyPriceId = (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text))?.Id
+                        HourlyPriceId =
+                            hourlyPriceEntity?.Id
                     };
+
                     if (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text) == null)
                     {
                         await _hourlyPriceServices.Create(hourlyPriceDto);
                     }
                     else
                     {
-                        await _hourlyPriceServices.Edit(hourlyPriceDto);
+                        if (hourlyPriceEntity.Price != int.Parse(taskType.Value))
+                        {
+                            await _hourlyPriceServices.Edit(hourlyPriceDto);
+                        }
                     }
+
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -101,23 +109,28 @@ namespace WMKancelariapp.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteSingle(string id)
         {
-            return View();
+            await _hourlyPriceServices.Delete(id);
+
+            return RedirectToAction(nameof(Index));
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteAllForCase(string id)
         {
             try
             {
+                var userCase = await _caseServices.GetByIdWithIncludes(id, x => x.AssignedUser, x => x.Client, x => x.Tasks, x => x.Prices);
+                userCase.Prices?.Clear();
+                var caseDto = _mapper.Map<CaseDtoViewModel>(userCase);
+                await _caseServices.Edit(caseDto);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
     }

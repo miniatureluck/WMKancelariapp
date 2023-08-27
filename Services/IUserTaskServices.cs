@@ -15,7 +15,7 @@ namespace WMKancelariapp.Services
         Task<UserTask> GetByIdWithIncludes(string id, params Expression<Func<UserTask, object>>[] includes);
         Task<UserTask> GetByClientNameSurname(string name, string surname);
         Task<UserTaskDtoViewModel> GetDtoById(string id);
-        Task<IEnumerable<TaskType>> GetAllTaskTypes();
+        Task<IEnumerable<TaskTypeDtoViewModel>> GetAllTaskTypes();
         Task<TaskType> GetTaskTypeById(string id);
         Task CreateTaskType(TaskTypeDtoViewModel newTaskType);
         Task EditTaskType(TaskTypeDtoViewModel editedTaskType);
@@ -24,6 +24,6 @@ namespace WMKancelariapp.Services
         Task<IEnumerable<Case>>? FindMostFrequentCaseForTaskType(TaskType taskType);
         UserTaskDtoViewModel CalculateDuration(UserTaskDtoViewModel model);
         Task<int> CountTaskTypes();
-        Task<TaskType> GetTaskTypeByName(string name);
+        Task<TaskTypeDtoViewModel> GetTaskTypeByName(string name);
     }
 }
