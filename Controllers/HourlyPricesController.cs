@@ -109,7 +109,7 @@ namespace WMKancelariapp.Controllers
             }
         }
 
-        public async Task<ActionResult> DeleteSingle(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             await _hourlyPriceServices.Delete(id);
 

@@ -67,7 +67,7 @@
                     }
                 </td>
                 <td>
-                    @await Html.PartialAsync("_ActionButtons", item.CaseId)
+                    @await Html.PartialAsync("_ActionButtons", $"{item.CaseId}|Details|Edit|Delete")
 
                 </td>
             </tr>

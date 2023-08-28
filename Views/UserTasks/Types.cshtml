@@ -45,7 +45,7 @@
                             ViewData.Add("TaskType", true);
                         }
                     }
-                    @await Html.PartialAsync("_ActionButtons", item.TaskTypeId)
+                    @await Html.PartialAsync("_ActionButtons", $"{item.TaskTypeId}|Edit|Delete|TaskType")
                 </td>
             </tr>
         }

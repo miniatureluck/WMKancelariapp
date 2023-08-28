@@ -74,7 +74,7 @@
                     @item.DurationMinutes?.ConvertTimeToMinutes().ConvertMinutesToStringDisplay()
                 </td>
                 <td>
-                    @await Html.PartialAsync("_ActionButtons", item.UserTaskId)
+                    @await Html.PartialAsync("_ActionButtons", $"{item.UserTaskId}|Edit|Delete|Details")
                 </td>
             </tr>
         }

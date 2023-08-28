@@ -4,13 +4,12 @@
 
 @{
     ViewData["Title"] = "Szczegóły";
-    ViewData.Add("GoBack", true);
 }
 
 <div>
     <h2>Sprawa: <b>@Model.Name</b></h2>
     <hr />
-    @await Html.PartialAsync("_ActionButtons", Model.CaseId)
+    @await Html.PartialAsync("_ActionButtons", $"{Model.CaseId}|GoBack|Edit|Delete")
 
     <dl>
         <dt class="col-md-2">
