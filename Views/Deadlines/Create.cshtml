@@ -1,0 +1,52 @@
+﻿@model WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>DeadlineDtoViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (User.IsInRole("SysAdmin"))
+            {
+                <div class="form-group">
+                    <label asp-for="User" class="control-label"></label>
+                    @Html.DropDownListFor(x=>x.User.Id, Model.UsersSelectList)
+                    <span asp-validation-for="User" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Case" class="control-label"></label>
+                @Html.DropDownListFor(x=>x.Case.Id, Model.CasesSelectList)
+                <span asp-validation-for="Case" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" type="date"/>
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            @Html.HiddenFor(x=>x.Case.Name)
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

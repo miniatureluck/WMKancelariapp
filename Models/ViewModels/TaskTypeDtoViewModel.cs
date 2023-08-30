@@ -5,7 +5,7 @@ namespace WMKancelariapp.Models.ViewModels
 {
     public class TaskTypeDtoViewModel
     {
-        public string TaskTypeId { get; set; }
+        public string? TaskTypeId { get; set; }
         [DisplayName("Nazwa")]
         [Required(ErrorMessage = "Należy podać nazwę")]
         [StringLength(25)]

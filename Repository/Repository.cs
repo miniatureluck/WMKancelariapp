@@ -31,6 +31,7 @@ namespace WMKancelariapp.Repository
             result = result.DistinctBy(x => x.Id).ToList();
             return result.ToList();
         }
+
         public async Task Insert(T entity)
         {
             if (entity != null)

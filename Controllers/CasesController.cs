@@ -42,7 +42,7 @@ namespace WMKancelariapp.Controllers
 
             foreach (var item in cases)
             {
-                model.AllCases.Add(_mapper.Map(item, new CaseDtoViewModel()));
+                model.AllCases.Add(_mapper.Map(item, new CaseDtoViewModel(){CaseId = item.Id}));
             }
 
             var maxPrices = await _userTaskServices.CountTaskTypes();

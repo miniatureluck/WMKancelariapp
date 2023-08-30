@@ -6,7 +6,7 @@ namespace WMKancelariapp.Models.ViewModels
 {
     public class ClientDtoViewModel
     {
-        public string ClientId { get; set; }
+        public string? ClientId { get; set; }
         [DisplayName("Imię")]
         public string? Name { get; set; }
         [DisplayName("Nazwisko")]

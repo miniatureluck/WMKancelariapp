@@ -8,6 +8,7 @@ namespace WMKancelariapp.Models
         public List<Case>? Cases { get; set; } = new List<Case>();
         public List<HourlyPrice>? HourlyPrices { get; set; } = new List<HourlyPrice>();
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
+        public List<Deadline>? Deadlines { get; set; } = new List<Deadline>();
 
     }
 }

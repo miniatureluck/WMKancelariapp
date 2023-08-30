@@ -6,7 +6,7 @@ namespace WMKancelariapp.Models.ViewModels
 {
     public class CaseDtoViewModel
     {
-        public string CaseId { get; set; }
+        public string? CaseId { get; set; }
 
         [DisplayName("Nazwa")]
         [Required(ErrorMessage = "Należy podać nazwę")]
@@ -17,6 +17,7 @@ namespace WMKancelariapp.Models.ViewModels
 
         [DisplayName("Klient")]
         public Client? Client { get; set; }
+        public string? ClientId { get; set; }
 
         [DisplayName("Opis")]
         public string? Description { get; set; }
@@ -26,6 +27,9 @@ namespace WMKancelariapp.Models.ViewModels
 
         [DisplayName("Czynności")]
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
+        
+        [DisplayName("Terminy")]
+        public List<Deadline>? Deadlines { get; set; } = new List<Deadline>();
 
         public int SpecifiedPrices { get; set; }
         public int PricesMaxCount { get; set; }

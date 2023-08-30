@@ -12,6 +12,8 @@ namespace WMKancelariapp.Data
         public DbSet<UserTask> Tasks { get; set; }
         public DbSet<TaskType> TaskTypes { get; set; }
         public DbSet<HourlyPrice> HourlyPrices { get; set; }
+        public DbSet<Deadline> Deadlines { get; set; }
+
         private readonly IConfiguration _configuration;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
@@ -34,6 +36,8 @@ namespace WMKancelariapp.Data
             builder.Entity<Case>()
                 .HasOne(x => x.Client).WithMany(x => x.Cases)
                 .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Case>()
+                .HasIndex(x => new { x.Name, x.ClientId }).IsUnique();
 
             builder.Entity<User>()
                 .HasMany(x => x.Clients).WithOne(x => x.AssignedUser)
@@ -59,6 +63,12 @@ namespace WMKancelariapp.Data
 
             builder.Entity<HourlyPrice>()
                 .HasIndex(x => new { x.TaskTypeId, x.CaseId }).IsUnique();
+
+            builder.Entity<Deadline>()
+                .HasOne(x => x.Case).WithMany(x => x.Deadlines);
+            builder.Entity<Deadline>()
+                .HasOne(x=>x.User).WithMany(x => x.Deadlines);
+
         }
     }
 }

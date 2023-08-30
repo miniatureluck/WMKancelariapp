@@ -62,7 +62,7 @@ namespace WMKancelariapp.Services
                 x => x.Tasks));
         }
 
-        public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList(string clientId)
+        public async Task<IEnumerable<SelectListItem>> CreateCasesSelectList(string clientId, string? userId = "all")
         {
             var model = new List<SelectListItem>
             {
@@ -75,12 +75,21 @@ namespace WMKancelariapp.Services
             };
             var cases = await GetAll();
 
+            var clientFilter = Enumerable.Empty<Case>();
             if (clientId != "all")
             {
-                cases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
+                clientFilter = cases.Where(x => x.Client == null || x.Client.Id == clientId);
             }
-            
-            model.AddRange(cases.Select(item => new SelectListItem { Text = $"{item.Name}", Value = item.Id }));
+
+            var caseFilter = Enumerable.Empty<Case>();
+            if (userId != "all")
+            {
+                caseFilter = cases.Where(x => x.AssignedUser == null || x.AssignedUser.Id == userId);
+            }
+
+            var filteredCases = clientFilter.Concat(caseFilter).DistinctBy(x => x.Id);
+
+            model.AddRange(filteredCases.Select(item => new SelectListItem { Text = $"{item.Name}", Value = item.Id }));
 
             return model;
         }
