@@ -39,10 +39,13 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Update(string id)
         {
             var userCase = await _caseServices.GetById(id);
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
             var taskTypes = await _userTaskServices.GetAllTaskTypes();
+            
             var model = new HourlyPriceDtoViewModel
             {
-                Case = userCase
+                Case = userCase,
+                User = user
             };
 
             foreach (var taskType in taskTypes)

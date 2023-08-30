@@ -45,7 +45,7 @@
                         <td>@item.TaskType.Name</td>
                         <td>@item.Price</td>
                         <td>@item.LastModified</td>
-                        <td>@await Html.PartialAsync("_ActionButtons", $"{item.HourlyPriceId}|Delete")</td>
+                        <td>@await Html.PartialAsync("_ActionButtons", $"{item.HourlyPriceId}|Delete|deleteText=stawki za<br/><b>{item.TaskType?.Name}</b><br/> w sprawie <br/><b>{item.Case?.Name}</b>")</td>
                     <td>
                     </td>
                     @if (item != group.First())

@@ -67,7 +67,11 @@
                     }
                 </td>
                 <td>
-                    @await Html.PartialAsync("_ActionButtons", $"{item.CaseId}|Details|Edit|Delete")
+                    @{
+                        var deleteText = ($"sprawy<br/><b>{item.Name}</b>" +
+                                          $"{(item.Client == null ? "<br/>nieprzydzielonej do żadnego klienta" : $"<br/>u klienta <b>{item.Client.Name} {item.Client.Surname}</b>")}");
+                    }
+                    @await Html.PartialAsync("_ActionButtons", $"{item.CaseId}|Details|Edit|Delete|deleteText={deleteText}")
 
                 </td>
             </tr>

@@ -7,6 +7,8 @@
     var delete = model.Contains("Delete");
     var suffix = taskType ? "Type" : "";
     var id = model[0];
+    var deleteTextIndex = Array.FindIndex(model, x => x.Contains("deleteText="));
+    var deleteText = deleteTextIndex >= 0 ? model[deleteTextIndex].Replace("deleteText=", string.Empty) : string.Empty;
     var referer = Context.Request.Headers.Referer.ToString();
     var indexName = taskType ? "Tasks" : "Index";
     var parentView = Context.Request.RouteValues["action"];
@@ -56,12 +58,12 @@
                     <h5 class="modal-title" id="staticBackdropLabel">Potwierdź usunięcie</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Czy na pewno chcesz usunąć?
+                <div class="modal-body text-center">
+                    Potwierdź usunięcie @Html.Raw(deleteText)
                 </div>
                 <div class="modal-footer">
-                    <a class="btn-template button-normal" data-bs-dismiss="modal">Nie</a>
-                    <a asp-action="@($"Delete{suffix}")" asp-route-id="@id"><button type="button" class="btn-template button-alert" data-bs-dismiss="modal">Tak</button></a>
+                    <a class="btn-template button-normal" data-bs-dismiss="modal">Anuluj</a>
+                    <a asp-action="@($"Delete{suffix}")" asp-route-id="@id"><button type="button" class="btn-template button-alert" data-bs-dismiss="modal">Usuń</button></a>
                 </div>
             </div>
         </div>

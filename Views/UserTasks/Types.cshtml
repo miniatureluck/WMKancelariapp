@@ -40,12 +40,9 @@
                 </td>
                 <td>
                     @{
-                        if (!ViewData.ContainsKey("TaskType"))
-                        {
-                            ViewData.Add("TaskType", true);
-                        }
+                        var deleteText = ($"kategorii <b>{item.Name}</b>");
                     }
-                    @await Html.PartialAsync("_ActionButtons", $"{item.TaskTypeId}|Edit|Delete|TaskType")
+                    @await Html.PartialAsync("_ActionButtons", $"{item.TaskTypeId}|Edit|Delete|TaskType|deleteText={deleteText}")
                 </td>
             </tr>
         }

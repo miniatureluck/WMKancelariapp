@@ -74,7 +74,10 @@
                     @item.DurationMinutes?.ConvertTimeToMinutes().ConvertMinutesToStringDisplay()
                 </td>
                 <td>
-                    @await Html.PartialAsync("_ActionButtons", $"{item.UserTaskId}|Edit|Delete|Details")
+                    @{ var deleteText = ($"czynności<br/>typu <b>{item.TaskType.Name}</b>" +
+                                        $"{(item.Case == null ? "<br/>nieprzydzielonej do żadnej sprawy" : $"<br/>dla sprawy <b>{item.Case.Name}</b>")}" +
+                                        $"{(item.Client == null ? "</br>nieprzydzielonej do żadnego klienta" : $"<br/>u klienta <b>{item.Client.Name} {item.Client.Surname}</b>")}");}
+                    @await Html.PartialAsync("_ActionButtons", $"{item.UserTaskId}|Edit|Delete|Details|deleteText={deleteText}")
                 </td>
             </tr>
         }
