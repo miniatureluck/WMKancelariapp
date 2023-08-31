@@ -6,7 +6,7 @@ namespace WMKancelariapp.Models.ViewModels
 {
     public class CaseDtoViewModel
     {
-        public string? CaseId { get; set; }
+        public string CaseId { get; set; }
 
         [DisplayName("Nazwa")]
         [Required(ErrorMessage = "Należy podać nazwę")]

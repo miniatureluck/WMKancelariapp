@@ -7,7 +7,7 @@ namespace WMKancelariapp.Models.ViewModels
 {
     public class DeadlineDtoViewModel
     {
-        public string? DeadlineId { get; set; }
+        public string DeadlineId { get; set; }
         
         [DisplayName("Opis")]
         public string Description { get; set; }

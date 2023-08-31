@@ -28,16 +28,23 @@ namespace WMKancelariapp.Controllers
 
         public async Task<IActionResult> Create()
         {
+            var userId = User.IsInRole("SysAdmin") ? "all" : (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
             var model = new DeadlineDtoViewModel
             {
                 User = await _userManager.FindByNameAsync(User.Identity.Name)
             };
-            model.CasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all"));
+            model.CasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all", userId));
 
-            if (User.IsInRole("SysAdmin"))
+            if (!User.IsInRole("SysAdmin"))
             {
-                model.UsersSelectList.AddRange(_userManager.CreateUsersSelectList());
-                model.UsersSelectList.RemoveAt(model.UsersSelectList.FindIndex(x=>x.Text == "Brak"));
+                return View(model);
+            }
+
+            model.UsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+            var indexOfNone = model.UsersSelectList.FindIndex(x => x.Text == "Brak");
+            if (indexOfNone > -1)
+            {
+                model.UsersSelectList.RemoveAt(indexOfNone);
             }
 
             return View(model);

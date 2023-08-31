@@ -75,21 +75,22 @@ namespace WMKancelariapp.Services
             };
             var cases = await GetAll();
 
-            var clientFilter = Enumerable.Empty<Case>();
+            var clientFilteredCases = Enumerable.Empty<Case>();
             if (clientId != "all")
             {
-                clientFilter = cases.Where(x => x.Client == null || x.Client.Id == clientId);
+                clientFilteredCases = cases.Where(x => x.Client == null || x.Client.Id == clientId);
             }
 
-            var caseFilter = Enumerable.Empty<Case>();
+            var userFilteredCases = Enumerable.Empty<Case>();
             if (userId != "all")
             {
-                caseFilter = cases.Where(x => x.AssignedUser == null || x.AssignedUser.Id == userId);
+                userFilteredCases = cases.Where(x => x.AssignedUser == null || x.AssignedUser.Id == userId);
             }
 
-            var filteredCases = clientFilter.Concat(caseFilter).DistinctBy(x => x.Id);
+            var filteredCases = clientFilteredCases.Concat(userFilteredCases).DistinctBy(x => x.Id);
+            var casesToAdd = filteredCases.Any() ? filteredCases : cases;
 
-            model.AddRange(filteredCases.Select(item => new SelectListItem { Text = $"{item.Name}", Value = item.Id }));
+            model.AddRange(casesToAdd.Select(item => new SelectListItem { Text = $"{item.Name}", Value = item.Id }));
 
             return model;
         }

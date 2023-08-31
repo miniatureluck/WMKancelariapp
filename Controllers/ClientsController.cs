@@ -53,7 +53,8 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new ClientDtoViewModel();
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0"));
+            var userId = User.IsInRole("SysAdmin") ? "all" : (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("0", userId));
             model.AllCasesSelectList.RemoveAt(0);
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
 
@@ -86,7 +87,8 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Edit(string id)
         {
             var model = await _clientServices.GetDtoById(id);
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(id));
+            var userId = User.IsInRole("SysAdmin") ? "all" : (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(id, userId));
             model.AllCasesSelectList.RemoveAt(0);
             model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
             model.SelectedCases.AddRange(model.Cases.Select(x=>x.Id));

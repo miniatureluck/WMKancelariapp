@@ -6,7 +6,7 @@ namespace WMKancelariapp.Models.ViewModels
 {
     public class UserTaskDtoViewModel
     {
-        public string? UserTaskId { get; set; }
+        public string UserTaskId { get; set; }
 
         [DisplayName("Opiekun")]
         public User User { get; set; }

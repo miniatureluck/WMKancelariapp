@@ -95,10 +95,7 @@ namespace WMKancelariapp.Controllers
         {
             var model = await _userTaskServices.GetDtoById(id);
 
-            model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
-            model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
-            model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(model.Client?.Id ?? "all"));
+            PopulateSelectionListsForCreateView(model);
 
             return View(model);
         }
@@ -267,7 +264,7 @@ namespace WMKancelariapp.Controllers
 
             model.AllTaskTypesSelectList.AddRange(await _userTaskServices.CreateTaskTypeSelectList());
             model.AllClientsSelectList.AddRange(await _clientServices.CreateClientsSelectList());
-            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all"));
+            model.AllCasesSelectList.AddRange(await _caseServices.CreateCasesSelectList(model.Client?.Id ?? "all"));
             if (User.IsInRole("SysAdmin"))
             {
                 model.AllUsersSelectList.AddRange(_userManager.CreateUsersSelectList());
