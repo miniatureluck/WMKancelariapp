@@ -95,7 +95,7 @@ namespace WMKancelariapp.Controllers
         {
             var model = await _userTaskServices.GetDtoById(id);
 
-            PopulateSelectionListsForCreateView(model);
+            await PopulateSelectionListsForCreateView(model);
 
             return View(model);
         }
