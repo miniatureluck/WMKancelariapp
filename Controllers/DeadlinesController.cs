@@ -54,7 +54,7 @@ namespace WMKancelariapp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DeadlineDtoViewModel model)
         {
-            ValidateDeadlineDto(model);
+            await ValidateDeadlineDto(model);
 
             if (!ModelState.IsValid)
             {
@@ -80,6 +80,7 @@ namespace WMKancelariapp.Controllers
 
         private async Task ValidateDeadlineDto(DeadlineDtoViewModel model)
         {
+            ModelState.Remove(nameof(model.DeadlineId));
             if (model.Case.Name == null)
             {
                 ModelState.Remove("Case.Name");

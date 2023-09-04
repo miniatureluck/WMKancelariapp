@@ -5,14 +5,16 @@ namespace WMKancelariapp.Extensions
 {
     public static class StringExtensions
     {
+        public static string CapitaliseFirstLetter(this string text)
+        {
+            var result = char.ToUpper(text[0]) + text[1..];
+            return result;
+        }
+
         public static string ToTitleCase(this string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return text;
-            }
-
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text);
+            var culture = new CultureInfo("pl-PL", true).TextInfo;
+            return string.IsNullOrEmpty(text) ? text : culture.ToTitleCase(text);
         }
 
         public static string Truncate(this string text, int maxLength)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 
@@ -13,10 +14,12 @@ namespace WMKancelariapp.Data.Profiles
 
 
             CreateMap<TaskTypeDtoViewModel, TaskType>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.TaskTypeId));
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => x.TaskTypeId))
+                .ForMember(x=>x.Name, opts=>opts.MapFrom(x=>x.Name.CapitaliseFirstLetter()));
             
             CreateMap<TaskType, TaskTypeDtoViewModel>()
                 .ForMember(x=>x.TaskTypeId, opt=>opt.MapFrom(src => src.Id))
+                .ForMember(x => x.Name, opts => opts.MapFrom(x => x.Name.CapitaliseFirstLetter()))
                 .ReverseMap();
         }
     }

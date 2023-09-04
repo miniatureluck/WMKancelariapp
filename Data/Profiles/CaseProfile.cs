@@ -14,10 +14,12 @@ namespace WMKancelariapp.Data.Profiles
 
             CreateMap<Case, CaseDtoViewModel>()
                 .ForMember(x => x.CaseId, opt => opt.MapFrom(x => x.Id))
-                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.ToTitleCase()));
+                .ForMember(x=>x.Description, opt=>opt.MapFrom(x=>x.Description.CapitaliseFirstLetter()))
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.CapitaliseFirstLetter()));
 
             CreateMap<Case, CaseDtoViewModel>()
-                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.ToTitleCase()));
+                .ForMember(x=>x.Description, opt=>opt.MapFrom(x=>x.Description.CapitaliseFirstLetter()))
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.CapitaliseFirstLetter()));
         }
     }
 }
