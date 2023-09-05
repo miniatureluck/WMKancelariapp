@@ -1,30 +1,38 @@
 ﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Terminy";
 }
 
-<h1>Index</h1>
+<h2>Terminy</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn-template button-create">Nowy termin</a>
+    <a class="btn-template button-normal" id="filter-toggle">Filtry</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="table table-striped table-hover table-sm align-middle" id="resultsTable">
+    <thead class="table-primary">
         <tr>
-            <th>
+            <th scope="col">
+                <div class="filter-section">
+                    <input type="text" id="descriptionInput" onkeyup="filterNames('descriptionInput', 'resultsTable', 0)" placeholder="Filtruj po opisie" class="filter-text-input" /><br/>
+                </div>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th scope="col">
+                <div class="filter-section">
+                    <input type="text" id="caseNameInput" onkeyup="filterNames('caseNameInput', 'resultsTable', 1)" placeholder="Filtruj po sprawie" class="filter-text-input" /><br />
+                </div>
                 @Html.DisplayNameFor(model=>model.Case)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.IsCompleted)
             </th>
-            <th></th>
+            <th>Akcje</th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +51,7 @@
                 @Html.DisplayFor(modelItem => item.IsCompleted)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @await Html.PartialAsync("_ActionButtons", $"{item.DeadlineId}|Edit|Details|Delete|deleteText=terminu z opisem<br/><b>{item.Description}</b><br/>w sprawie<br/><b>{item.Case.Name}</b><br/>z datą do<br/><b>{item.Date}</b>")
             </td>
         </tr>
 }

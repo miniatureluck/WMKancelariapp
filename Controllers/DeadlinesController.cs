@@ -78,6 +78,15 @@ namespace WMKancelariapp.Controllers
 
         }
 
+        public async Task<IActionResult> Edit(string id)
+        {
+            var model = await _deadlineServices.GetDtoById(id);
+            var userId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
+            model.CasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all", User.IsInRole("SysAdmin") ? "all" : userId));
+
+            return View(model);
+        }
+
         private async Task ValidateDeadlineDto(DeadlineDtoViewModel model)
         {
             ModelState.Remove(nameof(model.DeadlineId));

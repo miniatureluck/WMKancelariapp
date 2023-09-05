@@ -1,0 +1,18 @@
+﻿@model WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel
+
+@{
+    ViewData["Title"] = "Zmiany w terminie";
+}
+
+<h2>Zmiany w terminie</h2>
+<hr />
+
+<div class="row">
+        <form asp-action="Edit">
+            @await Html.PartialAsync("_DeadlinePartial", Model)
+        </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
