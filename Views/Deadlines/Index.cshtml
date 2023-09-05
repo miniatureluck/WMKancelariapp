@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel>
+﻿@using Humanizer
+@model IEnumerable<WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel>
 
 @{
     ViewData["Title"] = "Terminy";
@@ -16,7 +17,7 @@
         <tr>
             <th scope="col">
                 <div class="filter-section">
-                    <input type="text" id="descriptionInput" onkeyup="filterNames('descriptionInput', 'resultsTable', 0)" placeholder="Filtruj po opisie" class="filter-text-input" /><br/>
+                    <input type="text" id="descriptionInput" onkeyup="filterNames('descriptionInput', 'resultsTable', 0)" placeholder="Filtruj po opisie" class="filter-text-input" /><br />
                 </div>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
@@ -26,34 +27,39 @@
                 </div>
                 @Html.DisplayNameFor(model=>model.Case)
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            <th scope="col">
+            <th scope="col" class="text-center">
                 @Html.DisplayNameFor(model => model.IsCompleted)
             </th>
             <th>Akcje</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem=> item.Case.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCompleted)
-            </td>
-            <td>
-                @await Html.PartialAsync("_ActionButtons", $"{item.DeadlineId}|Edit|Details|Delete|deleteText=terminu z opisem<br/><b>{item.Description}</b><br/>w sprawie<br/><b>{item.Case.Name}</b><br/>z datą do<br/><b>{item.Date}</b>")
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div class="text-truncate" style="max-width: 40vw">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </div>
+                </td>
+                <td>
+                    <div class="text-truncate" style="max-width: 40vw">
+                        <a asp-action="Details" asp-controller="Cases" asp-route-id="@item.Case.Id">@Html.DisplayFor(modelItem=> item.Case.Name)</a>
+                    </div>
+                </td>
+                <td class="text-center">
+                    @(item.Date.TimeOfDay.Ticks == 0 ? item.Date.ToShortDateString() : item.Date)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.IsCompleted)
+                </td>
+                <td>
+                    @await Html.PartialAsync("_ActionButtons", $"{item.DeadlineId}|Edit|Details|Delete|deleteText=terminu z opisem<br/><b>{item.Description}</b><br/>w sprawie<br/><b>{item.Case.Name}</b><br/>z datą do<br/><b>{item.Date}</b>")
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

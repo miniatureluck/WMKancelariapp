@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WMKancelariapp.Extensions;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
@@ -82,9 +83,54 @@ namespace WMKancelariapp.Controllers
         {
             var model = await _deadlineServices.GetDtoById(id);
             var userId = (await _userManager.FindByNameAsync(User.Identity.Name)).Id;
-            model.CasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all", User.IsInRole("SysAdmin") ? "all" : userId));
+            var userIsSysAdmin = User.IsInRole("SysAdmin");
+            model.CasesSelectList.AddRange(await _caseServices.CreateCasesSelectList("all", userIsSysAdmin ? "all" : userId));
+
+
+            if (userIsSysAdmin)
+            {
+                model.UsersSelectList.AddRange(_userManager.CreateUsersSelectList());
+            }
+            else
+            {
+                model.UsersSelectList.Add(new SelectListItem()
+                {
+                   Text = User.Identity.Name,
+                   Value = userId
+                });
+            }
+            var indexOfNone = model.CasesSelectList.FindIndex(x => x.Text == "Brak");
+            if (indexOfNone >= 0)
+            {
+                model.UsersSelectList.RemoveAt(indexOfNone);
+            }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(DeadlineDtoViewModel model)
+        {
+            model.User = await _userManager.FindByIdAsync(model.User.Id) ?? await _userManager.FindByNameAsync(User.Identity.Name);
+            model.Case = await _caseServices.GetByIdWithIncludes(model.Case.Id, x=>x.AssignedUser);
+
+            await ValidateDeadlineDto(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                await _deadlineServices.Edit(model);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         private async Task ValidateDeadlineDto(DeadlineDtoViewModel model)
@@ -93,6 +139,16 @@ namespace WMKancelariapp.Controllers
             if (model.Case.Name == null)
             {
                 ModelState.Remove("Case.Name");
+            }
+
+            if (model.Case.AssignedUser != model.User)
+            {
+                ModelState.AddModelError("User", "Ten użytkownik nie jest przypisany do tej sprawy");
+            }
+
+            if (model.Case.Id == "0")
+            {
+                ModelState.AddModelError("Case", "Należy wskazać sprawę");
             }
         }
     }

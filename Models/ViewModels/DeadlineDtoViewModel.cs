@@ -16,7 +16,7 @@ namespace WMKancelariapp.Models.ViewModels
         public virtual Case Case { get; set; }
 
         [DisplayName("Deadline")]
-        public DateTime Date { get; set; } = DateTime.Now.Date;
+        public DateTime Date { get; set; } = DateTime.Now;
 
         [DisplayName("Wykonawca")]
         public User User { get; set; }
@@ -25,8 +25,8 @@ namespace WMKancelariapp.Models.ViewModels
         public bool IsCompleted { get; set; } = false;
 
 
-        public List<SelectListItem> UsersSelectList = new List<SelectListItem>();
-        public List<SelectListItem> CasesSelectList = new List<SelectListItem>();
+        public List<SelectListItem> UsersSelectList = new();
+        public List<SelectListItem> CasesSelectList = new();
         
     }
 }

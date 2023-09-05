@@ -7,13 +7,13 @@
         {
             <div class="col-md-3">
                 <label asp-for="User" class="control-label"></label>
-                @Html.DropDownListFor(x=>x.User.Id, Model.UsersSelectList)
+                @Html.DropDownListFor(x=>x.User.Id, Model.UsersSelectList, new {@class="form-control select-dropbox"})
                 <span asp-validation-for="User" class="text-danger"></span>
             </div>
         }
         <div class="col-md-3">
             <label asp-for="Case" class="control-label"></label>
-            @Html.DropDownListFor(x=>x.Case.Id, Model.CasesSelectList)
+            @Html.DropDownListFor(x=>x.Case.Id, Model.CasesSelectList, new {@class="form-control select-dropbox"})
             <span asp-validation-for="Case" class="text-danger"></span>
         </div>
     </div>
@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-3">
             <label asp-for="Date" class="control-label"></label>
-            <input asp-for="Date" class="form-control" type="date" />
+            <input asp-for="Date" class="form-control" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" />
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
     </div>
@@ -34,3 +34,4 @@
 
 @Html.HiddenFor(x=>x.Case.Name)
 @Html.HiddenFor(x=>x.IsCompleted)
+@Html.HiddenFor(x=>x.DeadlineId)
