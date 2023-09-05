@@ -133,6 +133,13 @@ namespace WMKancelariapp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _deadlineServices.Delete(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private async Task ValidateDeadlineDto(DeadlineDtoViewModel model)
         {
             ModelState.Remove(nameof(model.DeadlineId));
