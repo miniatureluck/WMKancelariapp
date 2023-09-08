@@ -76,7 +76,12 @@ namespace WMKancelariapp.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+        }
 
+        public async Task<IActionResult> Details(string id)
+        {
+            var model = await _deadlineServices.GetDtoById(id);
+            return View(model);
         }
 
         public async Task<IActionResult> Edit(string id)

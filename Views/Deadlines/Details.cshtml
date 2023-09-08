@@ -1,0 +1,52 @@
+﻿@model WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div>
+    <h2>Szczegóły terminu</h2>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Do zrobienia
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            W sprawie
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Case.Name)
+        </dd>
+        @if (User.IsInRole("SysAdmin"))
+        {
+            <dt class="col-sm-2">
+                Przypisano do
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User.UserName)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Date.TimeOfDay.Ticks == 0 ? Model.Date.ToShortDateString() : Model.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.IsCompleted)
+            {
+                <span class="bg-success text-light">Zrobione</span>
+            }
+            else
+            {
+                <span class="bg-danger text-light">Do zrobienia</span>
+            }
+        </dd>
+    </dl>
+</div>
+@await Html.PartialAsync("_ActionButtons", $"{Model.DeadlineId}|GoBack|Edit|Delete")
