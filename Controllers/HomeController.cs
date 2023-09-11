@@ -2,21 +2,28 @@
 using System.Diagnostics;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
+using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IDeadlineServices _deadlineServices;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IDeadlineServices deadlineServices)
         {
             _logger = logger;
+            _deadlineServices = deadlineServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var allDeadlines = await _deadlineServices.GetAll();
+            var model = new HomeIndexViewModel();
+            model.Deadlines.AddRange(allDeadlines);
+
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -153,7 +153,7 @@ namespace WMKancelariapp.Controllers
                 ModelState.Remove("Case.Name");
             }
 
-            if (model.Case.AssignedUser != model.User)
+            if (model.Case.AssignedUser != model.User && model.Case.AssignedUser != null)
             {
                 ModelState.AddModelError("User", "Ten użytkownik nie jest przypisany do tej sprawy");
             }

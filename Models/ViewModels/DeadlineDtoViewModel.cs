@@ -16,7 +16,7 @@ namespace WMKancelariapp.Models.ViewModels
         public virtual Case Case { get; set; }
 
         [DisplayName("Deadline")]
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.Now.Date;
 
         [DisplayName("Wykonawca")]
         public User User { get; set; }

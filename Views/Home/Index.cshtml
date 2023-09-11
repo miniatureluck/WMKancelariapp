@@ -1,19 +1,21 @@
-﻿@{
+﻿@model WMKancelariapp.Models.ViewModels.HomeIndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
+
+    var deadlinesToday = Model.Deadlines.Where(x => x.Date.DayOfYear <= DateTime.Today.DayOfYear && !x.IsCompleted);
+    var nextSevenDays = DateTime.Today.AddDays(7);
+    var deadlinesNextSevenDays = Model.Deadlines.Where(x => x.Date <= nextSevenDays && x.Date > DateTime.Today);
 }
 
 <div class="text-center">
     <h1 class="display-8">Ekran powitalny</h1>
 </div>
-    <p>
-        Sprawy z deadlinem na dziś:
-        <table>
-            #TODO
-        </table>
-    </p>
-    <p>
-        Kolejne sprawy z bliskim deadlinem:
-        <table>
-            #TODO
-        </table>
-    </p>
+<p>
+    <h3>Do zrobienia z terminami na dziś:</h3>
+    @await Html.PartialAsync("../Deadlines/_DeadlinesTable", deadlinesToday.ToList())
+</p>
+<p>
+    <h3>Do zrobienia w przeciągu 7 dni:</h3>
+    @await Html.PartialAsync("../Deadlines/_DeadlinesTable", deadlinesNextSevenDays.ToList())
+</p>
