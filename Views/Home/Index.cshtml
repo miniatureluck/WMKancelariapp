@@ -1,7 +1,8 @@
-﻿@model WMKancelariapp.Models.ViewModels.HomeIndexViewModel
+﻿@using WMKancelariapp.Extensions
+@model WMKancelariapp.Models.ViewModels.HomeIndexViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ekran powitalny";
 
     var deadlinesToday = Model.Deadlines.Where(x => x.Date.DayOfYear <= DateTime.Today.DayOfYear && !x.IsCompleted);
     var nextSevenDays = DateTime.Today.AddDays(7);
@@ -9,13 +10,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-8">Ekran powitalny</h1>
+    <h1 class="display-8">Dzień dobry, @User.Identity.Name.RemoveEmailDomain().ToTitleCase()!</h1>
 </div>
 <p>
-    <h3>Do zrobienia z terminami na dziś:</h3>
+    <h3>Pilne</h3>
     @await Html.PartialAsync("../Deadlines/_DeadlinesTable", deadlinesToday.ToList())
 </p>
 <p>
-    <h3>Do zrobienia w przeciągu 7 dni:</h3>
+    <h3>Mniej pilne</h3>
     @await Html.PartialAsync("../Deadlines/_DeadlinesTable", deadlinesNextSevenDays.ToList())
 </p>

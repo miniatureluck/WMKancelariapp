@@ -1,6 +1,4 @@
-﻿@using WMKancelariapp.Models.ViewModels
-@using WMKancelariapp.Extensions
-@model List<WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel>
+﻿@model List<WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel>
 
 @{
     var parentViewIsDeadlineIndex = this.Context.GetRouteData().Values["controller"].ToString() == "Deadlines";
@@ -69,7 +67,7 @@
                     </td>
                     <td class="text-center">
 
-                        <a class="btn-template button-navigation" data-bs-toggle="modal" data-bs-target="#deadlineStatusModal"
+                        <a class="btn-template @(item.IsCompleted ? "button-additional" : "button-alert")" data-bs-toggle="modal" data-bs-target="#deadlineStatusModal"
                                 data-case="@item.Case.Name" data-description="@item.Description" data-deadline-id="@item.DeadlineId" data-status="@(item.IsCompleted ? "do zrobienia" : "zrobione")">@(item.IsCompleted ? "Wykonane" : "Do zrobienia")
                             </a>
                     </td>
@@ -98,11 +96,12 @@
                     <b><div id="deadline-description"></div></b>
                     w sprawie<br/>
                     <b><div id="deadline-case"></div></b>
-                    na <b><span id="deadline-status"></span></b>?
+                    na<br/>
+                    <b><span id="deadline-status"></span></b>?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-template button-alert" data-bs-dismiss="modal">Anuluj</button>
-                <a class="btn-template button-accept" id="deadline-action" asp-action="RevertStatus" asp-controller="Deadlines">Wykonaj</a>
+                <button type="button" class="btn-template button-normal" data-bs-dismiss="modal">Anuluj</button>
+                <a class="btn-template button-alert" id="deadline-action" asp-action="RevertStatus" asp-controller="Deadlines">Wykonaj</a>
             </div>
         </div>
     </div>
