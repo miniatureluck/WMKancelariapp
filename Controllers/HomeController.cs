@@ -7,7 +7,6 @@ using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,7 +17,7 @@ namespace WMKancelariapp.Controllers
             _logger = logger;
             _deadlineServices = deadlineServices;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var allDeadlines = await _deadlineServices.GetAll();
