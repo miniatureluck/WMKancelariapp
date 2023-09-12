@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WMKancelariapp.Models.ViewModels
@@ -27,6 +25,6 @@ namespace WMKancelariapp.Models.ViewModels
 
         public List<SelectListItem> UsersSelectList = new();
         public List<SelectListItem> CasesSelectList = new();
-        
+
     }
 }

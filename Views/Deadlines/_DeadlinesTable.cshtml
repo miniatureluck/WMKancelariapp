@@ -54,14 +54,14 @@
                     </td>
                     <td class="text-center">
                         @{
-                            var date = item.Date.Date;
-                            var isForToday = date == DateTime.Today;
-                            var isForTomorrow = date == DateTime.Today.AddDays(1);
-                            var isPastDeadline = date < DateTime.Today;
+                            var date = item.Date;
+                            var isForToday = date.Date == DateTime.Today;
+                            var isForTomorrow = date.Date == DateTime.Today.AddDays(1);
+                            var isPastDeadline = date.Date < DateTime.Today;
                             var isTimeDefault = date.TimeOfDay.Ticks == 0;
 
                             <div class="@( isForToday || isForTomorrow || isPastDeadline ? "text-danger" : "")@(isPastDeadline ? " fw-bold" : "")">
-                                @(isTimeDefault ? date.ToShortDateString() : date.Date)
+                                @(isTimeDefault ? date.ToShortDateString() : $"{date.ToShortDateString()} - {date.ToShortTimeString()}")
                             </div>
                         }
                     </td>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.DeadlineDtoViewModel>
+﻿@model WMKancelariapp.Models.ViewModels.DeadlineIndexViewModel
 
 @{
     ViewData["Title"] = "Terminy";
@@ -9,6 +9,26 @@
 <p>
     <a asp-action="Create" class="btn-template button-create">Nowy termin</a>
     <a class="btn-template button-normal" id="filter-toggle">Filtry</a>
+    <a class="btn-template button-additional" id="dates-filter-toggle">Zakres dat</a>
+    <div id="dates-filter" style="margin-top:-1rem">
+        <form>
+            <table class="table">
+                <div>
+                    <td class="col-md-3 align-middle">
+                        Od @Html.TextBoxFor(x => x.DateRangeFrom)
+                    </td>
+                    <td class="col-md-3 align-middle">
+                        Do @Html.TextBoxFor(x => x.DateRangeTo)
+                    </td>
+                    <td class="col-md-2">
+                        <input class="btn-template button-accept" type="submit" />
+                    </td>
+                    <td class="col-md-3"></td>
+                </div>
+            </table>
+        </form>
+    </div>
 </p>
 
-@await Html.PartialAsync("_DeadlinesTable", @Model.ToList())
+@await Html.PartialAsync("_DeadlinesTable", @Model.DeadlineDtos.ToList())
+

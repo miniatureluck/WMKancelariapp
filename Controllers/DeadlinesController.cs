@@ -23,7 +23,11 @@ namespace WMKancelariapp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var model = await _deadlineServices.GetAll();
+            var model = new DeadlineIndexViewModel()
+            {
+                DeadlineDtos = await _deadlineServices.GetAll()
+            };
+
             return View(model);
         }
 

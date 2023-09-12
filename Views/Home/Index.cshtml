@@ -6,7 +6,7 @@
 
     var deadlinesToday = Model.Deadlines.Where(x => x.Date.DayOfYear <= DateTime.Today.DayOfYear && !x.IsCompleted);
     var nextSevenDays = DateTime.Today.AddDays(7);
-    var deadlinesNextSevenDays = Model.Deadlines.Where(x => x.Date <= nextSevenDays && x.Date > DateTime.Today);
+    var deadlinesNextSevenDays = Model.Deadlines.Where(x => x.Date <= nextSevenDays && x.Date.Date > DateTime.Today);
 }
 
 <div class="text-center">
