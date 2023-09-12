@@ -68,7 +68,10 @@
                         }
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.IsCompleted)
+
+                        <a class="btn-template button-navigation" data-bs-toggle="modal" data-bs-target="#deadlineStatusModal"
+                                data-case="@item.Case.Name" data-description="@item.Description" data-deadline-id="@item.DeadlineId" data-status="@(item.IsCompleted ? "do zrobienia" : "zrobione")">@(item.IsCompleted ? "Wykonane" : "Do zrobienia")
+                            </a>
                     </td>
                     @if (parentViewIsDeadlineIndex)
                     {
@@ -81,3 +84,28 @@
         </tbody>
     }
 </table>
+
+<div class="modal fade" id="deadlineStatusModal" tabindex="-1" role="dialog" aria-labelledby="deadlineStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deadlineStatusModalLabel">Zmiana statusu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                    Czy zmienić status dla <br/>
+                    <b><div id="deadline-description"></div></b>
+                    w sprawie<br/>
+                    <b><div id="deadline-case"></div></b>
+                    na <b><span id="deadline-status"></span></b>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-template button-alert" data-bs-dismiss="modal">Anuluj</button>
+                <a class="btn-template button-accept" id="deadline-action" asp-action="RevertStatus" asp-controller="Deadlines">Wykonaj</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/deadlinesTable.js"></script>

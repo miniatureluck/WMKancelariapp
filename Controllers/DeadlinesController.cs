@@ -145,6 +145,16 @@ namespace WMKancelariapp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> RevertStatus(string id)
+        {
+            var deadline = await _deadlineServices.GetDtoById(id);
+            deadline.IsCompleted = !deadline.IsCompleted;
+
+            await _deadlineServices.Edit(deadline);
+
+            return Redirect((string?) Request.Headers.Referer);
+        }
+
         private async Task ValidateDeadlineDto(DeadlineDtoViewModel model)
         {
             ModelState.Remove(nameof(model.DeadlineId));
