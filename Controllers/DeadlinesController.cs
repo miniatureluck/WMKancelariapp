@@ -21,12 +21,21 @@ namespace WMKancelariapp.Controllers
             _userManager = userManager;
             _caseServices = caseServices;
         }
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(DateTime? dateRangeFrom = null, DateTime? dateRangeTo = null)
         {
             var model = new DeadlineIndexViewModel()
             {
                 DeadlineDtos = await _deadlineServices.GetAll()
             };
+            if (dateRangeFrom != null)
+            {
+                model.DeadlineDtos = model.DeadlineDtos.Where(x => x.Date >= dateRangeFrom);
+            }
+            if (dateRangeTo != null)
+            {
+                model.DeadlineDtos = model.DeadlineDtos.Where(x => x.Date <= dateRangeTo);
+            }
 
             return View(model);
         }

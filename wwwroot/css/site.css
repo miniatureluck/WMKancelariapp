@@ -9,13 +9,23 @@
 }
 
 @keyframes blink-red {
-    0%, 100% { background-color: inherit; }
-    50% { background-color: red; }
+    0%, 100% {
+        background-color: inherit;
+    }
+
+    50% {
+        background-color: red;
+    }
 }
 
 @keyframes blink-green {
-    0%, 100% { background-color: inherit; }
-    50% { background-color: green; }
+    0%, 100% {
+        background-color: inherit;
+    }
+
+    50% {
+        background-color: green;
+    }
 }
 
 .margin-top-bot-1 {
@@ -120,6 +130,16 @@ body {
         background-color: #a90000;
     }
 
+.button-orange {
+    background: linear-gradient(to bottom, #ffa36d 5%, #fe8620 100%);
+    background-color: #ffa36d;
+}
+
+    .button-orange:hover {
+        background: linear-gradient(to bottom, #fe8620 5%, #ffa36d 100%);
+        background-color: #fe8620;
+    }
+
 .button-normal {
     background: linear-gradient(to bottom, #d1d1d1 5%, #918f91 100%);
     background-color: #d1d1d1;
@@ -136,6 +156,8 @@ body {
     position: relative;
     top: 2px;
     left: 2px;
+    margin-right: 5px;
+    margin-top: 3px;
     box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.4);
 }
 

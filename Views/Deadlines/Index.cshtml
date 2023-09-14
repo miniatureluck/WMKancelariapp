@@ -9,16 +9,16 @@
 <p>
     <a asp-action="Create" class="btn-template button-create">Nowy termin</a>
     <a class="btn-template button-normal" id="filter-toggle">Filtry</a>
-    <a class="btn-template button-additional" id="dates-filter-toggle">Zakres dat</a>
-    <div id="dates-filter" style="margin-top:-1rem">
-        <form>
+    <a class="btn-template button-orange" id="dates-filter-toggle">Zakres dat</a>
+    <div id="dates-filter" style="display:none; margin-top:-1rem">
+        <form asp-action="Index">
             <table class="table">
                 <div>
-                    <td class="col-md-3 align-middle">
-                        Od @Html.TextBoxFor(x => x.DateRangeFrom)
+                    <td class="col-md-2 align-middle">
+                    Od @Html.TextBoxFor(x => x.DateRangeFrom, new{ @type = "date" } )
                     </td>
-                    <td class="col-md-3 align-middle">
-                        Do @Html.TextBoxFor(x => x.DateRangeTo)
+                    <td class="col-md-2 align-middle">
+                        Do @Html.TextBoxFor(x => x.DateRangeTo, new { @type = "date" } )
                     </td>
                     <td class="col-md-2">
                         <input class="btn-template button-accept" type="submit" />
@@ -31,4 +31,9 @@
 </p>
 
 @await Html.PartialAsync("_DeadlinesTable", @Model.DeadlineDtos.ToList())
-
+<script type="text/javascript">
+    $('#dates-filter-toggle').click(function () {
+        $('#dates-filter-toggle').toggleClass("button-normal-toggled");
+        $('#dates-filter').toggle();
+    });
+</script>
