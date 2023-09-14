@@ -15,10 +15,12 @@
             <table class="table">
                 <div>
                     <td class="col-md-2 align-middle">
-                    Od @Html.TextBoxFor(x => x.DateRangeFrom, new{ @type = "date" } )
+                    Od @Html.TextBoxFor(x => x.DateRangeFrom, new{ @type = "date", id = "input-date-from"} )
+                    <a class="btn btn-close" id="reset-date-from"></a>
                     </td>
                     <td class="col-md-2 align-middle">
-                        Do @Html.TextBoxFor(x => x.DateRangeTo, new { @type = "date" } )
+                        Do @Html.TextBoxFor(x => x.DateRangeTo, new { @type = "date", id = "input-date-to"} )
+                    <a class="btn btn-close" id="reset-date-to"></a>
                     </td>
                     <td class="col-md-2">
                         <input class="btn-template button-accept" type="submit" />
@@ -35,5 +37,13 @@
     $('#dates-filter-toggle').click(function () {
         $('#dates-filter-toggle').toggleClass("button-normal-toggled");
         $('#dates-filter').toggle();
+    });
+
+    $('#reset-date-from').click(function () {
+        $('#input-date-from').val(null);
+    });
+    
+    $('#reset-date-to').click(function () {
+        $('#input-date-to').val(null);
     });
 </script>
