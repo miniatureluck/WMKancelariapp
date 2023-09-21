@@ -36,12 +36,13 @@
                 <div class="sidebar-heading border-bottom bg-light">
                     <a class="nav-link text-dark text-truncate" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@(User.Identity.Name.RemoveEmailDomain() ?? "---------")</a>
                 </div>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Home">START</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Clients">Klienci</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Cases">Sprawy</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="UserTasks">Czynności</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="HourlyPrices">Stawki</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Deadlines">Terminy</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Home">Finanse</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" asp-action="Index" asp-controller="Settlements">Finanse</a>
 
             </div>
         </div>

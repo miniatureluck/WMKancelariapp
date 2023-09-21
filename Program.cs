@@ -29,6 +29,7 @@ namespace WMKancelariapp
             builder.Services.AddScoped<IUserTaskServices, UserTaskServices>();
             builder.Services.AddScoped<IHourlyPriceServices, HourlyPriceServices>();
             builder.Services.AddScoped<IDeadlineServices, DeadlineServices>();
+            builder.Services.AddScoped<ISettlementServices, SettlementServices>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddAutoMapper(typeof(Program));
 
