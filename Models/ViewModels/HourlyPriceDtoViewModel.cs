@@ -20,8 +20,12 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Data modyfikacji")]
         public DateTime LastModified { get; set; } = DateTime.Now;
 
+        [DisplayName("Rozliczenie")]
+        public Settlement? Settlement { get; set; }
+
         public string TaskTypeId { get; set; }
         public string CaseId { get; set; }
+        public string? SettlementId { get; set; }
 
 
         public List<SelectListItem> CasesSelectList { get; set; } = new List<SelectListItem>();

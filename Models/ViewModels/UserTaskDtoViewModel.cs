@@ -33,6 +33,11 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Kategoria")]
         public TaskType TaskType { get; set; }
 
+        [DisplayName("Rozliczenie")]
+        public Settlement? Settlement { get; set; }
+        public string? SettlementId { get; set; }
+
+
         [DisplayName("Czas trwania")]
         public string? DurationMinutes { get; set; }
         

@@ -1,13 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using WMKancelariapp.Models.ViewModels;
+using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
     public class SettlementsController : Controller
     {
-        
-        public IActionResult Index()
+        private readonly IMapper _mapper;
+        private readonly ISettlementServices _settlementServices;
+        public SettlementsController(IMapper mapper, ISettlementServices settlementServices)
         {
-            return View();
+            _mapper = mapper;
+            _settlementServices = settlementServices;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var model = await _settlementServices.GetAll();
+
+            return View(model);
         }
 
         public async Task<IActionResult> Create()

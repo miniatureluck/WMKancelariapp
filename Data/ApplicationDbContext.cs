@@ -13,6 +13,7 @@ namespace WMKancelariapp.Data
         public DbSet<TaskType> TaskTypes { get; set; }
         public DbSet<HourlyPrice> HourlyPrices { get; set; }
         public DbSet<Deadline> Deadlines { get; set; }
+        public DbSet<Settlement> Settlements { get; set; }
 
         private readonly IConfiguration _configuration;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
@@ -69,6 +70,14 @@ namespace WMKancelariapp.Data
             builder.Entity<Deadline>()
                 .HasOne(x=>x.User).WithMany(x => x.Deadlines);
 
+            builder.Entity<Settlement>()
+                .HasOne(x => x.UserTask).WithOne(x => x.Settlement)
+                .HasForeignKey<UserTask>(x=>x.SettlementId);
+            builder.Entity<Settlement>()
+                .HasOne(x => x.HourlyRate).WithOne(x => x.Settlement)
+                .HasForeignKey<HourlyPrice>(x=>x.SettlementId);
+            builder.Entity<Settlement>()
+                .HasIndex(x => x.UserTaskId ).IsUnique();
         }
     }
 }

@@ -11,5 +11,7 @@
         public Client? Client { get; set; }
         public Case? Case { get; set; }
         public TaskType TaskType { get; set; }
+        public Settlement? Settlement { get; set; }
+        public string? SettlementId { get; set; }
     }
 }
