@@ -30,6 +30,10 @@ namespace WMKancelariapp.Models.ViewModels
         public List<Case>? Cases { get; set; } = new List<Case>();
         [DisplayName("Czynności")]
         public List<UserTask>? Tasks { get; set; } = new List<UserTask>();
+
+        [DisplayName("Rozliczenia")]
+        public List<Settlement>? Settlements { get; set; } = new List<Settlement>();
+
         [DisplayName("Opiekun")]
         public User? AssignedUser { get; set; }
 

@@ -296,9 +296,6 @@ namespace WMKancelariapp.Data.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("SettlementId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("TaskTypeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -309,10 +306,6 @@ namespace WMKancelariapp.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CaseId");
-
-                    b.HasIndex("SettlementId")
-                        .IsUnique()
-                        .HasFilter("[SettlementId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -328,6 +321,10 @@ namespace WMKancelariapp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -340,14 +337,9 @@ namespace WMKancelariapp.Data.Migrations
                     b.Property<int>("TotalPrice")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserTaskId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserTaskId")
-                        .IsUnique();
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Settlements");
                 });
@@ -483,9 +475,7 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("SettlementId")
-                        .IsUnique()
-                        .HasFilter("[SettlementId] IS NOT NULL");
+                    b.HasIndex("SettlementId");
 
                     b.HasIndex("TaskTypeId");
 
@@ -598,10 +588,6 @@ namespace WMKancelariapp.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WMKancelariapp.Models.Settlement", "Settlement")
-                        .WithOne("HourlyRate")
-                        .HasForeignKey("WMKancelariapp.Models.HourlyPrice", "SettlementId");
-
                     b.HasOne("WMKancelariapp.Models.TaskType", "TaskType")
                         .WithMany("HourlyPrices")
                         .HasForeignKey("TaskTypeId")
@@ -614,11 +600,20 @@ namespace WMKancelariapp.Data.Migrations
 
                     b.Navigation("Case");
 
-                    b.Navigation("Settlement");
-
                     b.Navigation("TaskType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WMKancelariapp.Models.Settlement", b =>
+                {
+                    b.HasOne("WMKancelariapp.Models.Client", "Client")
+                        .WithMany("Settlements")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.UserTask", b =>
@@ -633,8 +628,8 @@ namespace WMKancelariapp.Data.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("WMKancelariapp.Models.Settlement", "Settlement")
-                        .WithOne("UserTask")
-                        .HasForeignKey("WMKancelariapp.Models.UserTask", "SettlementId");
+                        .WithMany("UserTasks")
+                        .HasForeignKey("SettlementId");
 
                     b.HasOne("WMKancelariapp.Models.TaskType", "TaskType")
                         .WithMany("Tasks")
@@ -672,15 +667,14 @@ namespace WMKancelariapp.Data.Migrations
                 {
                     b.Navigation("Cases");
 
+                    b.Navigation("Settlements");
+
                     b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.Settlement", b =>
                 {
-                    b.Navigation("HourlyRate");
-
-                    b.Navigation("UserTask")
-                        .IsRequired();
+                    b.Navigation("UserTasks");
                 });
 
             modelBuilder.Entity("WMKancelariapp.Models.TaskType", b =>

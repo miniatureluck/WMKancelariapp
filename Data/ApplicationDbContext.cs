@@ -71,13 +71,9 @@ namespace WMKancelariapp.Data
                 .HasOne(x=>x.User).WithMany(x => x.Deadlines);
 
             builder.Entity<Settlement>()
-                .HasOne(x => x.UserTask).WithOne(x => x.Settlement)
-                .HasForeignKey<UserTask>(x=>x.SettlementId);
+                .HasOne(x => x.Client).WithMany(x => x.Settlements);
             builder.Entity<Settlement>()
-                .HasOne(x => x.HourlyRate).WithOne(x => x.Settlement)
-                .HasForeignKey<HourlyPrice>(x=>x.SettlementId);
-            builder.Entity<Settlement>()
-                .HasIndex(x => x.UserTaskId ).IsUnique();
+                .HasMany(x => x.UserTasks).WithOne(x => x.Settlement);
         }
     }
 }

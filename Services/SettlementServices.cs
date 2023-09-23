@@ -38,7 +38,7 @@ namespace WMKancelariapp.Services
 
         public async Task<IEnumerable<SettlementDtoViewModel>> GetAll()
         {
-            return _mapper.Map<IEnumerable<SettlementDtoViewModel>>(await _settlementRepository.GetAll(x=>x.HourlyRate, x=>x.UserTask));
+            return _mapper.Map<IEnumerable<SettlementDtoViewModel>>(await _settlementRepository.GetAll(x=>x.UserTasks, x=>x.Client));
         }
 
         public async Task<Settlement> GetById(string id)
