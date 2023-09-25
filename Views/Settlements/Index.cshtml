@@ -1,10 +1,10 @@
-﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.UserTaskDtoViewModel>
+﻿@model IEnumerable<WMKancelariapp.Models.ViewModels.SettlementDtoViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Rozliczenia";
 }
 
-<h1>Index</h1>
+<h2>Rozliczenia</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,21 +13,51 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Case.Name)
+                Klient
+            </th>
+            <th>
+                Czynności
+            </th>
+            <th>
+                Suma
+            </th>
+            <th>
+                Modyfikowano
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Case.Name)
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var group in Model.GroupBy(x => x.Client))
+        {
+            <tr>
+                <td rowspan="@group.Count()">
+                    <b>@group.Key.Name</b>
+                </td>
+                @foreach (var item in group)
+                {
+                    @Html.Raw(item != group.First() ? "<tr>" :"")
+                    <td rowspan="@item.UserTasks.Count()">
+                        @foreach (var usertask in item.UserTasks)
+                        {
+                            <tr>
+                                <td>@usertask.TaskType.Name</td>
+                                <td>@usertask.EndTime?.Date</td>
+                            </tr>
+                        }
+                    </td>
+                    <td>@item.TotalPrice</td>
+                    <td>@item.Modified</td>
+                    <td>@item.IsSettled</td>
+                    <td>@await Html.PartialAsync("_ActionButtons", $"{item.SettlementId}|Details|Edit|Delete|deleteText=rozliczenie<br/><b>{item.UserTasks.Count} czynności</b><br/>dla klienta<br/><b>{item.Client.Name} {item.Client.Surname}</b>")</td>
+                    @Html.Raw(item != group.First() ? "</tr>" :"")
+                }
+            </tr>
+        }
     </tbody>
 </table>

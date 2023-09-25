@@ -18,12 +18,11 @@ namespace WMKancelariapp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            //var model = await _settlementServices.GetAll();
-            var model = _mapper.Map<IEnumerable<UserTaskDtoViewModel>>(await _userTaskServices.GetAll());
-            return View(model.Where(x=>x.SettlementId == null));
+            var model = await _settlementServices.GetAll();
+            return View(model.Where(x=>x.SettlementId != null));
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(string? clientId = null)
         {
             return View();
         }
