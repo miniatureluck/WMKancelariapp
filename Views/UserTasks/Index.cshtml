@@ -44,6 +44,9 @@
                 @Html.DisplayNameFor(x=> x.AllUserTasks.FirstOrDefault().Duration)
             </th>
             <th>
+                Naliczenie
+            </th>
+            <th>
                 Opcje
             </th>
 
@@ -74,9 +77,20 @@
                     @item.DurationMinutes?.ConvertTimeToMinutes().ConvertMinutesToStringDisplay()
                 </td>
                 <td>
-                    @{ var deleteText = ($"czynności<br/>typu <b>{item.TaskType.Name}</b>" +
-                                        $"{(item.Case == null ? "<br/>nieprzydzielonej do żadnej sprawy" : $"<br/>dla sprawy <b>{item.Case.Name}</b>")}" +
-                                        $"{(item.Client == null ? "</br>nieprzydzielonej do żadnego klienta" : $"<br/>u klienta <b>{item.Client.Name} {item.Client.Surname}</b>")}");}
+                    @(item.Value switch
+                    {
+                        0 => "brak",
+                        -1 => Html.Raw($"<a class=\"btn-template button-create\" href=\"{Url.Action("Update", "HourlyPrices", new { id=@item.Case?.Id} )}\">Uzupełnij</a>"),
+                        _ => $"{item.Value} zł"
+                        })
+
+                </td>
+                <td>
+                    @{
+                    var deleteText = ($"czynności<br/>typu <b>{item.TaskType.Name}</b>" +
+                            $"{(item.Case == null ? "<br/>nieprzydzielonej do żadnej sprawy" : $"<br/>dla sprawy <b>{item.Case.Name}</b>")}" +
+                            $"{(item.Client == null ? "</br>nieprzydzielonej do żadnego klienta" : $"<br/>u klienta <b>{item.Client.Name} {item.Client.Surname}</b>")}");
+                    }
                     @await Html.PartialAsync("_ActionButtons", $"{item.UserTaskId}|Edit|Delete|Details|deleteText={deleteText}")
                 </td>
             </tr>

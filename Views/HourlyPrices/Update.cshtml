@@ -9,6 +9,7 @@
 @if (Model.CasesSelectList.Count() == 1)
 {
     <h4>w sprawie: <b>@Model.Case.Name</b></h4>
+    <h5>klient: @(Model.Case.Client?.Name ?? "-") @(Model.Case.Client?.Surname ?? "-")</h5>
 }
 <hr />
 

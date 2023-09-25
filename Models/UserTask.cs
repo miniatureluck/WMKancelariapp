@@ -7,6 +7,7 @@
         public DateTime? EndTime { get; set; }
         public long? Duration { get; set; }
         public string? Description { get; set; }
+        public int Value { get; set; }
 
         public Client? Client { get; set; }
         public Case? Case { get; set; }

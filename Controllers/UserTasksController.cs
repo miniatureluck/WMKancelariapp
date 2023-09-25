@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,15 @@ namespace WMKancelariapp.Controllers
         private readonly IClientServices _clientServices;
         private readonly UserManager<User> _userManager;
         private readonly ICaseServices _caseServices;
-        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper, IClientServices clientServices, UserManager<User> userManager, ICaseServices caseServices)
+        private readonly IHourlyPriceServices _hourlyPriceServices;
+        public UserTasksController(IUserTaskServices userTaskServices, IMapper mapper, IClientServices clientServices, UserManager<User> userManager, ICaseServices caseServices, IHourlyPriceServices hourlyPriceServices)
         {
             _userTaskServices = userTaskServices;
             _mapper = mapper;
             _clientServices = clientServices;
             _userManager = userManager;
             _caseServices = caseServices;
+            _hourlyPriceServices = hourlyPriceServices;
         }
         // GET: UserTasksController
         public async Task<ActionResult> Index()
@@ -66,20 +69,21 @@ namespace WMKancelariapp.Controllers
 
             try
             {
-                model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
-                model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
-                model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
-                model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
-                model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
-
-
                 if (!ModelState.IsValid)
                 {
                     await PopulateSelectionListsForCreateView(model);
                     return View(model);
                 }
 
+                model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
+                model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
+                model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
+                model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
+                model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
                 _userTaskServices.CalculateDuration(model);
+                model.Value = await CalculateTaskValue(model.Case.Id, model.TaskType.Id, model.Duration.Value);
+
+
 
                 await _userTaskServices.Create(model);
                 return RedirectToAction(nameof(Index));
@@ -89,6 +93,7 @@ namespace WMKancelariapp.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
 
         // GET: UserTasksController/Edit/5
         public async Task<ActionResult> Edit(string id)
@@ -109,20 +114,20 @@ namespace WMKancelariapp.Controllers
 
             try
             {
-                model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
-                model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
-                model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
-                model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
-                model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
-
                 if (!ModelState.IsValid)
                 {
                     await PopulateSelectionListsForCreateView(model);
                     return View(model);
                 }
 
+                model.Client = model.Client.Id == null ? null : await _clientServices.GetById(model.Client.Id);
+                model.User = model.User.Id == null ? null : await _userManager.FindByIdAsync(model.User.Id);
+                model.TaskType = await _userTaskServices.GetTaskTypeById(model.TaskType.Id);
+                model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
+                model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
                 _userTaskServices.CalculateDuration(model);
-
+                model.Value = await CalculateTaskValue(model.Case.Id, model.TaskType.Id, model.Duration.Value);
+                
                 await _userTaskServices.Edit(model);
                 return RedirectToAction(nameof(Index));
             }
@@ -323,6 +328,18 @@ namespace WMKancelariapp.Controllers
             ModelState.Remove("TaskType.Name");
 
             return model;
+        }
+        private async Task<int> CalculateTaskValue(string caseId, string taskTypeId, long duration)
+        {
+            var timeRate = TimeSpan.FromTicks(duration).TotalMinutes / 60;
+            var hourlyRate = await _hourlyPriceServices.GetHourlyRateForUserTask(caseId, taskTypeId);
+            if (hourlyRate < 0)
+            {
+                return -1;
+            }
+
+            var result = hourlyRate * timeRate;
+            return Convert.ToInt32(result);
         }
     }
 }

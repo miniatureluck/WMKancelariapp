@@ -23,6 +23,9 @@ namespace WMKancelariapp.Models.ViewModels
         [DisplayName("Opis")]
         public string? Description { get; set; }
 
+        [DisplayName("Należność")]
+        public int Value { get; set; }
+
 
         [DisplayName("Klient")]
         public Client? Client { get; set; }

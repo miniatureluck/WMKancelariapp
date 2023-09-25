@@ -84,5 +84,13 @@ namespace WMKancelariapp.Services
 
             return result;
         }
+
+        public async Task<int> GetHourlyRateForUserTask(string caseId, string taskTypeId)
+        {
+            var hourlyPrice = (await GetAll()).FirstOrDefault(x => x.CaseId == caseId && x.TaskTypeId == taskTypeId);
+            var result = hourlyPrice?.Price ?? -1;
+
+            return result;
+        }
     }
 }

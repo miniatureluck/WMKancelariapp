@@ -18,5 +18,6 @@ namespace WMKancelariapp.Services
 
         Task<int> CountSpecifiedPricesForCase (string caseId);
         Task<HourlyPrice> GetByCaseAndTaskTypeName(string caseId, string taskTypeName);
+        Task<int> GetHourlyRateForUserTask(string caseId, string taskTypeId);
     }
 }
