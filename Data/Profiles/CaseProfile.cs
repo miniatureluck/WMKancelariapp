@@ -17,7 +17,8 @@ namespace WMKancelariapp.Data.Profiles
                 .ForMember(x=>x.Description, opt=>opt.MapFrom(x=>x.Description.CapitaliseFirstLetter()))
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.CapitaliseFirstLetter()));
 
-            CreateMap<Case, CaseDtoViewModel>()
+            CreateMap<CaseDtoViewModel, Case>()
+                .ForMember(x=>x.Id, opt=>opt.MapFrom(x=>x.CaseId))
                 .ForMember(x=>x.Description, opt=>opt.MapFrom(x=>x.Description.CapitaliseFirstLetter()))
                 .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name.CapitaliseFirstLetter()));
         }

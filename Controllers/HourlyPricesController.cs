@@ -80,6 +80,7 @@ namespace WMKancelariapp.Controllers
                     var taskTypeDto = await _userTaskServices.GetTaskTypeByName(taskType.Text);
                     var hourlyPriceEntity =
                         await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text);
+                    
 
                     var hourlyPriceDto = new HourlyPriceDtoViewModel()
                     {
@@ -89,8 +90,7 @@ namespace WMKancelariapp.Controllers
                         TaskTypeId = taskTypeDto.TaskTypeId,
                         Price = int.Parse(taskType.Value),
                         User = user,
-                        HourlyPriceId =
-                            hourlyPriceEntity?.Id
+                        HourlyPriceId = hourlyPriceEntity?.Id,
                     };
 
                     if (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text) == null)
@@ -105,6 +105,8 @@ namespace WMKancelariapp.Controllers
                         }
                     }
 
+                    UpdateUserTaskValuesByCase(userCase.Id, taskTypeDto.TaskTypeId, hourlyPriceDto.Price);
+
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -113,6 +115,7 @@ namespace WMKancelariapp.Controllers
                 return View(model);
             }
         }
+
 
         public async Task<ActionResult> Delete(string id)
         {
@@ -136,6 +139,16 @@ namespace WMKancelariapp.Controllers
             catch
             {
                 return RedirectToAction(nameof(Index));
+            }
+        }
+        private async Task UpdateUserTaskValuesByCase(string userCaseId, string taskTypeId, int newValue)
+        {
+            var userTasks = (await _caseServices.GetByIdWithIncludes(userCaseId, x=>x.Tasks)).Tasks.Where(x=>x.TaskType.Id == taskTypeId);
+
+            foreach (var item in userTasks)
+            {
+                item.Value = newValue;
+                await _userTaskServices.Edit(_mapper.Map<UserTaskDtoViewModel>(item));
             }
         }
     }
