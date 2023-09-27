@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -126,7 +125,7 @@ namespace WMKancelariapp.Controllers
                 model.Case = model.Case.Id == null ? null : await _caseServices.GetById(model.Case.Id);
                 model.Duration = !model.DurationMinutes.IsNullOrEmpty() ? TimeSpan.FromMinutes(double.Parse(model.DurationMinutes?.ConvertTimeToMinutes())).Ticks : 0;
                 _userTaskServices.CalculateDuration(model);
-                model.Value = await CalculateTaskValue(model.Case.Id, model.TaskType.Id, model.Duration.Value);
+                model.Value = await CalculateTaskValue(model.Case?.Id, model.TaskType.Id, model.Duration.Value);
                 
                 await _userTaskServices.Edit(model);
                 return RedirectToAction(nameof(Index));

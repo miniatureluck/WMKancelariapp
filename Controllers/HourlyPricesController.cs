@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Operations;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Services;
@@ -43,7 +44,7 @@ namespace WMKancelariapp.Controllers
             var userCase = await _caseServices.GetById(id);
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
             var taskTypes = await _userTaskServices.GetAllTaskTypes();
-            
+
             var model = new HourlyPriceDtoViewModel
             {
                 Case = userCase,
@@ -66,7 +67,6 @@ namespace WMKancelariapp.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(HourlyPriceDtoViewModel model)
@@ -80,7 +80,7 @@ namespace WMKancelariapp.Controllers
                     var taskTypeDto = await _userTaskServices.GetTaskTypeByName(taskType.Text);
                     var hourlyPriceEntity =
                         await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text);
-                    
+
 
                     var hourlyPriceDto = new HourlyPriceDtoViewModel()
                     {
@@ -92,6 +92,7 @@ namespace WMKancelariapp.Controllers
                         User = user,
                         HourlyPriceId = hourlyPriceEntity?.Id,
                     };
+                    UpdateUserTaskValuesByCase(userCase, taskTypeDto.TaskTypeId, hourlyPriceDto.Price);
 
                     if (await _hourlyPriceServices.GetByCaseAndTaskTypeName(userCase.Id, taskType.Text) == null)
                     {
@@ -105,7 +106,6 @@ namespace WMKancelariapp.Controllers
                         }
                     }
 
-                    UpdateUserTaskValuesByCase(userCase.Id, taskTypeDto.TaskTypeId, hourlyPriceDto.Price);
 
                 }
                 return RedirectToAction(nameof(Index));
@@ -115,21 +115,25 @@ namespace WMKancelariapp.Controllers
                 return View(model);
             }
         }
-
-
+        
         public async Task<ActionResult> Delete(string id)
         {
+            ResetUserTasksValuesForThisHourlyPrice(id);
+
             await _hourlyPriceServices.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
-
-
+        
         public async Task<ActionResult> DeleteAllForCase(string id)
         {
             try
             {
                 var userCase = await _caseServices.GetByIdWithIncludes(id, x => x.AssignedUser, x => x.Client, x => x.Tasks, x => x.Prices);
+                foreach (var item in userCase.Prices)
+                {
+                    await ResetUserTasksValuesForThisHourlyPrice(item.Id);
+                }
                 userCase.Prices?.Clear();
                 var caseDto = _mapper.Map<CaseDtoViewModel>(userCase);
                 await _caseServices.Edit(caseDto);
@@ -141,14 +145,38 @@ namespace WMKancelariapp.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-        private async Task UpdateUserTaskValuesByCase(string userCaseId, string taskTypeId, int newValue)
+
+        private async Task ResetUserTasksValuesForThisHourlyPrice(string id)
         {
-            var userTasks = (await _caseServices.GetByIdWithIncludes(userCaseId, x=>x.Tasks)).Tasks.Where(x=>x.TaskType.Id == taskTypeId);
+            var hourlyPriceDto = await _hourlyPriceServices.GetDtoById(id);
+            var userCase = await _caseServices.GetByIdWithIncludes(hourlyPriceDto.CaseId, x => x.Tasks);
+            UpdateUserTaskValuesByCase(userCase, hourlyPriceDto.TaskTypeId, -1);
+        }
+
+        private static void UpdateUserTaskValuesByCase(Case userCase, string taskTypeId, int newRate)
+        {
+            var userTasks = userCase.Tasks.Where(x => x.TaskType.Id == taskTypeId);
 
             foreach (var item in userTasks)
             {
-                item.Value = newValue;
-                await _userTaskServices.Edit(_mapper.Map<UserTaskDtoViewModel>(item));
+                var duration = item.Duration;
+
+                if (!duration.HasValue)
+                {
+                    continue;
+                }
+
+                if (newRate == -1)
+                {
+                    item.Value = newRate;
+                }
+                else
+                {
+                    var timeRate = TimeSpan.FromTicks((long)duration).TotalMinutes / 60;
+                    var result = newRate * timeRate;
+
+                    item.Value = Convert.ToInt32(result);
+                }
             }
         }
     }

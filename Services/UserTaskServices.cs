@@ -34,7 +34,8 @@ namespace WMKancelariapp.Services
 
         public async Task Edit(UserTaskDtoViewModel editedUserTask)
         {
-            var userTaskToEdit = _mapper.Map(editedUserTask, await GetById(editedUserTask.UserTaskId));
+            var userTask = await GetById(editedUserTask.UserTaskId);
+            var userTaskToEdit = _mapper.Map(editedUserTask, userTask);
             if (userTaskToEdit == null)
             {
                 return;
