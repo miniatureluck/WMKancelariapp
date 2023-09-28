@@ -25,7 +25,7 @@ namespace WMKancelariapp.Services
 
         public async Task<bool> Delete(string id)
         {
-            var caseToDelete = await _caseRepository.GetById(id);
+            var caseToDelete = await _caseRepository.GetById(id, x=>x.Tasks);
             return await _caseRepository.Delete(caseToDelete);
         }
 
