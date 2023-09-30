@@ -1,5 +1,4 @@
 ﻿@using WMKancelariapp.Extensions
-@using Microsoft.IdentityModel.Tokens
 @model WMKancelariapp.Models.ViewModels.UserTaskIndexViewModel
 
 @{
@@ -60,7 +59,9 @@
                     @Html.DisplayFor(modelItem => item.TaskType.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Case.Name)
+                    <a asp-action="Details" asp-controller="Cases" asp-route-id="@item.Case?.Id">
+                        @Html.DisplayFor(modelItem => item.Case.Name)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)

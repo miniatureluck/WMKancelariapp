@@ -42,7 +42,7 @@
                     <a asp-action="Update" asp-controller="HourlyPrices" asp-route-caseId="@Model.CaseId" class="btn-template button-create float-end" style="margin-top: -3px">Zmień</a>
                 }
             </span>
-            </div>
+        </div>
         @if (!Model.Prices.Any())
         {
             @await Html.PartialAsync("_PlusButton", $"HourlyPrices|{Model.CaseId}")
@@ -63,5 +63,37 @@
                 }
             </table>
         }
+    </div>
+    <div class="col-md-10">
+            <span>
+                <b>@Html.DisplayNameFor(x=>x.Deadlines)</b>
+                @if (Model.Deadlines.Any())
+                {
+                    <table class="col-md-8">
+                        @foreach (var item in Model.Deadlines)
+                        {
+                            var timeDifference = item.Date - DateTime.Now;
+                            var deadlineAlert = (timeDifference < TimeSpan.FromDays(1) || timeDifference < TimeSpan.Zero) && !item.IsCompleted;
+                            <tr>
+                                <td>
+                                    • @item.Description.Truncate(40)
+                                </td>
+                                <td class="@($"{(deadlineAlert ? "text-danger" : "")}")">
+                                    do @item.Date.ToShortDateString(), godz. @item.Date.ToShortTimeString()
+                                </td>
+                                <td>
+                                    @(item.IsCompleted ? "Wykonano" : "Niewykonano")
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div>
+                        brak
+                    </div>
+                }
+            </span>
     </div>
 </div>

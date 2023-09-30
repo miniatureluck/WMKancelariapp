@@ -59,7 +59,7 @@ namespace WMKancelariapp.Controllers
         public async Task<ActionResult> Details(string id)
         {
             var userCase =
-                await _caseServices.GetByIdWithIncludes(id, x => x.AssignedUser, x => x.Tasks, x => x.Client, x=>x.Prices);
+                await _caseServices.GetByIdWithIncludes(id, x => x.AssignedUser, x => x.Tasks, x => x.Client, x=>x.Prices, x=>x.Deadlines);
             var model = _mapper.Map(userCase, new CaseDtoViewModel());
             return View(model);
         }
