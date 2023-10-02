@@ -6,7 +6,7 @@
         @Html.Raw($"dla klienta: <b>{Model.Client.Name} {Model.Client.Surname}</b>")
     }
 </h5>
-<hr/>
+<hr />
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="col-md-12">
     <div class="row">
@@ -27,45 +27,55 @@
     @if (Model.Client != null)
     {
         <div>
-            <div class="col-md-10">
-                <table class="table table-bordered">
-                    <thead>
-                    <th rowspan="2">
-                        <input type="checkbox" id="select-all-checkbox" />
-                    </th>
-                    <th colspan="5">
-                        <span class="text-uppercase">Nierozliczone czynności</span>
-                    </th>
-                    <tr>
-                        <th>Sprawa</th>
-                        <th>Rodzaj czynności</th>
-                        <th>Data ukończenia</th>
-                        <th>Czas trwania</th>
-                        <th>Naliczenie</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @for (var i = 0; i < Model.UserTasks.Count; i++)
-                        {
-                            var validValue = Model.UserTasks[i].Value > 0;
-                            <tr>
-                                <td>
-                                    @if (validValue)
-                                    {
-                                        @Html.CheckBoxFor(x => x.UserTaskIdsList.ElementAt(i).Value)
-                                    }
-                                </td>
-                                <td>@Model.UserTasks[i].Case.Name</td>
-                                <td>@Model.UserTasks[i].TaskType.Name</td>
-                                <td>@Model.UserTasks[i].EndTime</td>
-                                <td>@TimeSpan.FromTicks(Model.UserTasks[i].Duration.Value).ToString(@"hh\:mm")</td>
-                                <td>@(validValue ? $"{Model.UserTasks[i].Value} zł" : "---")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+
+            @if (!Model.UserTasks.Any())
+            {
+                <p class="text-danger">
+                    Brak nierozliczonych czynności
+                </p>
+            }
+            else
+            {
+                <div class="col-md-10">
+                    <table class="table table-bordered">
+                        <thead>
+                        <th rowspan="2">
+                            <input type="checkbox" id="select-all-checkbox" />
+                        </th>
+                        <th colspan="5">
+                            <span class="text-uppercase">Nierozliczone czynności</span>
+                        </th>
+                        <tr>
+                            <th>Sprawa</th>
+                            <th>Rodzaj czynności</th>
+                            <th>Data ukończenia</th>
+                            <th>Czas trwania</th>
+                            <th>Naliczenie</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.UserTasks.Count; i++)
+                            {
+                                var validValue = Model.UserTasks[i].Value > 0;
+                                <tr>
+                                    <td>
+                                        @if (validValue)
+                                        {
+                                            @Html.CheckBoxFor(x => x.UserTaskIdsList.ElementAt(i).Value)
+                                        }
+                                    </td>
+                                    <td>@Model.UserTasks[i].Case.Name</td>
+                                    <td>@Model.UserTasks[i].TaskType.Name</td>
+                                    <td>@Model.UserTasks[i].EndTime</td>
+                                    <td>@TimeSpan.FromTicks(Model.UserTasks[i].Duration.Value).ToString(@"hh\:mm")</td>
+                                    <td>@(validValue ? $"{Model.UserTasks[i].Value} zł" : "---")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
+            }
         </div>
-        @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
     }
 </div>
