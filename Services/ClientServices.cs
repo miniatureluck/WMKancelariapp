@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using WMKancelariapp.Models;
 using WMKancelariapp.Models.ViewModels;
 using WMKancelariapp.Repository;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WMKancelariapp.Services
 {
@@ -27,7 +28,6 @@ namespace WMKancelariapp.Services
             var clientToDelete = await _clients.GetById(id);
             return await _clients.Delete(clientToDelete);
         }
-
         public async Task Edit(ClientDtoViewModel editedClient)
         {
             var clients = await GetAll();
@@ -83,6 +83,36 @@ namespace WMKancelariapp.Services
 
             model.AddRange(clients.Select(item => new SelectListItem { Text = $"{item.Name} {item.Surname}", Value = item.Id }));
             return model;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetJsonClientByCaseId(string caseId)
+        {
+            if (caseId.IsNullOrEmpty() || caseId == "0")
+            {
+                var freshlist = await CreateClientsSelectList();
+                var newFreshlist = freshlist.ToList();
+                newFreshlist.RemoveAt(0);
+                return newFreshlist;
+            }
+
+            var clients = await GetAll();
+            var client = clients.FirstOrDefault(x => x.Cases.Any(y => y.Id == caseId));
+            var result = new List<SelectListItem>();
+
+            if (client == null)
+            {
+                return result;
+            }
+
+            var filteredClient = _mapper.Map<ClientDtoViewModel>(client);
+
+            result.Add(new SelectListItem()
+            {
+                Value = filteredClient.ClientId,
+                Text = filteredClient.Name + " " + filteredClient.Surname
+            });
+
+            return result;
         }
     }
 }

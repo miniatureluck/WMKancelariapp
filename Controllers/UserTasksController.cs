@@ -218,30 +218,7 @@ namespace WMKancelariapp.Controllers
 
         public async Task<IActionResult> GetJsonClientByCaseId(string caseId)
         {
-            if (caseId.IsNullOrEmpty() || caseId == "0")
-            {
-                var freshlist = await _clientServices.CreateClientsSelectList();
-                var newFreshlist = freshlist.ToList();
-                newFreshlist.RemoveAt(0);
-                return Json(newFreshlist);
-            }
-
-            var clients = await _clientServices.GetAll();
-            var client = clients.FirstOrDefault(x => x.Cases.Any(y => y.Id == caseId));
-            var result = new List<SelectListItem>();
-
-            if (client == null)
-            {
-                return Json(result);
-            }
-
-            var filteredClient = _mapper.Map<ClientDtoViewModel>(client);
-
-            result.Add(new SelectListItem()
-            {
-                Value = filteredClient.ClientId,
-                Text = filteredClient.Name + " " + filteredClient.Surname
-            });
+            var result = await _clientServices.GetJsonClientByCaseId(caseId);
 
             return Json(result);
         }

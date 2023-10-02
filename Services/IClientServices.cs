@@ -16,5 +16,7 @@ namespace WMKancelariapp.Services
         Task<Client> GetByName(string name, string surname);
         Task<ClientDtoViewModel> GetDtoById(string id);
         public Task<IEnumerable<SelectListItem>> CreateClientsSelectList();
+        public Task<IEnumerable<SelectListItem>> GetJsonClientByCaseId(string caseId);
+
     }
 }

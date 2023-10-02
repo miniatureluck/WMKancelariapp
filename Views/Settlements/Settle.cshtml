@@ -1,0 +1,17 @@
+﻿@model WMKancelariapp.Models.ViewModels.SettlementDtoViewModel
+@{
+    ViewData["Title"] = "Nowe rozliczenie";
+}
+
+<div>
+    <form asp-action="Settle">
+        <h4>Nowe rozliczenie</h4>
+        @await Html.PartialAsync("_SettlementPartial", Model)
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
