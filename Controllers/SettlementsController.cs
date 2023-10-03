@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using WMKancelariapp.Services;
 
 namespace WMKancelariapp.Controllers
 {
+    [Authorize]
     public class SettlementsController : Controller
     {
         private readonly IMapper _mapper;
@@ -28,7 +30,7 @@ namespace WMKancelariapp.Controllers
         public async Task<IActionResult> Index()
         {
             var model = await _settlementServices.GetAll();
-            return View(model.Where(x=>x.SettlementId != null));
+            return View(model.Where(x => x.SettlementId != null));
         }
 
         public async Task<IActionResult> Settle(string? id = null)
@@ -47,16 +49,22 @@ namespace WMKancelariapp.Controllers
 
             if (id != null)
             {
-                model.Client = await _clientServices.GetByIdWithIncludes(id, x=>x.Tasks);
+                model.Client = await _clientServices.GetByIdWithIncludes(id, x => x.Tasks);
                 model.ClientsSelectList.Add(new SelectListItem()
                 {
                     Text = $"{model.Client.Name} {model.Client.Surname}",
                     Value = model.Client.Id
                 });
-                model.UserTasks.AddRange(model.Client.Tasks);
+                model.UserTasks = new List<UserTask>(model.Client.Tasks);
+                model.SelectedUserTasksStatus = new List<bool>(model.UserTasks.Count);
+                for (var i = 0; i < model.UserTasks.Count; i++)
+                {
+                    model.SelectedUserTasksStatus.Add(false);
+                }
+
                 foreach (var task in model.Client.Tasks)
                 {
-                    var taskEntity = await _userTaskServices.GetByIdWithIncludes(task.Id, x=>x.Case, x=>x.Client, x=>x.TaskType, x=>x.Settlement);
+                    var taskEntity = await _userTaskServices.GetByIdWithIncludes(task.Id, x => x.Case, x => x.Client, x => x.TaskType, x => x.Settlement);
                     task.Case = taskEntity.Case;
                     task.Client = taskEntity.Client;
                     task.TaskType = taskEntity.TaskType;
@@ -71,6 +79,39 @@ namespace WMKancelariapp.Controllers
             model.UserTasks = model.UserTasks.Where(x => x.Settlement == null).ToList();
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settle(SettlementDtoViewModel model)
+        {
+            model.Client = await _clientServices.GetById(model.Client.Id);
+
+            for (var i = 0; i < model.UserTasks.Count; i++)
+            {
+                model.UserTasks[i] = await _userTaskServices.GetById(model.UserTasks[i].Id);
+                var isSelected = model.SelectedUserTasksStatus[i];
+
+                if (isSelected)
+                {
+                    model.TotalPrice += model.UserTasks[i].Value;
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            try
+            {
+                await _settlementServices.Create(model);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Settle");
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

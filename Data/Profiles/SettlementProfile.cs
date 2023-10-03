@@ -11,7 +11,9 @@ namespace WMKancelariapp.Data.Profiles
             CreateMap<Case, CaseDtoViewModel>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
             
-            CreateMap<Settlement, SettlementDtoViewModel>().ReverseMap();
+            CreateMap<Settlement, SettlementDtoViewModel>()
+                .ForMember(x=>x.AssignedUser, opt=>opt.MapFrom(x=>x.Client.AssignedUser))
+                .ReverseMap();
         }
     }
 }

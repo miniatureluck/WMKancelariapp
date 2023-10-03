@@ -12,24 +12,11 @@ namespace WMKancelariapp.Models.ViewModels
         public bool IsSettled { get; set; }
 
 
-
-        private Dictionary<string, bool> _userTaskIdsList;
+        public List<bool> SelectedUserTasksStatus { get; set; }
         public User? AssignedUser { get; set; }
         public List<SelectListItem> UsersSelectList { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> ClientsSelectList { get; set; } = new List<SelectListItem>();
-        public Dictionary<string, bool> UserTaskIdsList
-        {
-            get
-            {
-                if (_userTaskIdsList != null) return _userTaskIdsList;
-                _userTaskIdsList = new Dictionary<string, bool>();
-                foreach (var userTask in UserTasks)
-                {
-                    _userTaskIdsList[userTask.Id] = false;
-                }
-                return _userTaskIdsList;
-            }
-        }
+        
 
     }
 }

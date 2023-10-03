@@ -18,6 +18,10 @@
                 <span asp-validation-for="AssignedUser" class="text-danger"></span>
             </div>
         }
+        else
+        {
+            @Html.HiddenFor(x=>x.AssignedUser.Id)
+        }
         <div class="col-md-3">
             <label asp-for="Client" class="control-label"></label>
             @Html.DropDownListFor(x=>x.Client.Id, Model.ClientsSelectList, new {@class="form-control select-dropbox"})
@@ -54,28 +58,31 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @for (var i = 0; i < Model.UserTasks.Count; i++)
-                            {
-                                var validValue = Model.UserTasks[i].Value > 0;
-                                <tr>
-                                    <td>
-                                        @if (validValue)
-                                        {
-                                            @Html.CheckBoxFor(x => x.UserTaskIdsList.ElementAt(i).Value)
-                                        }
-                                    </td>
-                                    <td>@Model.UserTasks[i].Case.Name</td>
-                                    <td>@Model.UserTasks[i].TaskType.Name</td>
-                                    <td>@Model.UserTasks[i].EndTime</td>
-                                    <td>@TimeSpan.FromTicks(Model.UserTasks[i].Duration.Value).ToString(@"hh\:mm")</td>
-                                    <td>@(validValue ? $"{Model.UserTasks[i].Value} zł" : "---")</td>
-                                </tr>
-                            }
+                        @for (var i = 0; i < Model.UserTasks.Count; i++)
+                        {
+                                
+                            var validValue = Model.UserTasks[i].Value > 0;
+                            <tr>
+                                <td>
+                                    @if (validValue)
+                                    {
+                                        @Html.HiddenFor(x=>x.UserTasks[i].Id)
+                                        @Html.CheckBoxFor(x=> x.SelectedUserTasksStatus[i])
+                                    }
+                                </td>
+                                <td>@Model.UserTasks[i].Case.Name</td>
+                                <td>@Model.UserTasks[i].TaskType.Name</td>
+                                <td>@Model.UserTasks[i].EndTime</td>
+                                <td>@TimeSpan.FromTicks(Model.UserTasks[i].Duration.Value).ToString(@"hh\:mm")</td>
+                                <td>@(validValue ? $"{Model.UserTasks[i].Value} zł" : "---")</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
-                @await Html.PartialAsync("_OkCancelButtons", @Context.Request.Headers.Referer)
+                @await Html.PartialAsync("_OkCancelButtons", Context.Request.Headers.Referer)
             }
         </div>
     }
 </div>
+@Html.HiddenFor(x=>x.Client.Surname)
