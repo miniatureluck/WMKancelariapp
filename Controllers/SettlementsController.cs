@@ -62,7 +62,7 @@ namespace WMKancelariapp.Controllers
                     model.SelectedUserTasksStatus.Add(false);
                 }
 
-                foreach (var task in model.Client.Tasks)
+                foreach (var task in model.UserTasks)
                 {
                     var taskEntity = await _userTaskServices.GetByIdWithIncludes(task.Id, x => x.Case, x => x.Client, x => x.TaskType, x => x.Settlement);
                     task.Case = taskEntity.Case;
@@ -98,10 +98,15 @@ namespace WMKancelariapp.Controllers
                 }
             }
 
-            if (!ModelState.IsValid)
+            for (var i = model.UserTasks.Count-1; i >= 0; i--)
             {
-                return RedirectToAction("Index");
+                if (model.SelectedUserTasksStatus[i]==false)
+                {
+                    model.UserTasks.RemoveAt(i);
+                }
             }
+
+            
             try
             {
                 await _settlementServices.Create(model);

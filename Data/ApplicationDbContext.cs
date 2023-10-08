@@ -73,7 +73,8 @@ namespace WMKancelariapp.Data
             builder.Entity<Settlement>()
                 .HasOne(x => x.Client).WithMany(x => x.Settlements);
             builder.Entity<Settlement>()
-                .HasMany(x => x.UserTasks).WithOne(x => x.Settlement);
+                .HasMany(x => x.UserTasks).WithOne(x => x.Settlement)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
