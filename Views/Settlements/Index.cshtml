@@ -11,53 +11,52 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                Klient
-            </th>
-            <th>
-                Czynności
-            </th>
-            <th>
-                Suma
-            </th>
-            <th>
-                Modyfikowano
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-
-            </th>
-        </tr>
+    <tr>
+        <th>
+            Klient
+        </th>
+        <th>
+            Czynności
+        </th>
+        <th>
+            Suma
+        </th>
+        <th>
+            Modyfikowano
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+        </th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var group in Model.GroupBy(x => x.Client))
+    @foreach (var group in Model.GroupBy(x => x.Client))
+    {
+        @foreach (var item in group)
         {
             <tr>
-                <td rowspan="@group.Count()">
-                    <b>@group.Key.Name</b>
+                <td rowspan="@item.UserTasks.Count()">
+                    <b>@group.Key.Name @group.Key.Surname</b>
                 </td>
-                @foreach (var item in group)
-                {
-                    @Html.Raw(item != group.First() ? "<tr>" :"")
-                    <td rowspan="@item.UserTasks.Count()">
+                <td>
+                    <table>
                         @foreach (var usertask in item.UserTasks)
                         {
                             <tr>
-                                <td>@usertask.TaskType.Name</td>
-                                <td>@usertask.EndTime?.Date</td>
+                                <td>@usertask.TaskType.Name - @usertask.EndTime?.Date.ToShortDateString()</td>
                             </tr>
                         }
-                    </td>
-                    <td>@item.TotalPrice</td>
-                    <td>@item.Modified</td>
-                    <td>@item.IsSettled</td>
-                    <td>@await Html.PartialAsync("_ActionButtons", $"{item.SettlementId}|Details|Edit|Delete|deleteText=rozliczenie<br/><b>{item.UserTasks.Count} czynności</b><br/>dla klienta<br/><b>{item.Client.Name} {item.Client.Surname}</b>")</td>
-                    @Html.Raw(item != group.First() ? "</tr>" :"")
-                }
+                    </table>
+                </td>
+                <td>@item.TotalPrice</td>
+                <td>@item.Modified</td>
+                <td>@item.IsSettled</td>
+                <td>@await Html.PartialAsync("_ActionButtons", $"{item.SettlementId}|Details|Edit|Delete|deleteText=rozliczenie<br/><b>{item.UserTasks.Count} czynności</b><br/>dla klienta<br/><b>{item.Client.Name} {item.Client.Surname}</b>")</td>
             </tr>
         }
+    }
     </tbody>
 </table>
+

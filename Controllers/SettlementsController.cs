@@ -30,7 +30,16 @@ namespace WMKancelariapp.Controllers
         public async Task<IActionResult> Index()
         {
             var model = await _settlementServices.GetAll();
-            return View(model.Where(x => x.SettlementId != null));
+            foreach (var item in model)
+            {
+                foreach (var userTask in item.UserTasks)
+                {
+                    var taskEntity = await _userTaskServices.GetByIdWithIncludes(userTask.Id, x=>x.TaskType);
+                    userTask.TaskType = taskEntity.TaskType;
+                }
+            }
+
+            return View(model.Where(x => x.UserTasks.Any(y=>y.SettlementId!=null)));
         }
 
         public async Task<IActionResult> Settle(string? id = null)
