@@ -114,7 +114,6 @@ namespace WMKancelariapp.Controllers
                     model.UserTasks.RemoveAt(i);
                 }
             }
-
             
             try
             {
@@ -125,6 +124,12 @@ namespace WMKancelariapp.Controllers
                 return RedirectToAction("Settle");
             }
 
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _settlementServices.Delete(id);
             return RedirectToAction("Index");
         }
     }

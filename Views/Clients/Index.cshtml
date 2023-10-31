@@ -45,7 +45,13 @@
                 <td>@item.AssignedUser?.UserName.RemoveEmailDomain()</td>
                 <td>@item.Cases.Count</td>
                 <td>
-                    @await Html.PartialAsync("_ActionButtons", $"{item.ClientId}|Settle|Delete|Edit|Details|deleteText=klienta<br/><b>{item.Name} {item.Surname}</b>")
+                    @await Html.PartialAsync("_ActionButtons", 
+                               $"{item.ClientId}|" +
+                               $"{(item.Cases.Count==0? "" : "Settle|")}" +
+                               $"Delete|" +
+                               $"Edit|" +
+                               $"Details|" +
+                               $"deleteText=klienta<br/><b>{item.Name} {item.Surname}</b>")
                 </td>
             </tr>
         }

@@ -54,8 +54,7 @@ namespace WMKancelariapp.Data
                 .HasMany(x => x.HourlyPrices).WithOne(x => x.TaskType);
 
             builder.Entity<UserTask>()
-                .HasOne(x => x.Client).WithMany(x => x.Tasks)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasOne(x => x.Client).WithMany(x => x.Tasks);
             builder.Entity<UserTask>()
                 .HasOne(x => x.Case).WithMany(x => x.Tasks);
 
