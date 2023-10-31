@@ -53,7 +53,7 @@
                 <td>@item.TotalPrice</td>
                 <td>@item.Modified</td>
                 <td>@item.IsSettled</td>
-                <td>@await Html.PartialAsync("_ActionButtons", $"{item.SettlementId}|Details|Edit|Delete|deleteText=rozliczenie<br/><b>{item.UserTasks.Count} czynności</b><br/>dla klienta<br/><b>{item.Client.Name} {item.Client.Surname}</b>")</td>
+                <td>@await Html.PartialAsync("_ActionButtons", $"{item.SettlementId}|Details|Edit|Delete|deleteText=rozliczenia<br/><b>{item.UserTasks.Count} czynności</b><br/>dla klienta<br/><b>{item.Client.Name} {item.Client.Surname}</b>")</td>
             </tr>
         }
     }

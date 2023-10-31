@@ -13,6 +13,7 @@ namespace WMKancelariapp.Data.Profiles
             
             CreateMap<Settlement, SettlementDtoViewModel>()
                 .ForMember(x=>x.AssignedUser, opt=>opt.MapFrom(x=>x.Client.AssignedUser))
+                .ForMember(x=>x.SettlementId, opt=>opt.MapFrom(x=>x.Id))
                 .ReverseMap();
         }
     }

@@ -67,8 +67,8 @@
                                         @Html.HiddenFor(x=>x.UserTasks[i].Id)
                                         @Html.CheckBoxFor(x=> x.SelectedUserTasksStatus[i], hasValidValue ? null: new { @disabled="true" })
                                     </td>
-                                    <td>@Model.UserTasks[i].Case.Name</td>
-                                    <td>@Model.UserTasks[i].TaskType.Name</td>
+                                    <td>@Model.UserTasks[i].Case?.Name</td>
+                                    <td>@Model.UserTasks[i].TaskType?.Name</td>
                                     <td>@Model.UserTasks[i].EndTime</td>
                                     <td>@TimeSpan.FromTicks(Model.UserTasks[i].Duration.Value).ToString(@"hh\:mm")</td>
                                     <td>@(hasValidValue ? $"{Model.UserTasks[i].Value} zł" : "---")</td>
